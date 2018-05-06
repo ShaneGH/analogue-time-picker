@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./testBin",
+        "module": "commonjs"
+    },
+    "include": [
+        "./unitTests/**/*"
+    ]
+}
