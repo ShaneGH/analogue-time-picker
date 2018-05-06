@@ -1,0 +1,17 @@
+{
+  "name": "simple-material-time",
+  "version": "0.1.0",
+  "description": "A small and simple time picker based on google material UI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ui",
+    "material",
+    "timepicker",
+    "time"
+  ],
+  "author": "Shane Connon",
+  "license": "MIT"
+}
