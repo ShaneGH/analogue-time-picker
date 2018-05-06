@@ -17,8 +17,8 @@ type Elements =
         clock: HTMLElement,
         hours: HTMLElement,
         minutes: HTMLElement,
-        hand: HTMLElement,
-        ballPostion: HTMLElement
+        hands: HTMLElement[],
+        ballPostion: HTMLElement[]
     }
 
 function buildElements(root: HTMLElement): Elements {
@@ -26,14 +26,14 @@ function buildElements(root: HTMLElement): Elements {
         clock: root,
         hours: <HTMLElement>root.querySelectorAll(".facc-hours")[0],
         minutes: <HTMLElement>root.querySelectorAll(".facc-minutes")[0],
-        hand: <HTMLElement>root.querySelectorAll(".facc-hand-container")[0],
-        ballPostion: <HTMLElement>root.querySelectorAll(".facc-ball-position")[0]
+        hands: Array.prototype.slice.call(root.querySelectorAll(".facc-hand-container")),
+        ballPostion: Array.prototype.slice.call(root.querySelectorAll(".facc-ball-position"))
     };
 
     if (!el.clock ||
         !el.hours ||
         !el.minutes ||
-        !el.hand ||
+        !el.hands ||
         !el.ballPostion) {
 
         throw new Error("Invalid html element");
@@ -108,7 +108,7 @@ class Clock {
             if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
 
             if (this.mode === Modes.hours) {
-                this.elements.ballPostion.classList.remove("facc-ball-position-pm");
+                this.elements.ballPostion.forEach(b => b.classList.remove("facc-ball-position-pm"));
                 this.setMinutes(getAngleForMinutes(this.time.minute));
                 this.setMode(Modes.minutes);
             }
@@ -184,14 +184,14 @@ class Clock {
     }
 
     setHandAngleToHours(isPm: boolean) {
-        this.elements.hand.style.transform = `rotate(${this.time.handAngle}rad)`;
+        this.elements.hands.forEach(h => h.style.transform = `rotate(${this.time.handAngle}rad)`);
         isPm ?
-            this.elements.ballPostion.classList.add("facc-ball-position-pm") :
-            this.elements.ballPostion.classList.remove("facc-ball-position-pm");
+            this.elements.ballPostion.forEach(b => b.classList.add("facc-ball-position-pm")) :
+            this.elements.ballPostion.forEach(b => b.classList.remove("facc-ball-position-pm"));
     }
 
     setHandAngleToMinutes() {
-        this.elements.hand.style.transform = `rotate(${this.time.handAngle}rad)`;
+        this.elements.hands.forEach(h => h.style.transform = `rotate(${this.time.handAngle}rad)`);
     }
     
     dispose() {

@@ -40,23 +40,30 @@
     align-items: center;
 }
 
+.facc-hand-container-container-dot {
+    justify-content: center;
+}
+
 .facc-hand-container {
     height: 1.65em;
     display: flex;
     transition: transform 0.1s;
-    width: 100%;
+    transform-origin: 100% 50%;
+    width: 50%;
     align-items: center;
 }
 
-.facc-hand {
-    height: 0.2em;
+.facc-hand-dot {
+    height: 0.3em;
+    width: 0.3em;
     background-color: aqua;
-    flex: 1;
+    border-radius: 50%;
 }
 
-.facc-hand-spacer {
-    min-width: 45%;
-    height: 1px;
+.facc-hand {
+    height: 0.1em;
+    background-color: aqua;
+    flex: 1;
 }
 
 .facc-number-container {
@@ -86,7 +93,7 @@
 }
 
 .facc-number-padding {
-    width: 1em;
+    width: 0.5em;
     height: 1px;
 }
 
@@ -178,20 +185,28 @@
     transform: rotate(-90deg);
 }
 
-.facc-ball {
+.facc-ball,
+.facc-ball-spacer {
     width: 1.65em;
+}
+
+.facc-ball-spacer {
+    height: 1px;
+}
+
+.facc-ball {
     height: 1.65em;
     border-radius: 1.65em;
     background-color: aqua;
 }
 
 .facc-ball-position {
-    width: 0.825em;
+    width: 0.325em;
     transition: width 0.1s;
     height: 1px;
     display: inline-block;
 }
 
 .facc-ball-position-pm {
-    width: 3.05em;
+    width: 2.05em;
 }
