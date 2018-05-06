@@ -3,7 +3,8 @@ const path = require('path');
 module.exports = {
     
     output: {
-        path: path.resolve("./")
+        path: path.resolve("./"),
+        libraryTarget: "umd"
     },
 
     resolve: {
@@ -22,10 +23,19 @@ module.exports = {
                 }
             },
 
-            // {
-            //     test: /\.css$/,
-            //     use: [ 'style-loader', 'css-loader' ]
-            // }
+            {
+                test: /\.css$/,
+                use: 
+                [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            minimize: true
+                        }
+                    }
+                ]
+            }
         ]
     }
 };

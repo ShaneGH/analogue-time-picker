@@ -1,0 +1,197 @@
+
+
+.facc-clock-container {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}
+
+.facc-clock {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.facc-face {
+    background-color: #AAA;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+}
+
+.facc-numbers {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    transform: scale(1);
+    transition: transform 0.3s, opacity 0.05s;
+}
+
+.facc-hand-container-container {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+}
+
+.facc-hand-container {
+    height: 1.65em;
+    display: flex;
+    transition: transform 0.1s;
+    width: 100%;
+    align-items: center;
+}
+
+.facc-hand {
+    height: 0.2em;
+    background-color: aqua;
+    flex: 1;
+}
+
+.facc-hand-spacer {
+    min-width: 45%;
+    height: 1px;
+}
+
+.facc-number-container {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.facc-number-container>* {
+    float: left;
+}
+
+.facc-number {
+    width: 1.3em;
+    text-align: center;
+    line-height: 1.3em;
+    height: 1.3em;
+}
+
+.facc-clock *::selection {
+    background: transparent;
+}
+
+.facc-number-padding {
+    width: 1em;
+    height: 1px;
+}
+
+.facc-number-container-1 {
+    transform: rotate(120deg);
+}
+
+.facc-number-1 {
+    transform: rotate(-120deg);
+}
+
+.facc-number-container-2 {
+    transform: rotate(150deg);
+}
+
+.facc-number-2 {
+    transform: rotate(-150deg);
+}
+
+.facc-number-container-3 {
+    transform: rotate(180deg);
+}
+
+.facc-number-3 {
+    transform: rotate(-180deg);
+}
+
+.facc-number-container-4 {
+    transform: rotate(210deg);
+}
+
+.facc-number-4 {
+    transform: rotate(-210deg);
+}
+
+.facc-number-container-5 {
+    transform: rotate(240deg);
+}
+
+.facc-number-5 {
+    transform: rotate(-240deg);
+}
+
+.facc-number-container-6 {
+    transform: rotate(270deg);
+}
+
+.facc-number-6 {
+    transform: rotate(-270deg);
+}
+
+.facc-number-container-7 {
+    transform: rotate(300deg);
+}
+
+.facc-number-7 {
+    transform: rotate(-300deg);
+}
+
+.facc-number-container-8 {
+    transform: rotate(330deg);
+}
+
+.facc-number-8 {
+    transform: rotate(-330deg);
+}
+
+.facc-number-container-10 {
+    transform: rotate(30deg);
+}
+
+.facc-number-10 {
+    transform: rotate(-30deg);
+}
+
+.facc-number-container-11 {
+    transform: rotate(60deg);
+}
+
+.facc-number-11 {
+    transform: rotate(-60deg);
+}
+
+.facc-number-container-12 {
+    transform: rotate(90deg);
+}
+
+.facc-number-12 {
+    transform: rotate(-90deg);
+}
+
+.facc-ball {
+    width: 1.65em;
+    height: 1.65em;
+    border-radius: 1.65em;
+    background-color: aqua;
+}
+
+.facc-ball-position {
+    width: 0.825em;
+    transition: width 0.1s;
+    height: 1px;
+    display: inline-block;
+}
+
+.facc-ball-position-pm {
+    width: 3.05em;
+}
