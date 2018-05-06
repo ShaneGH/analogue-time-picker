@@ -1,26 +1,46 @@
+/* ##################### */
+/* ##################### */
+/* ### Default Theme ### */
+/* ##################### */
+/* ##################### */
 
-
-.facc-clock-container {
+.smt-background-color {
     background-color: white;
+}
+
+.smt-face-color {
+    background-color: rgb(238, 238, 238);
+}
+
+.smt-foreground-color {
+    background-color: rgb(0, 128, 129);
+}
+
+/* ##################### */
+/* ##################### */
+/* #### Positioning #### */
+/* ##################### */
+/* ##################### */
+
+.smt {
     width: 100%;
     height: 100%;
     cursor: default;
 }
 
-.facc-clock {
+.smt-clock {
     width: 100%;
     height: 100%;
     position: relative;
 }
 
-.facc-face {
-    background-color: #AAA;
+.smt-face {
     width: 100%;
     height: 100%;
     border-radius: 100%;
 }
 
-.facc-numbers {
+.smt-ns {
     width: 100%;
     height: 100%;
     top: 0;
@@ -30,7 +50,7 @@
     transition: transform 0.3s, opacity 0.05s;
 }
 
-.facc-hand-container-container {
+.smt-h-cnt-cnt {
     width: 100%;
     height: 100%;
     top: 0;
@@ -40,11 +60,11 @@
     align-items: center;
 }
 
-.facc-hand-container-container-dot {
+.smt-h-cnt-cnt-dot {
     justify-content: center;
 }
 
-.facc-hand-container {
+.smt-h-cnt {
     height: 1.65em;
     display: flex;
     transition: transform 0.1s;
@@ -53,20 +73,18 @@
     align-items: center;
 }
 
-.facc-hand-dot {
+.smt-h-dot {
     height: 0.3em;
     width: 0.3em;
-    background-color: aqua;
     border-radius: 50%;
 }
 
-.facc-hand {
+.smt-h {
     height: 0.1em;
-    background-color: aqua;
     flex: 1;
 }
 
-.facc-number-container {
+.smt-n-cnt {
     width: 100%;
     height: 100%;
     top: 0;
@@ -77,136 +95,135 @@
     border-radius: 50%;
 }
 
-.facc-number-container>* {
+.smt-n-cnt>* {
     float: left;
 }
 
-.facc-number {
+.smt-n {
     width: 1.3em;
     text-align: center;
     line-height: 1.3em;
     height: 1.3em;
 }
 
-.facc-clock *::selection {
+.smt-clock *::selection {
     background: transparent;
 }
 
-.facc-number-padding {
+.smt-n-pad {
     width: 0.5em;
     height: 1px;
 }
 
-.facc-number-container-1 {
+.smt-n-cnt-1 {
     transform: rotate(120deg);
 }
 
-.facc-number-1 {
+.smt-n-1 {
     transform: rotate(-120deg);
 }
 
-.facc-number-container-2 {
+.smt-n-cnt-2 {
     transform: rotate(150deg);
 }
 
-.facc-number-2 {
+.smt-n-2 {
     transform: rotate(-150deg);
 }
 
-.facc-number-container-3 {
+.smt-n-cnt-3 {
     transform: rotate(180deg);
 }
 
-.facc-number-3 {
+.smt-n-3 {
     transform: rotate(-180deg);
 }
 
-.facc-number-container-4 {
+.smt-n-cnt-4 {
     transform: rotate(210deg);
 }
 
-.facc-number-4 {
+.smt-n-4 {
     transform: rotate(-210deg);
 }
 
-.facc-number-container-5 {
+.smt-n-cnt-5 {
     transform: rotate(240deg);
 }
 
-.facc-number-5 {
+.smt-n-5 {
     transform: rotate(-240deg);
 }
 
-.facc-number-container-6 {
+.smt-n-cnt-6 {
     transform: rotate(270deg);
 }
 
-.facc-number-6 {
+.smt-n-6 {
     transform: rotate(-270deg);
 }
 
-.facc-number-container-7 {
+.smt-n-cnt-7 {
     transform: rotate(300deg);
 }
 
-.facc-number-7 {
+.smt-n-7 {
     transform: rotate(-300deg);
 }
 
-.facc-number-container-8 {
+.smt-n-cnt-8 {
     transform: rotate(330deg);
 }
 
-.facc-number-8 {
+.smt-n-8 {
     transform: rotate(-330deg);
 }
 
-.facc-number-container-10 {
+.smt-n-cnt-10 {
     transform: rotate(30deg);
 }
 
-.facc-number-10 {
+.smt-n-10 {
     transform: rotate(-30deg);
 }
 
-.facc-number-container-11 {
+.smt-n-cnt-11 {
     transform: rotate(60deg);
 }
 
-.facc-number-11 {
+.smt-n-11 {
     transform: rotate(-60deg);
 }
 
-.facc-number-container-12 {
+.smt-n-cnt-12 {
     transform: rotate(90deg);
 }
 
-.facc-number-12 {
+.smt-n-12 {
     transform: rotate(-90deg);
 }
 
-.facc-ball,
-.facc-ball-spacer {
+.smt-b,
+.smt-b-spacer {
     width: 1.65em;
 }
 
-.facc-ball-spacer {
+.smt-b-spacer {
     height: 1px;
 }
 
-.facc-ball {
+.smt-b {
     height: 1.65em;
     border-radius: 1.65em;
-    background-color: aqua;
 }
 
-.facc-ball-position {
+.smt-b-pos {
     width: 0.325em;
     transition: width 0.1s;
     height: 1px;
     display: inline-block;
 }
 
-.facc-ball-position-pm {
+.smt-b-pos-pm {
     width: 2.05em;
 }

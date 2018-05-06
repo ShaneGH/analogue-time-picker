@@ -32,7 +32,7 @@ function jsFile() {
         "",
         "function append(el: HTMLElement) {",
         "    el.innerHTML = innerTemplate;",
-        "    el.classList.add(\"facc-clock-container\");",
+        "    el.classList.add(\"smt\");",
         " ",
         "    return el;",
         "}",

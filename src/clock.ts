@@ -15,8 +15,8 @@ type Time =
 type Elements = 
     {
         clock: HTMLElement,
-        hours: HTMLElement,
-        minutes: HTMLElement,
+        hourContainer: HTMLElement,
+        minuteContainer: HTMLElement,
         hands: HTMLElement[],
         ballPostion: HTMLElement[]
     }
@@ -24,15 +24,15 @@ type Elements =
 function buildElements(root: HTMLElement): Elements {
     var el = {
         clock: root,
-        hours: <HTMLElement>root.querySelectorAll(".facc-hours")[0],
-        minutes: <HTMLElement>root.querySelectorAll(".facc-minutes")[0],
-        hands: Array.prototype.slice.call(root.querySelectorAll(".facc-hand-container")),
-        ballPostion: Array.prototype.slice.call(root.querySelectorAll(".facc-ball-position"))
+        hourContainer: <HTMLElement>root.querySelectorAll(".smt-hours")[0],
+        minuteContainer: <HTMLElement>root.querySelectorAll(".smt-minutes")[0],
+        hands: Array.prototype.slice.call(root.querySelectorAll(".smt-h-cnt")),
+        ballPostion: Array.prototype.slice.call(root.querySelectorAll(".smt-b-pos"))
     };
 
     if (!el.clock ||
-        !el.hours ||
-        !el.minutes ||
+        !el.hourContainer ||
+        !el.minuteContainer ||
         !el.hands ||
         !el.ballPostion) {
 
@@ -108,26 +108,26 @@ class Clock {
             if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
 
             if (this.mode === Modes.hours) {
-                this.elements.ballPostion.forEach(b => b.classList.remove("facc-ball-position-pm"));
+                this.elements.ballPostion.forEach(b => b.classList.remove("smt-b-pos-pm"));
                 this.setMinutes(getAngleForMinutes(this.time.minute));
                 this.setMode(Modes.minutes);
             }
         });
 
         mouseTracker.onMouseMove(e => this.setTime(e));
-    }
+    } 
 
     setMode(mode: Modes) {
         var show: HTMLElement
         var hide: HTMLElement
         switch (mode) {
             case Modes.hours:
-                show = this.elements.hours;
-                hide = this.elements.minutes;
+                show = this.elements.hourContainer;
+                hide = this.elements.minuteContainer;
                 break;
             case Modes.minutes:
-                hide = this.elements.hours;
-                show = this.elements.minutes;
+                hide = this.elements.hourContainer;
+                show = this.elements.minuteContainer;
                 break;
             default:
                 throw new Error(`Invalid mode: "${mode}". Only "${Modes.hours}" and "${Modes.minutes}" are supported`)
@@ -186,8 +186,8 @@ class Clock {
     setHandAngleToHours(isPm: boolean) {
         this.elements.hands.forEach(h => h.style.transform = `rotate(${this.time.handAngle}rad)`);
         isPm ?
-            this.elements.ballPostion.forEach(b => b.classList.add("facc-ball-position-pm")) :
-            this.elements.ballPostion.forEach(b => b.classList.remove("facc-ball-position-pm"));
+            this.elements.ballPostion.forEach(b => b.classList.add("smt-b-pos-pm")) :
+            this.elements.ballPostion.forEach(b => b.classList.remove("smt-b-pos-pm"));
     }
 
     setHandAngleToMinutes() {
