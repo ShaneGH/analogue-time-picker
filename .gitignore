@@ -1,5 +1,6 @@
 # Auto gen files
 dist/
+testBin/
 
 # Logs
 logs
