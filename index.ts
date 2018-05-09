@@ -26,7 +26,7 @@ function simpleMaterialTime(element?: object, time?: {hour: object | null, minut
         } else {
             if (time.hour != null) {
                 if (typeof time.hour === "number") {
-                    if (time.hour < 1 || time.hour > 24) throw new Error("The time.hour argument must be between 1 and 24.");
+                    if (time.hour < 0 || time.hour > 23) throw new Error("The time.hour argument must be between 1 and 24.");
                     _time.hour = time.hour;
                 } else {
                     throw new Error("The time.hour argument must be a number.");

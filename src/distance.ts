@@ -4,26 +4,26 @@ enum AmPm {
     pm = "pm"
 }
 
-function emToPx(em: number, clock: HTMLElement) {
-    return parseFloat(
-        window.getComputedStyle(clock).fontSize || 
-        window.getComputedStyle(document.body).fontSize || 
-        "12") * em;
+function emToPx(em: number, fontSize: number | null) {
+    return (fontSize ||
+        parseFloat(
+            window.getComputedStyle(document.body).fontSize || 
+            "12")) * em;
 }
 
 function getAMPM(
-    clientX: number, 
-    clientY: number, 
-    clockFace: HTMLElement) {
+    x: number, 
+    y: number, 
+    width: number, 
+    height: number,
+    fontSize: number | null) {
 
-    var width = clockFace.offsetWidth / 2;
-    var x = width - clientX;
+    var w = width / 2;
+    var _x = w - x;
+    var _y = (height / 2) - y;
 
-    var height = clockFace.offsetHeight / 2;
-    var y = height - clientY;
-
-    var distance = Math.sqrt((x * x) + (y * y));
-    var maxPm = width - emToPx(2.5, clockFace);
+    var distance = Math.sqrt((_x * _x) + (_y * _y));
+    var maxPm = w - emToPx(2.5, fontSize);
 
     return distance > maxPm ? AmPm.am : AmPm.pm;
 };

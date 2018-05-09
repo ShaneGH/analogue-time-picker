@@ -2,19 +2,17 @@ const _90 = Math.PI / 2;
 const _360 = Math.PI * 2;
 
 function getAngle(
-    clientX: number, 
-    clientY: number, 
-    clockFace: HTMLElement) {
+    x: number, 
+    y: number,
+    width: number, 
+    height: number) {
 
-    var width = clockFace.offsetWidth / 2;
-    var x = width - clientX;
-
-    var height = clockFace.offsetHeight / 2;
-    var y = height - clientY;
+    var _x = (width / 2) - x;
+    var _y = (height / 2) - y;
 
     // tan O = y / x
-    var angle = x ? Math.atan(y / x) : (Math.PI / 2);
-    if (x < 0) {
+    var angle = _x ? Math.atan(_y / _x) : (Math.PI / 2);
+    if (_x < 0) {
         angle = -angle + (2 * ((Math.PI / 2) + angle));
     }
 

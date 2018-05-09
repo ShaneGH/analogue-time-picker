@@ -1,8 +1,9 @@
 import { AmPm } from "./distance";
 
-var one12th = Math.PI / 6;
-var one60th = Math.PI / 30;
-var _360 = Math.PI * 2;
+const _30 = Math.PI / 6;
+const _12 = Math.PI / 30;
+const _360 = Math.PI * 2;
+const _90 = Math.PI / 2;
 
 function snap(angle: number, step: number) {
 
@@ -17,13 +18,18 @@ function snap(angle: number, step: number) {
     return angle - diff + step;
 }
 
-const hourMultiplier = 6 / Math.PI;
-function getHours (handAngle: number) {
-    handAngle = snap(handAngle, one12th);
+function getHours (handAngle: number, amPm: AmPm) {
+    handAngle = snap(handAngle, _30);
 
-    var hour = parseInt(((handAngle / one12th) % 12 - 3).toFixed());
-    while (hour <= 0) hour += 12;
-    while (hour > 12) hour -= 12;
+    var hour = parseInt((((handAngle - _90) % _360) / _30).toFixed());
+    if (hour < 0) hour += 12;
+    if (hour >= 12) hour -= 12;
+
+    if (!hour) {
+        if (amPm === AmPm.am) hour = 12; 
+    } else {
+        if (amPm !== AmPm.am) hour += 12; 
+    }
 
     return {
         hour,
@@ -31,13 +37,12 @@ function getHours (handAngle: number) {
     }
 }
 
-const minuteMultiplier = 30 / Math.PI;
 function getMinutes (handAngle: number) {
-    handAngle = snap(handAngle, one60th);
+    handAngle = snap(handAngle, _12);
 
-    var minute = parseInt(((handAngle / one60th) % 60 - 15).toFixed());
+    var minute = parseInt((((handAngle - _90) % _360) / _12).toFixed());
     while (minute < 0) minute += 60;
-    while (minute > 60) minute -= 60;
+    while (minute >= 60) minute -= 60;
     
     return {
         minute,

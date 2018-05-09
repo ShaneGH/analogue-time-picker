@@ -54,6 +54,7 @@
     position: absolute;
     transform: scale(1);
     transition: transform 0.3s, opacity 0.05s;
+    display: flex;
 }
 
 .smt-h-cnt-cnt {
@@ -202,11 +203,11 @@
     transform: rotate(-60deg);
 }
 
-.smt-n-cnt-12 {
+.smt-n-cnt-0 {
     transform: rotate(90deg);
 }
 
-.smt-n-12 {
+.smt-n-0 {
     transform: rotate(-90deg);
 }
 
