@@ -1,47 +1,19 @@
 import { registerEvent } from "./utils";
 import { MouseTracker } from "./mouseTracker";
-import { getAngle, getAngleDelta } from "../unitTests/angle";
+import { getAngle, getAngleDelta } from "./angle";
 import { getMinutes, getHours } from "./time";
 import { getAMPM, AmPm } from "./distance";
+import { buildElements, Elements } from "./componentElements";
+import { offset } from "./html";
 
 type Time = 
     {
         hour: number,
         minute: number,
-        handAngle: number,
-        amPm: AmPm
+        handAngle: number
     }
 
-type Elements = 
-    {
-        clock: HTMLElement,
-        hourContainer: HTMLElement,
-        minuteContainer: HTMLElement,
-        hands: HTMLElement[],
-        ballPostion: HTMLElement[]
-    }
-
-function buildElements(root: HTMLElement): Elements {
-    var el = {
-        clock: root,
-        hourContainer: <HTMLElement>root.querySelectorAll(".smt-hours")[0],
-        minuteContainer: <HTMLElement>root.querySelectorAll(".smt-minutes")[0],
-        hands: Array.prototype.slice.call(root.querySelectorAll(".smt-h-cnt")),
-        ballPostion: Array.prototype.slice.call(root.querySelectorAll(".smt-b-pos"))
-    };
-
-    if (!el.clock ||
-        !el.hourContainer ||
-        !el.minuteContainer ||
-        !el.hands ||
-        !el.ballPostion) {
-
-        throw new Error("Invalid html element");
-    }
-
-    return el;
-}
-
+const _360 = 2 * Math.PI;
 const _2PiOver60 = 2 * Math.PI / 60;
 function getAngleForMinutes(minutes: number) {
     minutes = (parseInt(Math.abs(minutes).toFixed()) - 45) % 60;
@@ -79,43 +51,35 @@ type TimeInput =
         minute: number | null
     }
 
-class Clock {
-    time: Time
-    elements: Elements
-    mode = Modes.hours
-
-    _createTracker: (() => void) | null = null; 
-
-    constructor(public rootElement: HTMLElement, time?: TimeInput) {
-        this.time = buildTime(time);
-
-        this.elements = buildElements(rootElement);
-        this._createTracker = registerEvent(this.elements.clock, "mousedown", e => this.createTracker(e));
-        
-        this.setHours(getAngleForHours(this.time.hour), this.time.amPm);
-        this.setMode(Modes.hours);
+type FaceElements =
+    {
+        hourContainer: HTMLElement
+        minuteContainer: HTMLElement
     }
 
-    mouseTracker: MouseTracker | null = null;
-    createTracker(e: MouseEvent) {
-        this.setTime(e);
+class Numbers {
+    constructor (public face: HTMLElement, public value: number, private visible = true) {
+    }
 
-        if (this.mouseTracker) return;
-        var mouseTracker = this.mouseTracker = new MouseTracker();
+    set(x: number, y: number) {
+    }
 
-        mouseTracker.onMouseUp(() => {
-            mouseTracker.dispose();
-            if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
+    show() {        
+        this.face.style.transform = "scale(1)";
+        this.face.style.opacity = "1";
+    }
 
-            if (this.mode === Modes.hours) {
-                this.elements.ballPostion.forEach(b => b.classList.remove("smt-b-pos-pm"));
-                this.setMinutes(getAngleForMinutes(this.time.minute));
-                this.setMode(Modes.minutes);
-            }
-        });
+    hide() {
+        this.face.style.transform = "scale(0)";
+        this.face.style.opacity = "0";
+    }
+}
 
-        mouseTracker.onMouseMove(e => this.setTime(e));
-    } 
+class Face {
+
+    constructor (public elements: FaceElements, public  mode = Modes.hours) {
+        this.setMode(mode);
+    }
 
     setMode(mode: Modes) {
         var show: HTMLElement
@@ -141,38 +105,112 @@ class Clock {
         
         this.mode = mode;
     }
+}
+
+type BallElements =
+    {
+        ballPostion: HTMLElement[]
+    }
+
+class Ball {
+    constructor(public elements: BallElements, public mode = AmPm.am) {
+    }
+
+    setToAm() {
+        this.elements.ballPostion.forEach(b => b.classList.remove("smt-b-pos-pm"));
+        this.mode = AmPm.am;
+    }
+
+    setToPm() {
+        this.elements.ballPostion.forEach(b => b.classList.add("smt-b-pos-pm"));
+        this.mode = AmPm.pm;
+    }
+}
+
+class Clock {
+    time: Time
+    face: Face
+    ball: Ball
+
+    _createTracker: (() => void) | null = null; 
+
+    constructor(public elements: Elements, time?: TimeInput) {
+        this.face = new Face(elements, Modes.hours);
+        this.ball = new Ball(elements, AmPm.am);
+
+        this.time = buildTime(time);
+        this._createTracker = registerEvent(this.elements.clock, "mousedown", e => this.createTracker(e));
+        
+        this.setComponentHours(getAngleForHours(this.time.hour), this.time.hour > 12 ? AmPm.pm : AmPm.am, true);
+    }
+
+    mouseTracker: {tracker: MouseTracker; offsetX: number; offsetY: number } | null = null;
+    createTracker(e: MouseEvent) {
+        this.setTime(e);
+
+        if (this.mouseTracker) return;
+        var mouseTracker = this.mouseTracker = {
+            tracker: new MouseTracker(),
+            offsetX: this.getOffsetX(),
+            offsetY: this.getOffsetY()
+        };
+
+        mouseTracker.tracker.onMouseUp(() => {
+            mouseTracker.tracker.dispose();
+            if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
+
+            if (this.face.mode === Modes.hours) {
+                this.setComponentMinutes(getAngleForMinutes(this.time.minute), true);
+                this.ball.setToAm();
+                this.face.setMode(Modes.minutes);
+            }
+        });
+
+        mouseTracker.tracker.onMouseMove(e => this.setTime(e));
+    } 
+
+    getOffsetX() {
+        if (this.mouseTracker) return this.mouseTracker.offsetX;
+        else return offset(this.elements.face, "offsetLeft");
+    }
+
+    getOffsetY() {
+        if (this.mouseTracker) return this.mouseTracker.offsetX;
+        else return offset(this.elements.face, "offsetTop")
+    }
 
     setTime(e: MouseEvent) {
-        var angle = getAngle(e.clientX, e.clientY, this.elements.clock);
-        if (this.mode === Modes.hours) {
-            var amPm = getAMPM(e.clientX, e.clientY, this.elements.clock);
-            this.setHours(angle, amPm);
+        var offsetX = this.getOffsetX();
+        var offsetY = this.getOffsetY();
+        var angle = getAngle(e.clientX - offsetX, e.clientY - offsetY, this.elements.face);
+        if (this.face.mode === Modes.hours) {
+            var amPm = getAMPM(e.clientX - offsetX, e.clientY - offsetY, this.elements.face);
+            this.setComponentHours(angle, amPm);
         } else {
-            this.setMinutes(angle);
+            this.setComponentMinutes(angle);
         }
     }
 
-    setHours(angle: number, amPm: AmPm) {
+    setComponentHours(angle: number, amPm: AmPm, force = false) {
         var delta = getAngleDelta(this.time.handAngle, angle);
-        if (!delta) return;
+        if (!force && !delta) return;
 
         angle = this.time.handAngle + delta;
-        var h = getHours(angle, amPm);
+        var h = getHours(angle);
 
         this.time.hour = h.hour;
-        this.time.amPm = h.amPm;        
         this.time.handAngle = h.handAngle;
 
         if (amPm == AmPm.pm) {
             this.time.hour += 12;
         }
 
-        this.setHandAngleToHours(amPm === AmPm.pm); 
+        this.setUiHours(); 
     }
 
-    setMinutes(angle: number) {
+    setComponentMinutes(angle: number, force = false) {
         var delta = getAngleDelta(this.time.handAngle, angle);
-        if (!delta) return;
+        if (!force && !delta) return;
 
         angle = this.time.handAngle + delta;
         var m = getMinutes(angle);
@@ -180,23 +218,37 @@ class Clock {
         this.time.minute = m.minute;
         this.time.handAngle = m.handAngle;
 
-        this.setHandAngleToMinutes(); 
+        this.setUiMinutes(); 
     }
 
-    setHandAngleToHours(isPm: boolean) {
+    setUiHours() {
+        if (this.elements.selectedNumber) {
+            this.elements.selectedNumber.classList.remove("smt-number-selected");
+        }
+        
         this.elements.hands.forEach(h => h.style.transform = `rotate(${this.time.handAngle}rad)`);
-        isPm ?
-            this.elements.ballPostion.forEach(b => b.classList.add("smt-b-pos-pm")) :
-            this.elements.ballPostion.forEach(b => b.classList.remove("smt-b-pos-pm"));
+        this.elements.selectedNumber = this.elements.hours[this.time.hour];
+        this.elements.selectedNumber.classList.add("smt-number-selected");
+        
+        this.time.hour > 12 ?
+            this.ball.setToPm() :
+            this.ball.setToAm();
     }
 
-    setHandAngleToMinutes() {
+    setUiMinutes() {
+        if (this.elements.selectedNumber) {
+            this.elements.selectedNumber.classList.remove("smt-number-selected");
+        }
+        
+        this.elements.selectedNumber = this.elements.minutes[this.time.minute];
+        if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("smt-number-selected");
+
         this.elements.hands.forEach(h => h.style.transform = `rotate(${this.time.handAngle}rad)`);
     }
     
     dispose() {
         if (this.mouseTracker) {
-            this.mouseTracker.dispose();
+            this.mouseTracker.tracker.dispose();
             this.mouseTracker = null;
         }
         

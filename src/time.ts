@@ -18,16 +18,16 @@ function snap(angle: number, step: number) {
 }
 
 const hourMultiplier = 6 / Math.PI;
-function getHours (handAngle: number, amPm: AmPm) {
+function getHours (handAngle: number) {
     handAngle = snap(handAngle, one12th);
 
-    var hour = parseInt(((hourMultiplier * handAngle) + 9).toFixed(0));
-    if (hour > 12) hour -= 12;
-    
+    var hour = parseInt(((handAngle / one12th) % 12 - 3).toFixed());
+    while (hour <= 0) hour += 12;
+    while (hour > 12) hour -= 12;
+
     return {
         hour,
-        handAngle,
-        amPm
+        handAngle
     }
 }
 
@@ -35,8 +35,9 @@ const minuteMultiplier = 30 / Math.PI;
 function getMinutes (handAngle: number) {
     handAngle = snap(handAngle, one60th);
 
-    var minute = parseInt(((minuteMultiplier * handAngle) + 45).toFixed(0));
-    if (minute >= 60) minute -= 60;
+    var minute = parseInt(((handAngle / one60th) % 60 - 15).toFixed());
+    while (minute < 0) minute += 60;
+    while (minute > 60) minute -= 60;
     
     return {
         minute,
