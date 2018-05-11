@@ -26,7 +26,7 @@ class Hours extends Numbers {
         return {
             angle: angle,
             value: value,
-            position: value <= 12 ? Position.far : Position.near
+            position: value && value <= 12 ? Position.far : Position.near
         }
     }
 }

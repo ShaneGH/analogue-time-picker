@@ -55,7 +55,6 @@ class Clock {
         mouseTracker.onMouseUp(() => {
             mouseTracker.dispose();
             if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
-
             if (this.hours.getVisible()) {
                 this.minutes.normalizeAngle(this.hours.value.angle);
                 this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
