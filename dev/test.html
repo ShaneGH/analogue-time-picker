@@ -1,0 +1,28 @@
+<html>
+
+<body>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="file:///C:/Dev/simple-material-time/simple-material-time.js"></script>
+    <style>
+        body {
+            font-family: Roboto, sans-serif;
+            font-size: 15;
+        }
+    </style>
+
+    <div style="padding-top: 20px; padding-left: 20px">
+        <div style="width: 250px; height: 250px; background-color: aqua">
+            <div id="test1">
+            </div>
+        </div>
+        <div id="console"></div>
+    </div>
+    <script>
+        (function (test1) {
+            simpleMaterialTime(test1, {hour: 01, minute: 00});
+        }(document.getElementById("test1")));
+    </script>
+</body>
+
+</html>
