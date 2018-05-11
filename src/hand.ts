@@ -14,7 +14,7 @@ class Hand {
         this.setPositon(angle, position);
     }
 
-    setPositon(angle: number, position: Position) {        
+    setPositon(angle: number, position: Position) {
         this.elements.hands.forEach(h => h.style.transform = `rotate(${angle}rad)`);
         
         position === Position.near ?

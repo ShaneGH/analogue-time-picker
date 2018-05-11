@@ -80,6 +80,9 @@
     transform-origin: 100% 50%;
     width: 50%;
     align-items: center;
+    
+    /* initial angle */
+    transform: rotate(1.5708rad);
 }
 
 .smt-h-dot {
