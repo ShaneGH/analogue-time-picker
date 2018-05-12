@@ -24,7 +24,12 @@ function buildMinutesList(root: HTMLElement): HTMLElement[] {
 
 type Elements = 
     {
+        root: HTMLElement,
         clock: HTMLElement,
+        ok: HTMLElement,
+        hoursTextbox: HTMLInputElement,
+        minutesTextbox: HTMLInputElement,
+        cancel: HTMLElement,
         hourContainer: HTMLElement,
         minuteContainer: HTMLElement,
         hands: HTMLElement[],
@@ -35,7 +40,12 @@ type Elements =
 
 function buildElements(root: HTMLElement): Elements {
     var el = {
-        clock: root,
+        root: root,
+        clock: <HTMLElement>root.querySelectorAll(".smt-clock")[0],
+        ok: <HTMLElement>root.querySelectorAll(".smt-ok")[0],
+        hoursTextbox: <HTMLInputElement>root.querySelectorAll(".smt-hour")[0],
+        minutesTextbox: <HTMLInputElement>root.querySelectorAll(".smt-minute")[0],
+        cancel: <HTMLElement>root.querySelectorAll(".smt-cancel")[0],
         hourContainer: <HTMLElement>root.querySelectorAll(".smt-hours")[0],
         minuteContainer: <HTMLElement>root.querySelectorAll(".smt-minutes")[0],
         hands: Array.prototype.slice.call(root.querySelectorAll(".smt-h-cnt")),
@@ -55,7 +65,12 @@ function buildElements(root: HTMLElement): Elements {
         .length
         && el.minutes.length !== 12;
 
-    if (!el.clock ||
+    if (!el.root ||
+        !el.clock ||
+        !el.ok ||
+        !el.cancel ||
+        !el.hoursTextbox ||
+        !el.minutesTextbox ||
         !el.hourContainer ||
         !el.minuteContainer ||
         !el.hands ||

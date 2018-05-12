@@ -1,42 +1,60 @@
 import { Clock, TimeInput } from "./src/clock";
-import { create, append } from "./src/template";
+import { create, append, remove } from "./src/template";
 import { buildElements } from "./src/componentElements";
+import { publicClock } from "./src/publicClock";
 
 // requiring will auto inject via webpack style-loader
 declare var require: any
 const css = require('./src/clock.css');
 
-function simpleMaterialTime(element?: object, time?: {hour: object | null, minute: object | null} | Date) {
+enum ElementMode {
+    Created = 1,
+    Appended = 2
+}
 
-    var _element: HTMLElement;
-    var _time: TimeInput = {hour: null, minute: null};
-
-    if (element == null) {
-        _element = create();
-    } else if (!(element instanceof HTMLElement)) {
-        throw new Error("The input argument must be a html element.");
-    } else {
-        _element = append(element);
+type Input =
+    {
+        element?: object, 
+        time?: {hour: object | null, minute: object | null} | Date,
+        closeOnSelect?: boolean
     }
 
-    if (time != null) {
-        if (time instanceof Date) {
-            _time.hour = time.getHours();
-            _time.minute = time.getMinutes();
+function simpleMaterialTime(input?: Input) {
+
+    if (!input) input = {};
+
+    var element: HTMLElement;
+    var time: TimeInput = {hour: null, minute: null};
+
+    var mode: ElementMode
+    if (input.element == null) {
+        mode = ElementMode.Created;
+        element = create();
+    } else if (!(input.element instanceof HTMLElement)) {
+        throw new Error("The input argument must be a html element.");
+    } else {
+        mode = ElementMode.Appended;
+        element = append(input.element);
+    }
+
+    if (input.time != null) {
+        if (input.time instanceof Date) {
+            time.hour = input.time.getHours();
+            time.minute = input.time.getMinutes();
         } else {
-            if (time.hour != null) {
-                if (typeof time.hour === "number") {
-                    if (time.hour < 0 || time.hour > 23) throw new Error("The time.hour argument must be between 1 and 24.");
-                    _time.hour = time.hour;
+            if (input.time.hour != null) {
+                if (typeof input.time.hour === "number") {
+                    if (input.time.hour < 0 || input.time.hour > 23) throw new Error("The time.hour argument must be between 1 and 24.");
+                    time.hour = input.time.hour;
                 } else {
                     throw new Error("The time.hour argument must be a number.");
                 }
             }
             
-            if (time.minute != null) {
-                if (typeof time.minute === "number") {
-                    if (time.minute < 0 || time.minute > 59) throw new Error("The time.minute argument must be between 0 and 59.");
-                    _time.minute = time.minute;
+            if (input.time.minute != null) {
+                if (typeof input.time.minute === "number") {
+                    if (input.time.minute < 0 || input.time.minute > 59) throw new Error("The time.minute argument must be between 0 and 59.");
+                    time.minute = input.time.minute;
                 } else {
                     throw new Error("The time.minute argument must be a number.");
                 }
@@ -44,10 +62,14 @@ function simpleMaterialTime(element?: object, time?: {hour: object | null, minut
         }
     }
 
-    return {
-        element: _element,
-        clock: new Clock(buildElements(_element), _time)
-    };
+    var clock = new Clock(buildElements(element), !!input.closeOnSelect, time);
+    clock.onDispose(() => mode === ElementMode.Created ?
+        element.parentElement ?
+            element.parentElement.removeChild(element) :
+            null :
+        remove(element));
+
+    return publicClock(clock, element);
 }
 
 export {

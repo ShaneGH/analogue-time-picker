@@ -76,7 +76,6 @@ abstract class Numbers {
         this.value = v;
 
         this.highlightNumber();
-
         return v;
     }
 
@@ -104,7 +103,7 @@ abstract class Numbers {
         this.visible = false;
     }
 
-    /** alter angle so that it is closest to the given angle, e.g. 400deg -> 40deg */
+    /** alter angle so that it is closest to the given angle, e.g. 500deg -> 140deg */
     normalizeAngle (angle: number) {
         var angle1 = angle % _360;
         var angle2 = this.value.angle % _360;

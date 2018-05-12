@@ -1,12 +1,12 @@
-import { registerEvent } from "./utils";
+import { registerMouseEvent } from "./utils";
 
 class MouseTracker {
 
     _dispose: (() => void)[] = [];
     constructor() {
         this._dispose.push(
-            registerEvent(document, "mouseup", e => this.mouseUp()),
-            registerEvent(document, "mousemove", e => this.mouseMove(e)));
+            registerMouseEvent(document, "mouseup", e => this.mouseUp()),
+            registerMouseEvent(document, "mousemove", e => this.mouseMove(e)));
     }
 
     mouseMove(e: MouseEvent){

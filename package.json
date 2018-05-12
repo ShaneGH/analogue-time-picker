@@ -8,7 +8,7 @@
     "build-unit-tests": "node \"./node_modules/typescript/lib/tsc.js\" -p \"./test.tsconfig.json\"",
     "mocha-unit-test": "mocha \"./testBin/**/*.js\"",
     "unit-test": "npm run build-unit-tests && npm run mocha-unit-test",
-    "develop": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch",
+    "develop": "npm run build-html-template && node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch",
     "build-dev": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\"",
     "build-prod": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/production.config.js\"",
     "build": "npm run build-html-template && npm run build-dev && npm run build-prod"

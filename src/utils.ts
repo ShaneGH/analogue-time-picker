@@ -6,7 +6,7 @@ type EventElement =
         removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void
     }
 
-function registerEvent(element: EventElement, event: string, fun: (e: MouseEvent) => void) {
+function registerEvent(element: EventElement, event: string, fun: (e: UIEvent) => void) {
     element.addEventListener(event, fun);
 
     var removed = false;
@@ -17,6 +17,15 @@ function registerEvent(element: EventElement, event: string, fun: (e: MouseEvent
     };
 }
 
+function registerMouseEvent(element: EventElement, event: string, fun: (e: MouseEvent) => void) {
+    return registerEvent(element, event, fun);
+}
+
+function registerKeyEvent(element: EventElement, event: string, fun: (e: KeyboardEvent) => void) {
+    return registerEvent(element, event, fun);
+}
+
 export {
-    registerEvent
+    registerKeyEvent,
+    registerMouseEvent
 }
