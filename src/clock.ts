@@ -1,68 +1,50 @@
-import { registerMouseEvent } from "./utils";
-import { MouseTracker } from "./mouseTracker";
-import { getAngle, getAngleDelta } from "./angle";
-import { getMinutes, getHours } from "./time";
-import { getAMPM, AmPm } from "./distance";
-import { buildElements, Elements } from "./componentElements";
-import { offset } from "./html";
-import { Numbers, Position } from "./numbers";
-import { Minutes } from "./minutes";
-import { Hours } from "./hours";
-import { Hand } from "./hand";
-// import { TimeDisplay } from "./timeDisplay";
+import { Hand } from './hand';
+import { Hours } from './hours';
+import { Minutes } from './minutes';
+import { MouseTracker } from './mouseTracker';
+import { registerMouseEvent } from './utils';;
 
 type TimeInput =
     {
-        hour: number | null
-        minute: number | null
+        hour: number
+        minute: number
+    }
+
+type Elements =
+    {
+        clock: HTMLElement
+        okButton: HTMLElement
+        cancelButton: HTMLElement
     }
 
 class Clock {
-    hours: Hours
-    minutes: Minutes
-    hand: Hand
-    // time: TimeDisplay
-
     ok: HTMLElement
     cancel: HTMLElement
+    clock: HTMLElement
 
-    _createTracker: (() => void) | null = null;
-    _okPropagation: (() => void) | null = null;
-    _cancelPropagation: (() => void) | null = null;
-    _ok: (() => void) | null = null;
-    _cancel: (() => void) | null = null;
+    _createTracker: (() => void)
+    _okPropagation: (() => void)
+    _cancelPropagation: (() => void)
+    _ok: (() => void)
+    _cancel: (() => void)
 
-    constructor(elements: Elements, public closeOnSelect: boolean, time?: TimeInput) {
+    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, public closeOnSelect: boolean) {
 
-        this.ok = elements.ok;
-        this.cancel = elements.cancel;
+        this.ok = elements.okButton;
+        this.cancel = elements.cancelButton;
+        this.clock = elements.clock;
 
-        var hr = time ? time.hour || 0 : 0;
-        this.hours = new Hours({
-            containerElement: elements.hourContainer,
-            numbers: elements.hours,
-            numberInput: elements.hoursTextbox
-        }, hr, true);
+        this.hours.show();
+        this.minutes.hide();
+        this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
+        this.hours.numberInput.onNext(() => this.minutes.numberInput.focus());
+        this.minutes.numberInput.onNext(() => this.ok.focus());
 
-        var min = time ? time.minute || 0 : 0;
-        this.minutes = new Minutes({
-            containerElement: elements.minuteContainer,
-            numbers: elements.minutes,
-            numberInput: elements.minutesTextbox
-        }, min, false);
-
-        this.hand = new Hand(elements, this.hours.value.angle, this.hours.value.position);
-        // this.time = new TimeDisplay(elements.hoursTextbox, elements.minutesTextbox, elements.ok);
-        // this.time.setTime(this.hours.value.value, this.minutes.value.value);
-
-        this._createTracker = registerMouseEvent(elements.clock, "mousedown", e => this.createTracker(e));
-        this._okPropagation = registerMouseEvent(elements.ok, "mousedown", e => e.stopPropagation());
-        this._cancelPropagation = registerMouseEvent(elements.cancel, "mousedown", e => e.stopPropagation());
-        this._ok = registerMouseEvent(elements.ok, "click", () => this.okClick());
-        this._cancel = registerMouseEvent(elements.cancel, "click", () => this.cancelClick());
-
-        // this.onTimeChanged((h, m) => this.time.setTime(h, m));
-        // this.time.onTimeChanged((h, m) => this.s .setTime(h, m));
+        this._createTracker = registerMouseEvent(this.clock, "mousedown", e => this.createTracker(e));
+        this._okPropagation = registerMouseEvent(this.ok, "mousedown", e => e.stopPropagation());
+        this._cancelPropagation = registerMouseEvent(this.cancel, "mousedown", e => e.stopPropagation());
+        this._ok = registerMouseEvent(this.ok, "click", () => this.okClick());
+        this._cancel = registerMouseEvent(this.cancel, "click", () => this.cancelClick());
     }
 
     _timeChangeCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
@@ -156,44 +138,25 @@ class Clock {
     }
     
     dispose() {
-        // this.time.dispose();
 
         if (this.mouseTracker) {
             this.mouseTracker.dispose();
             this.mouseTracker = null;
         }
         
-        if (this._createTracker) {
-            this._createTracker();
-            this._createTracker = null;
-        }
-        
-        if (this._okPropagation) {
-            this._okPropagation();
-            this._okPropagation = null;
-        }
-        
-        if (this._cancelPropagation) {
-            this._cancelPropagation();
-            this._cancelPropagation = null;
-        }
-
-        this._timeChangeCallbacks = [];
-        
-        this._okCallbacks = [];
-        if (this._ok) {
-            this._ok();
-            this._ok = null;
-        }
-        
-        this._cancelCallbacks = [];
-        if (this._cancel) {
-            this._cancel();
-            this._cancel = null;
-        }
-        
         var callbacks = this._disposeCallbacks;
+        
+        this._disposeCallbacks = [];
+        this._timeChangeCallbacks = [];
+        this._okCallbacks = [];
         this._cancelCallbacks = [];
+        
+        this._createTracker();
+        this._okPropagation();
+        this._cancelPropagation();
+        this._ok();
+        this._cancel();
+        
         callbacks
             .slice(0)
             .forEach(f => f());

@@ -2,6 +2,7 @@ import { Clock, TimeInput } from "./src/clock";
 import { create, append, remove } from "./src/template";
 import { buildElements } from "./src/componentElements";
 import { publicClock } from "./src/publicClock";
+import { DiContext } from "./src/di";
 
 // requiring will auto inject via webpack style-loader
 declare var require: any
@@ -24,7 +25,7 @@ function simpleMaterialTime(input?: Input) {
     if (!input) input = {};
 
     var element: HTMLElement;
-    var time: TimeInput = {hour: null, minute: null};
+    var time: TimeInput = {hour: 0, minute: 0};
 
     var mode: ElementMode
     if (input.element == null) {
@@ -62,7 +63,8 @@ function simpleMaterialTime(input?: Input) {
         }
     }
 
-    var clock = new Clock(buildElements(element), !!input.closeOnSelect, time);
+    var context = new DiContext(element, { time, closeOnSelect: !!input.closeOnSelect });
+    var clock = context.buildClock();
     clock.onDispose(() => mode === ElementMode.Created ?
         element.parentElement ?
             element.parentElement.removeChild(element) :

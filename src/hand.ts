@@ -4,14 +4,14 @@ import { Position } from "./numbers";
 type BallElements =
     {
         ballPostion: HTMLElement[],
-        hands: HTMLElement[],
-        hours: HTMLElement[],
-        minutes: HTMLElement[]
+        hands: HTMLElement[]
     }
 
+const _90 = Math.PI / 2;
+
 class Hand {
-    constructor(public elements: BallElements, angle: number, position: Position) {
-        this.setPositon(angle, position);
+    constructor(public elements: BallElements) {
+        this.setPositon(_90, Position.far);
     }
 
     setPositon(angle: number, position: Position) {

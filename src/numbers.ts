@@ -1,5 +1,6 @@
 import { getAngleDelta } from "./angle";
 import { registerKeyEvent } from "./utils";
+import { NumberInput } from "./numberInput";
 
 const _360 = Math.PI * 2;
 
@@ -8,11 +9,11 @@ enum Position {
     far = "far"
 }
 
-type Elements =
+type NumbersElements =
     {
         containerElement: HTMLElement,
         numbers: HTMLElement[],
-        numberInput: HTMLInputElement
+        // numberInput: HTMLInputElement
     }
 
 type GetValueResult =
@@ -32,144 +33,26 @@ function offset(el: HTMLElement | null, prop: "offsetLeft" | "offsetTop") {
     return offset;
 }
 
-function increase(val: string, max: number) {
-    var v = parseInt(val) + 1;
-    return  v > max ? 0 : v;
-}
-
-function decrease(val: string, max: number) {
-    var v = parseInt(val) - 1;
-    return v < 0 ? max : v;
-}
-
-function getElementNewValues(element: HTMLInputElement, key: string, max: number) {
-    var actualStart = element.selectionStart || 0;
-    var start = actualStart > 1 ? 
-        1 : 
-        actualStart ;
-
-    var val1 = (element.value || "").substr(0, start);
-    var val2 = (element.value || "").substr(start + 1);
-
-    var value = parseInt(`${val1}${key}${val2}`);
-    if (value < 0 || value > max) return null;
-
-    return {
-        value,
-        position: actualStart + 1,
-        characterReplaced: actualStart ? 2 : 1
-    };
-}
-
-var numberKey = /^\d$/;
-var fKey = /^F\d+$/;
-function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: number) {
-
-    var handled = true;
-    switch (e.key) {
-        case "ArrowUp":
-            return {
-                handled: true,
-                value: increase(element.value, max),
-                position: null,
-                characterReplaced: null
-            };
-        case "ArrowDown":
-            return {
-                handled: true,
-                value: decrease(element.value, max),
-                position: null,
-                characterReplaced: null
-            };
-        case "ArrowRight":
-        case "ArrowLeft":
-        case "Tab":
-            return {
-                handled: false
-            };
-        default:
-            if (numberKey.test(e.key)) {
-                return {
-                    handled: true,
-                    ...getElementNewValues(element, e.key, max)
-                };
-            } else if (fKey.test(e.key)) {
-                return {
-                    handled: false
-                };
-            }
-    }
-    
-    return { handled: true };
-}
-
-class NumberInput {
-
-    _keyPressHandler: (() => void) | null
-    constructor(public input: HTMLInputElement, public selectNext: () => void) {
-        this._keyPressHandler = registerKeyEvent(input, "keydown", e => this.onKeyDown(e));
-    }
-
-    onKeyDown(e: KeyboardEvent) {
-        var details = keyPressDetails(this.input, e, 23);
-        
-        if (details.handled) e.preventDefault();
-        if (details.value != null) {
-            this.input.value = `0${details.value}`.slice(-2);
-        }
-
-        if (details.position) {
-            this.input.selectionEnd = details.position;
-            this.input.selectionStart = details.position;
-            if (details.position > 1) {
-                this.selectNext();
-            }
-        }
-    }
-    
-    _timeChangedCallbacks: ((hours: number, minutes: number) => void)[] = [];
-    onTimeChanged(callback: ((hours: number, minutes: number) => void)) {
-        this._timeChangedCallbacks.push(callback);
-    }
-
-    //TODO
-    // focusOnMinutes() {
-    //     this.minutesElement.focus();
-    //     this.minutesElement.selectionStart = 0;
-    //     this.minutesElement.selectionEnd = 0;
-    // }
-
-    dispose() {
-        if (this._keyPressHandler) {
-            this._keyPressHandler();
-            this._keyPressHandler = null;
-        }
-
-        this._timeChangedCallbacks = [];
-    }
-}
-
 abstract class Numbers {
-    numberInput: NumberInput
     offsetLeft: number
     offsetTop: number
     width: number
     height: number
     fontSize: number | null
     value: GetValueResult
-    elements: Elements & { selectedNumber: HTMLElement | null }
+    elements: NumbersElements & { selectedNumber: HTMLElement | null }
 
-    constructor (elements: Elements, value: number, private visible = true) {
+    constructor (public numberInput: NumberInput, elements: NumbersElements, value: number, private visible: boolean) {
 
         this.elements = {
             ...elements,
             selectedNumber: null
         };
 
-        this.numberInput = new NumberInput(elements.numberInput, () => {});
         this.refreshOffsets();
         this.value = this.getValuesFromValue(value);
         this.highlightNumber();
+        this.numberInput.set(this.value.value);
 
         if (visible) this.show();
         else this.hide();
@@ -205,7 +88,7 @@ abstract class Numbers {
         value.angle = this.value.angle + delta;
         this.value = value;
 
-        this.elements.numberInput.value = `0${this.value.value}`.slice(-2);
+        this.numberInput.set(value.value);
         this.highlightNumber();
         return value;
     }
@@ -239,10 +122,6 @@ abstract class Numbers {
         var angle1 = angle % _360;
         var angle2 = this.value.angle % _360;
         this.value.angle = angle + angle2 - angle1;
-    }
-
-    dispose() {
-        this.numberInput.dispose();
     }
 }
 
