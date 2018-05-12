@@ -6,7 +6,7 @@ const _90 = Math.PI / 2;
 const _6 = Math.PI / 30;
 class Minutes extends Numbers {
     getValuesFromPosition(x: number, y: number) {
-        var angle = getAngle(x, y, this.containerElement.offsetWidth, this.containerElement.offsetHeight);
+        var angle = getAngle(x, y, this.elements.containerElement.offsetWidth, this.elements.containerElement.offsetHeight);
         var value = getMinutes(angle);
 
         return {

@@ -9,7 +9,7 @@ import { Numbers, Position } from "./numbers";
 import { Minutes } from "./minutes";
 import { Hours } from "./hours";
 import { Hand } from "./hand";
-import { TimeDisplay } from "./timeDisplay";
+// import { TimeDisplay } from "./timeDisplay";
 
 type TimeInput =
     {
@@ -21,7 +21,7 @@ class Clock {
     hours: Hours
     minutes: Minutes
     hand: Hand
-    time: TimeDisplay
+    // time: TimeDisplay
 
     ok: HTMLElement
     cancel: HTMLElement
@@ -40,18 +40,20 @@ class Clock {
         var hr = time ? time.hour || 0 : 0;
         this.hours = new Hours({
             containerElement: elements.hourContainer,
-            numbers: elements.hours
+            numbers: elements.hours,
+            numberInput: elements.hoursTextbox
         }, hr, true);
 
         var min = time ? time.minute || 0 : 0;
         this.minutes = new Minutes({
             containerElement: elements.minuteContainer,
-            numbers: elements.minutes
+            numbers: elements.minutes,
+            numberInput: elements.minutesTextbox
         }, min, false);
 
         this.hand = new Hand(elements, this.hours.value.angle, this.hours.value.position);
-        this.time = new TimeDisplay(elements.hoursTextbox, elements.minutesTextbox, elements.ok);
-        this.time.setTime(this.hours.value.value, this.minutes.value.value);
+        // this.time = new TimeDisplay(elements.hoursTextbox, elements.minutesTextbox, elements.ok);
+        // this.time.setTime(this.hours.value.value, this.minutes.value.value);
 
         this._createTracker = registerMouseEvent(elements.clock, "mousedown", e => this.createTracker(e));
         this._okPropagation = registerMouseEvent(elements.ok, "mousedown", e => e.stopPropagation());
@@ -59,7 +61,8 @@ class Clock {
         this._ok = registerMouseEvent(elements.ok, "click", () => this.okClick());
         this._cancel = registerMouseEvent(elements.cancel, "click", () => this.cancelClick());
 
-        this.onTimeChanged((h, m) => this.time.setTime(h, m));
+        // this.onTimeChanged((h, m) => this.time.setTime(h, m));
+        // this.time.onTimeChanged((h, m) => this.s .setTime(h, m));
     }
 
     _timeChangeCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
@@ -128,6 +131,8 @@ class Clock {
                 this.minutes.show();
             } else if (this.closeOnSelect) {
                 this.okClick();
+            } else {
+                this.ok.focus();
             }
         });
 
@@ -136,13 +141,13 @@ class Clock {
 
     setTime(e: MouseEvent) {
         if (this.hours.getVisible()) {
-            if (this.hours.set(e.clientX, e.clientY)) {
+            if (this.hours.setFromPosition(e.clientX, e.clientY)) {
                 this.timeChangeOccurred();
             }
 
             this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
         } else {
-            if (this.minutes.set(e.clientX, e.clientY)) {
+            if (this.minutes.setFromPosition(e.clientX, e.clientY)) {
                 this.timeChangeOccurred();
             }
 
@@ -151,7 +156,7 @@ class Clock {
     }
     
     dispose() {
-        this.time.dispose();
+        // this.time.dispose();
 
         if (this.mouseTracker) {
             this.mouseTracker.dispose();

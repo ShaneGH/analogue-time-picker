@@ -8,8 +8,8 @@ const _30 = Math.PI / 6;
 
 class Hours extends Numbers {
     getValuesFromPosition(x: number, y: number) {
-        var angle = getAngle(x, y, this.containerElement.offsetWidth, this.containerElement.offsetHeight);
-        var amPm = getAMPM(x, y, this.containerElement.offsetWidth, this.containerElement.offsetHeight, this.fontSize);
+        var angle = getAngle(x, y, this.elements.containerElement.offsetWidth, this.elements.containerElement.offsetHeight);
+        var amPm = getAMPM(x, y, this.elements.containerElement.offsetWidth, this.elements.containerElement.offsetHeight, this.fontSize);
         var value = getHours(angle, amPm);
 
         return {

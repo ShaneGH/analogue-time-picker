@@ -278,3 +278,7 @@
 .smt-time .smt-hour {
     text-align: right;
 }
+
+button.smt-enforce-font-size {
+    font-size: 100%;
+}
