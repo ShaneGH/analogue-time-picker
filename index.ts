@@ -1,8 +1,7 @@
-import { Clock, TimeInput } from "./src/clock";
-import { create, append, remove } from "./src/template";
-import { buildElements } from "./src/componentElements";
-import { publicClock } from "./src/publicClock";
-import { DiContext } from "./src/di";
+import { TimeInput } from './src/clock';
+import { DiContext } from './src/di';
+import { publicClock } from './src/publicClock';
+import { append, create, remove } from './src/template';
 
 // requiring will auto inject via webpack style-loader
 declare var require: any

@@ -1,6 +1,4 @@
-import { getAngleDelta } from "./angle";
-import { registerKeyEvent } from "./utils";
-import { NumberInput } from "./numberInput";
+import { NumberInput } from './numberInput';
 
 const _360 = Math.PI * 2;
 
@@ -12,8 +10,7 @@ enum Position {
 type NumbersElements =
     {
         containerElement: HTMLElement,
-        numbers: HTMLElement[],
-        // numberInput: HTMLInputElement
+        numbers: HTMLElement[]
     }
 
 type GetValueResult =
@@ -84,10 +81,7 @@ abstract class Numbers {
     private _set (value: GetValueResult) {
         if (value.value === this.value.value) return null;
 
-        var delta = getAngleDelta(this.value.angle, value.angle);
-        value.angle = this.value.angle + delta;
         this.value = value;
-
         this.numberInput.set(value.value);
         this.highlightNumber();
         return value;

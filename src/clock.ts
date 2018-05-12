@@ -2,7 +2,7 @@ import { Hand } from './hand';
 import { Hours } from './hours';
 import { Minutes } from './minutes';
 import { MouseTracker } from './mouseTracker';
-import { registerMouseEvent } from './utils';;
+import { registerMouseEvent } from './utils';
 
 type TimeInput =
     {
@@ -22,11 +22,11 @@ class Clock {
     cancel: HTMLElement
     clock: HTMLElement
 
-    _createTracker: (() => void)
-    _okPropagation: (() => void)
-    _cancelPropagation: (() => void)
-    _ok: (() => void)
-    _cancel: (() => void)
+    _createTracker: () => void
+    _okPropagation: () => void
+    _cancelPropagation: () => void
+    _ok: () => void
+    _cancel: () => void
 
     constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, public closeOnSelect: boolean) {
 
@@ -52,15 +52,25 @@ class Clock {
         this._timeChangeCallbacks.push(callback);
     }
 
+    _okCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
+    onOk(callback: ((hour: number, minute: number) => void | boolean)) {
+        this._okCallbacks.push(callback);
+    }
+
+    _cancelCallbacks: (() => void | boolean)[] = [];
+    onCancel(callback: (() => void | boolean)) {
+        this._cancelCallbacks.push(callback);
+    }
+
+    _disposeCallbacks: (() => void)[] = [];
+    onDispose(f: () => void) {
+        this._disposeCallbacks.push(f);
+    }
+
     timeChangeOccurred() {
         this._timeChangeCallbacks
             .slice(0)
             .forEach(f => f(this.hours.value.value, this.minutes.value.value));
-    }
-
-    _okCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
-    onOk(callback: ((hour: number, minute: number) => void | boolean)) {
-        this._okCallbacks.push(callback);
     }
 
     okClick() {
@@ -73,11 +83,6 @@ class Clock {
         if (!cancelDispose) this.dispose();
     }
 
-    _cancelCallbacks: (() => void | boolean)[] = [];
-    onCancel(callback: (() => void | boolean)) {
-        this._cancelCallbacks.push(callback);
-    }
-
     cancelClick() {
         var cancelDispose = this._cancelCallbacks
             .slice(0)
@@ -86,11 +91,6 @@ class Clock {
             .length;
 
         if (!cancelDispose) this.dispose();
-    }
-
-    _disposeCallbacks: (() => void)[] = [];
-    onDispose(callback: (() => void)) {
-        this._disposeCallbacks.push(callback);
     }
 
     mouseTracker: MouseTracker | null = null;
@@ -146,10 +146,10 @@ class Clock {
         
         var callbacks = this._disposeCallbacks;
         
-        this._disposeCallbacks = [];
-        this._timeChangeCallbacks = [];
-        this._okCallbacks = [];
-        this._cancelCallbacks = [];
+        this._timeChangeCallbacks.length = 0;
+        this._okCallbacks.length = 0;
+        this._cancelCallbacks.length = 0;
+        this._disposeCallbacks.length = 0
         
         this._createTracker();
         this._okPropagation();

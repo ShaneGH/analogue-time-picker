@@ -1,8 +1,8 @@
-import { Hours } from './hours';
-import { HourInput, MinuteInput } from './numberInput';
-import { Minutes } from './minutes';
 import { Clock } from './clock';
 import { Hand } from './hand';
+import { Hours } from './hours';
+import { Minutes } from './minutes';
+import { HourInput, MinuteInput } from './numberInput';
 
 type DIResult<T> =
     {

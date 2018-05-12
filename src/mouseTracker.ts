@@ -2,11 +2,21 @@ import { registerMouseEvent } from "./utils";
 
 class MouseTracker {
 
-    _dispose: (() => void)[] = [];
+    _mouseUp: () => void
+    _mouseMove: () => void
     constructor() {
-        this._dispose.push(
-            registerMouseEvent(document, "mouseup", e => this.mouseUp()),
-            registerMouseEvent(document, "mousemove", e => this.mouseMove(e)));
+        this._mouseUp = registerMouseEvent(document, "mouseup", e => this.mouseUp());
+        this._mouseMove = registerMouseEvent(document, "mousemove", e => this.mouseMove(e));
+    }
+
+    _onMouseUp: (() => void)[] = [];
+    onMouseUp(callback: () => void) {
+        this._onMouseUp.push(callback);
+    }
+
+    _onMouseMove: ((e: MouseEvent) => void)[] = [];
+    onMouseMove(callback: (e: MouseEvent) => void) {
+        this._onMouseMove.push(callback);
     }
 
     mouseMove(e: MouseEvent){
@@ -21,19 +31,9 @@ class MouseTracker {
             .forEach(f => f());
     }
 
-    _onMouseUp: (() => void)[] = [];
-    onMouseUp(callback: () => void) {
-        this._onMouseUp.push(callback);
-    }
-
-    _onMouseMove: ((e: MouseEvent) => void)[] = [];
-    onMouseMove(callback: (e: MouseEvent) => void) {
-        this._onMouseMove.push(callback);
-    }
-
     dispose() {
-        this._dispose.forEach(x => x());
-        this._dispose.length = 0;
+        this._mouseUp();
+        this._mouseMove();
         this._onMouseUp.length = 0;
         this._onMouseMove.length = 0;
     }

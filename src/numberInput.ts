@@ -1,4 +1,4 @@
-import { registerKeyEvent } from "./utils";
+import { registerKeyEvent } from './utils';
 
 
 function increase(val: string, max: number) {
@@ -83,6 +83,11 @@ abstract class NumberInput {
     onNext(f: () => void) {
         this._onNextCallbacks.push(f);
     }
+    
+    _timeChangedCallbacks: ((hours: number, minutes: number) => void)[] = [];
+    onTimeChanged(callback: ((hours: number, minutes: number) => void)) {
+        this._timeChangedCallbacks.push(callback);
+    }
 
     protected abstract getMaxValue(): number
 
@@ -111,11 +116,6 @@ abstract class NumberInput {
     _set(value: number) {
         this.input.value = `0${value}`.slice(-2);
     }
-    
-    _timeChangedCallbacks: ((hours: number, minutes: number) => void)[] = [];
-    onTimeChanged(callback: ((hours: number, minutes: number) => void)) {
-        this._timeChangedCallbacks.push(callback);
-    }
 
     focus() {
         this.input.focus();
@@ -126,8 +126,8 @@ abstract class NumberInput {
     dispose() {
         this._keyPressHandler();
         
-        this._onNextCallbacks = [];
-        this._timeChangedCallbacks = [];
+        this._onNextCallbacks.length = 0;
+        this._timeChangedCallbacks.length = 0;
     }
 }
 
