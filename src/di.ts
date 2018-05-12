@@ -3,6 +3,8 @@ import { Hand } from './hand';
 import { Hours } from './hours';
 import { Minutes } from './minutes';
 import { HourInput, MinuteInput } from './numberInput';
+import { create, append, remove } from './template';
+import { HtmlTree } from './htmlTree';
 
 type DIResult<T> =
     {
@@ -30,11 +32,19 @@ function toArray<T extends Element>(xs: NodeListOf<Element>): T[] {
 
 class DiContext {
     disposables: Disposable[] = [];
-    constructor(public rootHtmlElement: HTMLElement, public config: Config) {
+    htmlTree: HtmlTree;
+
+    constructor(public config: Config, rootHtmlElement?: HTMLElement) {
+        this.htmlTree = new HtmlTree(rootHtmlElement);
+        this.disposables.push(this.htmlTree);
     }
 
-    getElement<T extends HTMLElement>(selector: string) {
-        var el = this.rootHtmlElement.querySelectorAll(selector);
+    getRootElement() {
+        return this.htmlTree.element;
+    }
+
+    private _getElement<T extends HTMLElement>(selector: string) {
+        var el = this.getRootElement().querySelectorAll(selector);
         if (el.length !== 1) {
             var message = el.length ? "Too many elements" : "Cannot find element";
             throw new Error(`${message} "${selector}".`);
@@ -47,7 +57,7 @@ class DiContext {
         var list: HTMLElement[] = [];
     
         for (var i = 0; i < 12; i++) {
-            list[i] = <HTMLElement>this.rootHtmlElement.querySelectorAll(`.smt-hours .smt-n-${i}`)[index];
+            list[i] = <HTMLElement>this.getRootElement().querySelectorAll(`.smt-hours .smt-n-${i}`)[index];
         }
 
         return list.map((el, i) => {
@@ -67,13 +77,13 @@ class DiContext {
 
             
         return {
-            containerElement: this.getElement(".smt-hours"),
+            containerElement: this._getElement(".smt-hours"),
             numbers: hours
         };
     }
 
     buildHoursInput() {
-        var el = this.getElement<HTMLInputElement>(".smt-hour");
+        var el = this._getElement<HTMLInputElement>(".smt-hour");
         var hours = new HourInput(el);
         this.disposables.push(hours);
 
@@ -88,7 +98,7 @@ class DiContext {
         var list: HTMLElement[] = [];
     
         for (var i = 0; i < 12; i++) {
-            list[(i * 5) % 60] = <HTMLElement>this.rootHtmlElement.querySelectorAll(`.smt-minutes .smt-n-${i}`)[0];
+            list[(i * 5) % 60] = <HTMLElement>this.getRootElement().querySelectorAll(`.smt-minutes .smt-n-${i}`)[0];
         }
 
         return list.map((el, i) => {
@@ -99,13 +109,13 @@ class DiContext {
 
     buildMinutesElements() {
         return {
-            containerElement: this.getElement(".smt-minutes"),
+            containerElement: this._getElement(".smt-minutes"),
             numbers: this.buildMinutesElementList()
         };
     }
 
     buildMinutesInput() {
-        var el = this.getElement<HTMLInputElement>(".smt-minute");
+        var el = this._getElement<HTMLInputElement>(".smt-minute");
         var hours = new MinuteInput(el);
         this.disposables.push(hours);
 
@@ -118,8 +128,8 @@ class DiContext {
     
     buildHandElements() {
         return {
-            ballPostion: toArray<HTMLElement>(this.rootHtmlElement.querySelectorAll(".smt-b-pos")),
-            hands: toArray<HTMLElement>(this.rootHtmlElement.querySelectorAll(".smt-h-cnt"))
+            ballPostion: toArray<HTMLElement>(this.getRootElement().querySelectorAll(".smt-b-pos")),
+            hands: toArray<HTMLElement>(this.getRootElement().querySelectorAll(".smt-h-cnt"))
         };
     }
 
@@ -129,9 +139,9 @@ class DiContext {
     
     buildClockElements() {
         return {
-            okButton: this.getElement(".smt-ok"),
-            cancelButton: this.getElement(".smt-cancel"),
-            clock: this.getElement(".smt-clock")
+            okButton: this._getElement(".smt-ok"),
+            cancelButton: this._getElement(".smt-cancel"),
+            clock: this._getElement(".smt-clock")
         };
     }
 

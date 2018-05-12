@@ -14,7 +14,6 @@
         }
     </style>
 
-
     <div style="padding-top: 20px; padding-left: 20px">
         <div style="width: 166px; background-color: aqua">
             <div id="test1" style="border: 1px solid black">
@@ -30,7 +29,9 @@
                 closeOnSelect: false
             });
 
-            time.onOk((h, m) => alert(`0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)))
+            time.onOk((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
+            time.onTimeChanged((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
+            time.onCancel(() => console.log("CANCEL"));
         }(document.getElementById("test1")));
     </script>
 </body>

@@ -51,7 +51,13 @@ function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: numbe
                 characterReplaced: null
             };
         case "ArrowRight":
+            return {
+                handled: false
+            };
         case "ArrowLeft":
+            return {
+                handled: false
+            };
         case "Tab":
             return {
                 handled: false
@@ -83,9 +89,14 @@ abstract class NumberInput {
     onNext(f: () => void) {
         this._onNextCallbacks.push(f);
     }
+
+    _onPreviousCallbacks: (() => void)[] = []
+    onPrevious(f: () => void) {
+        this._onPreviousCallbacks.push(f);
+    }
     
-    _timeChangedCallbacks: ((hours: number, minutes: number) => void)[] = [];
-    onTimeChanged(callback: ((hours: number, minutes: number) => void)) {
+    _timeChangedCallbacks: ((value: number) => void)[] = [];
+    onTimeChanged(callback: ((value: number) => void)) {
         this._timeChangedCallbacks.push(callback);
     }
 
@@ -106,6 +117,9 @@ abstract class NumberInput {
                 this._onNextCallbacks.forEach(f => f());
             }
         }
+
+        // if (details.next) {
+        //     this.onNext
     }
 
     set(value: number) {
@@ -115,6 +129,9 @@ abstract class NumberInput {
 
     _set(value: number) {
         this.input.value = `0${value}`.slice(-2);
+        this._timeChangedCallbacks
+            .slice(0)
+            .forEach(f => f(value));
     }
 
     focus() {
@@ -126,6 +143,7 @@ abstract class NumberInput {
     dispose() {
         this._keyPressHandler();
         
+        this._onPreviousCallbacks.length = 0;
         this._onNextCallbacks.length = 0;
         this._timeChangedCallbacks.length = 0;
     }

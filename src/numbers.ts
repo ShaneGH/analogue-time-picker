@@ -45,14 +45,19 @@ abstract class Numbers {
             ...elements,
             selectedNumber: null
         };
-
+        
         this.refreshOffsets();
-        this.value = this.getValuesFromValue(value);
+        this.set(value);
+        this.numberInput.onTimeChanged(v => this.set(v));
         this.highlightNumber();
-        this.numberInput.set(this.value.value);
 
         if (visible) this.show();
         else this.hide();
+    }
+
+    _onValueChanged: ((x: number) => void)[] = [];
+    onValueChanged(f: (x: number) => void) {
+        this._onValueChanged.push(f);
     }
 
     /** re-calculate the width, height and position of the elements */
@@ -70,21 +75,23 @@ abstract class Numbers {
 
     setFromPosition (mouseX: number, mouseY: number) {
         var v = this.getValuesFromPosition(mouseX - this.offsetLeft, mouseY - this.offsetTop);
-        return this._set(v);
+        this._set(v);
     }
 
     set (value: number) {
         var v = this.getValuesFromValue(value);
-        return this._set(v);
+        this._set(v);
     }
 
     private _set (value: GetValueResult) {
-        if (value.value === this.value.value) return null;
+        if (this.value && this.value.value === value.value) return null;
 
         this.value = value;
         this.numberInput.set(value.value);
         this.highlightNumber();
-        return value;
+        this._onValueChanged
+            .slice(0)
+            .forEach(f => f(value.value));
     }
 
     highlightNumber() {
@@ -103,6 +110,7 @@ abstract class Numbers {
         this.elements.containerElement.style.transform = "scale(1)";
         this.elements.containerElement.style.opacity = "1";
         this.visible = true;
+        this.numberInput.focus();
     }
 
     hide() {

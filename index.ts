@@ -7,11 +7,6 @@ import { append, create, remove } from './src/template';
 declare var require: any
 const css = require('./src/clock.css');
 
-enum ElementMode {
-    Created = 1,
-    Appended = 2
-}
-
 type Input =
     {
         element?: object, 
@@ -23,18 +18,15 @@ function simpleMaterialTime(input?: Input) {
 
     if (!input) input = {};
 
-    var element: HTMLElement;
+    var element: HTMLElement | undefined;
     var time: TimeInput = {hour: 0, minute: 0};
 
-    var mode: ElementMode
-    if (input.element == null) {
-        mode = ElementMode.Created;
-        element = create();
-    } else if (!(input.element instanceof HTMLElement)) {
-        throw new Error("The input argument must be a html element.");
-    } else {
-        mode = ElementMode.Appended;
-        element = append(input.element);
+    if (input.element) {
+        if (input.element instanceof HTMLElement) {
+            element = input.element;
+        } else {
+            throw new Error("The element propery must be a html element, or undefined.");
+        }
     }
 
     if (input.time != null) {
@@ -62,15 +54,8 @@ function simpleMaterialTime(input?: Input) {
         }
     }
 
-    var context = new DiContext(element, { time, closeOnSelect: !!input.closeOnSelect });
-    var clock = context.buildClock();
-    clock.onDispose(() => mode === ElementMode.Created ?
-        element.parentElement ?
-            element.parentElement.removeChild(element) :
-            null :
-        remove(element));
-
-    return publicClock(clock, element);
+    var context = new DiContext({ time, closeOnSelect: !!input.closeOnSelect }, element);
+    return publicClock(context);
 }
 
 export {

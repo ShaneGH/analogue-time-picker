@@ -39,6 +39,8 @@ class Clock {
         this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
         this.hours.numberInput.onNext(() => this.minutes.numberInput.focus());
         this.minutes.numberInput.onNext(() => this.ok.focus());
+        this.hours.onValueChanged(() => this.hourChangeOccurred());
+        this.minutes.onValueChanged(() => this.minuteChangeOccurred());
 
         this._createTracker = registerMouseEvent(this.clock, "mousedown", e => this.createTracker(e));
         this._okPropagation = registerMouseEvent(this.ok, "mousedown", e => e.stopPropagation());
@@ -62,9 +64,25 @@ class Clock {
         this._cancelCallbacks.push(callback);
     }
 
-    _disposeCallbacks: (() => void)[] = [];
-    onDispose(f: () => void) {
-        this._disposeCallbacks.push(f);
+    getTime() {
+        return {
+            hour: this.hours.value.value,
+            minute: this.minutes.value.value
+        };
+    }
+
+    hourChangeOccurred() {
+        if (this.hours.getVisible())
+            this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
+
+        this.timeChangeOccurred();
+    }
+
+    minuteChangeOccurred() {
+        if (this.minutes.getVisible())
+            this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
+
+        this.timeChangeOccurred();
     }
 
     timeChangeOccurred() {
@@ -122,19 +140,9 @@ class Clock {
     }
 
     setTime(e: MouseEvent) {
-        if (this.hours.getVisible()) {
-            if (this.hours.setFromPosition(e.clientX, e.clientY)) {
-                this.timeChangeOccurred();
-            }
-
-            this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
-        } else {
-            if (this.minutes.setFromPosition(e.clientX, e.clientY)) {
-                this.timeChangeOccurred();
-            }
-
-            this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
-        }
+        this.hours.getVisible() ?
+            this.hours.setFromPosition(e.clientX, e.clientY) :
+            this.minutes.setFromPosition(e.clientX, e.clientY);
     }
     
     dispose() {
@@ -144,22 +152,15 @@ class Clock {
             this.mouseTracker = null;
         }
         
-        var callbacks = this._disposeCallbacks;
-        
         this._timeChangeCallbacks.length = 0;
         this._okCallbacks.length = 0;
         this._cancelCallbacks.length = 0;
-        this._disposeCallbacks.length = 0
         
         this._createTracker();
         this._okPropagation();
         this._cancelPropagation();
         this._ok();
         this._cancel();
-        
-        callbacks
-            .slice(0)
-            .forEach(f => f());
     }
 }
 
