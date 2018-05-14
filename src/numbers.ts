@@ -51,9 +51,15 @@ abstract class Numbers {
         this.numberInput.onTimeChanged(v => this.set(v));
         this.numberInput.onNext(() => this.goNext());
         this.highlightNumber();
+        this.numberInput.onFocus(() => this.focusOnInput());
 
         if (visible) this.show();
         else this.hide();
+    }
+
+    _onInputFocus: (() => void)[] = []
+    onInputFocus(f: () => void) {
+        this._onInputFocus.push(f);
     }
 
     _onValueChanged: ((x: number) => void)[] = [];
@@ -64,6 +70,12 @@ abstract class Numbers {
     _onNextCallbacks: (() => void)[] = []
     onNext(f: () => void) {
         this._onNextCallbacks.push(f);
+    }
+
+    private focusOnInput() {
+        this._onInputFocus
+            .slice(0)
+            .forEach(f => f());
     }
 
     goNext() {
@@ -140,6 +152,8 @@ abstract class Numbers {
 
     dispose() {
         this._onNextCallbacks.length = 0;
+        this._onInputFocus.length = 0;
+        this._onValueChanged.length = 0;
     }
 }
 

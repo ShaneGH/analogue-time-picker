@@ -81,8 +81,15 @@ function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: numbe
 abstract class NumberInput {
 
     _keyPressHandler: () => void
+    _focusHandler: () => void
     constructor(public input: HTMLInputElement) {
-        this._keyPressHandler = registerKeyEvent(input, "keydown", e => this.onKeyDown(e));
+        this._keyPressHandler = registerKeyEvent(input, "keydown", e => this.keyDown(e));
+        this._focusHandler = registerKeyEvent(input, "focus", e => this.focusOnInput());
+    }
+
+    _onFocus: (() => void)[] = []
+    onFocus(f: () => void) {
+        this._onFocus.push(f);
     }
 
     _onNextCallbacks: (() => void)[] = []
@@ -102,7 +109,7 @@ abstract class NumberInput {
 
     protected abstract getMaxValue(): number
 
-    onKeyDown(e: KeyboardEvent) {
+    private keyDown(e: KeyboardEvent) {
         var details = keyPressDetails(this.input, e, this.getMaxValue());
         
         if (details.handled) e.preventDefault();
@@ -117,9 +124,12 @@ abstract class NumberInput {
                 this._onNextCallbacks.forEach(f => f());
             }
         }
+    }
 
-        // if (details.next) {
-        //     this.onNext
+    private focusOnInput() {
+        this._onFocus
+            .slice(0)
+            .forEach(f => f());
     }
 
     set(value: number) {
@@ -141,8 +151,10 @@ abstract class NumberInput {
     }
 
     dispose() {
+        this._focusHandler();
         this._keyPressHandler();
         
+        this._onFocus.length = 0;
         this._onPreviousCallbacks.length = 0;
         this._onNextCallbacks.length = 0;
         this._timeChangedCallbacks.length = 0;
