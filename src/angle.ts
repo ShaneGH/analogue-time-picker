@@ -2,20 +2,21 @@ const _90 = Math.PI / 2;
 const _360 = Math.PI * 2;
 
 function getAngle(
-    x: number, 
-    y: number,
+    left: number, 
+    top: number,
     width: number, 
     height: number) {
 
-    var _x = (width / 2) - x;
-    var _y = (height / 2) - y;
+    var x = (width / 2) - left;
+    var y = (height / 2) - top;
 
     // tan O = y / x
-    var angle = _x ? 
-        Math.atan(_y / _x) : 
-        _y < 0 ? -_90 : _90;
+    var angle = x ? 
+        Math.atan(y / x) : 
+        y < 0 ? -_90 : _90;
 
-    if (_x < 0) {
+    if (x < 0) {
+        // reflect along vertical axis
         angle = -angle + (2 * (_90 + angle));
     }
 

@@ -12,17 +12,17 @@ function emToPx(em: number, fontSize: number | null) {
 }
 
 function getAMPM(
-    x: number, 
-    y: number, 
+    left: number, 
+    top: number, 
     width: number, 
     height: number,
     fontSize: number | null) {
 
     var w = width / 2;
-    var _x = w - x;
-    var _y = (height / 2) - y;
+    var x = w - left;
+    var y = (height / 2) - top;
 
-    var distance = Math.sqrt((_x * _x) + (_y * _y));
+    var distance = Math.sqrt((x * x) + (y * y));
     var maxPm = w - emToPx(2.5, fontSize);
 
     return distance > maxPm ? AmPm.am : AmPm.pm;
