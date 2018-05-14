@@ -13,7 +13,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: true
+            closeOnSelect: false
         }));
 
         hours = ctxt.getInnerElement<HTMLInputElement>(".smt-hour");

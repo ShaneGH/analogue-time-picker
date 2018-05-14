@@ -13,7 +13,7 @@ describe("publicEvents_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: true
+            closeOnSelect: false
         }));
 
         document.body.appendChild(clock.element);
@@ -73,5 +73,15 @@ describe("publicEvents_tests.ts", () => {
 
         // act
         clock.dispose();
+    });
+
+    it("closes on select", function() {
+
+        // arrange
+        // act
+        clock.dispose();
+
+        // assert
+        if (ctxt.getRootElement().parentElement) throw new Error("Should be null");
     });
 });

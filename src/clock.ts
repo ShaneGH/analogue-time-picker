@@ -28,7 +28,7 @@ class Clock {
     _ok: () => void
     _cancel: () => void
 
-    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, public closeOnSelect: boolean) {
+    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, closeOnSelect: boolean) {
 
         this.ok = elements.okButton;
         this.cancel = elements.cancelButton;
@@ -38,7 +38,7 @@ class Clock {
         this.hours.onValueChanged(() => this.hourChangeOccurred());
         this.hours.onInputFocus(() => this.showHours());
 
-        this.minutes.onNext(() => this.ok.focus());
+        this.minutes.onNext(() => closeOnSelect ? this.okClick() : this.ok.focus());
         this.minutes.onPrevious(() => this.showHours());
         this.minutes.onValueChanged(() => this.minuteChangeOccurred());
         this.minutes.onInputFocus(() => this.showMinutes());
@@ -74,6 +74,7 @@ class Clock {
     }
 
     showMinutes() {
+        this.minutes.normalizeAngle(this.hours.value.angle);
         this.minutes.show();
         this.hours.hide();
         this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
@@ -185,14 +186,9 @@ class Clock {
             mouseTracker.dispose();
             if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
 
-            if (this.hours.getVisible()) {
-                this.minutes.normalizeAngle(this.hours.value.angle);
-                this.showMinutes();
-            } else if (this.closeOnSelect) {
-                this.okClick();
-            } else {
+            this.hours.getVisible() ?
+                this.hours.goNext() :
                 this.minutes.goNext();
-            }
         });
 
         mouseTracker.onMouseMove(e => this.setTimeFromPosition(e));

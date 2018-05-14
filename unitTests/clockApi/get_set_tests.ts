@@ -13,7 +13,7 @@ describe("get_set_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: true
+            closeOnSelect: false
         }));
 
         document.body.appendChild(clock.element);
