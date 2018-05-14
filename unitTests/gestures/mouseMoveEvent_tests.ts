@@ -13,7 +13,7 @@ describe("mouseMoveEvent_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: true
+            closeOnSelect: false
         }));
 
         clock.element.style.width = "600px";
