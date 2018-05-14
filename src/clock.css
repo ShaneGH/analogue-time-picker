@@ -242,14 +242,14 @@
 }
 
 .smt-b-pos {
-    width: 0.325em;
+    width: 0.355em;
     transition: width 0.1s;
     height: 1px;
     display: inline-block;
 }
 
 .smt-b-pos-pm {
-    width: 2.35em;
+    width: 2.40em;
 }
 
 .smt-clock-btn {

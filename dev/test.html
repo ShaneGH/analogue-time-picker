@@ -7,39 +7,21 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-cyan.min.css">
     <!-- <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
     <script src="file:///C:/Dev/simple-material-time/simple-material-time.js"></script>
-    <style>
-        body {
-            font-family: Roboto, sans-serif;
-            font-size: 15px;
-        }
-    </style>
-
-<div>TODO:</div>
-<div>set hrs to 18, doule click hours to select, press 2 (won't change)</div>
-<div>select hours text, go right, right, doesn't go to minutes. And mins to hours too</div>
-<div>when minute hand shows, click hours should show hour hand, and vice versa</div>
-<div>dispose and DI</div>
-
 
     <div style="padding: 20px">
         <div style="background-color: aqua">
-            <div id="test1" style="border: 1px solid black; width: 300px;">
+            <div id="test1" style="border: 1px solid black; width: 300px; font-size: 15px">
             </div>
         </div>
         <div id="console"></div>
     </div>
     <script>
         (function (test1) {
-            var time = simpleMaterialTime({
+            simpleMaterialTime({
                 element: test1, 
                 time: {hour: 18, minute: 00},
                 closeOnSelect: false
             });
-
-            // time.onOk((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
-            // time.onTimeChanged((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
-            // time.onCancel(() => console.log("CANCEL"));
-            // setTimeout(function() { time.setTime(7, 15); }, 1000);
         }(document.getElementById("test1")));
     </script>
 </body>
