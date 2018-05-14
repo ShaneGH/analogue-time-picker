@@ -2,7 +2,9 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "outDir": "./testBin",
-        "module": "commonjs"
+        "module": "amd"
+
+
     },
     "include": [
         "./unitTests/**/*"

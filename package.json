@@ -4,14 +4,16 @@
   "description": "A small and simple time picker based on google material UI",
   "main": "index.js",
   "scripts": {
-    "build-html-template": "node ./tools/buildHtmlTemplate.js",
+    "clear-old-tests": "node \"./unitTests/deleteTestBin.js\"",
     "build-unit-tests": "node \"./node_modules/typescript/lib/tsc.js\" -p \"./test.tsconfig.json\"",
-    "mocha-unit-test": "mocha \"./testBin/**/*.js\"",
-    "unit-test": "npm run build-unit-tests && npm run mocha-unit-test",
-    "develop": "npm run build-html-template && node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch",
+    "build-test-html": "node \"./unitTests/buildTestPage.js\"",
+    "mocha-unit-test": "chrome \"./testBin/unitTest.html\"",
+    "unit-test": "npm run clear-old-tests && npm run build-unit-tests && npm run build-test-html && npm run mocha-unit-test",
+    "build-html-template": "node ./tools/buildHtmlTemplate.js",
     "build-dev": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\"",
     "build-prod": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/production.config.js\"",
-    "build": "npm run build-html-template && npm run build-dev && npm run build-prod"
+    "build": "npm run build-html-template && npm run build-dev && npm run build-prod",
+    "develop": "npm run build-html-template && node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch"
   },
   "keywords": [
     "ui",
@@ -24,10 +26,13 @@
   "devDependencies": {
     "@types/chai": "^4.1.3",
     "@types/mocha": "^5.2.0",
+    "@types/requirejs": "^2.1.31",
     "awesome-typescript-loader": "^5.0.0",
     "chai": "^4.1.2",
     "css-loader": "^0.28.11",
+    "fs-walker": "^1.0.0",
     "mocha": "^5.1.1",
+    "requirejs": "^2.3.5",
     "style-loader": "^0.21.0",
     "typescript": "^2.8.3",
     "webpack": "^4.7.0",
