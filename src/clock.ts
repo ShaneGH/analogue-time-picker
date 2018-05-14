@@ -39,6 +39,7 @@ class Clock {
         this.hours.onInputFocus(() => this.showHours());
 
         this.minutes.onNext(() => this.ok.focus());
+        this.minutes.onPrevious(() => this.showHours());
         this.minutes.onValueChanged(() => this.minuteChangeOccurred());
         this.minutes.onInputFocus(() => this.showMinutes());
 

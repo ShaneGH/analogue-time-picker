@@ -3,7 +3,7 @@
 <body>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-cyan.min.css">
     <!-- <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
     <script src="file:///C:/Dev/simple-material-time/simple-material-time.js"></script>
@@ -32,14 +32,14 @@
         (function (test1) {
             var time = simpleMaterialTime({
                 element: test1, 
-                time: {hour: 23, minute: 00},
+                time: {hour: 18, minute: 00},
                 closeOnSelect: false
             });
 
-            time.onOk((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
-            time.onTimeChanged((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
-            time.onCancel(() => console.log("CANCEL"));
-            setTimeout(function() { time.setTime(7, 15); }, 1000);
+            // time.onOk((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
+            // time.onTimeChanged((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
+            // time.onCancel(() => console.log("CANCEL"));
+            // setTimeout(function() { time.setTime(7, 15); }, 1000);
         }(document.getElementById("test1")));
     </script>
 </body>

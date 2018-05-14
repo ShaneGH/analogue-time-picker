@@ -11,9 +11,12 @@ function getAngle(
     var _y = (height / 2) - y;
 
     // tan O = y / x
-    var angle = _x ? Math.atan(_y / _x) : (Math.PI / 2);
+    var angle = _x ? 
+        Math.atan(_y / _x) : 
+        _y < 0 ? -_90 : _90;
+
     if (_x < 0) {
-        angle = -angle + (2 * ((Math.PI / 2) + angle));
+        angle = -angle + (2 * (_90 + angle));
     }
 
     return angle;

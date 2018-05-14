@@ -11,7 +11,7 @@ function decrease(val: string, max: number) {
     return v < 0 ? max : v;
 }
 
-function getElementNewValues(element: HTMLInputElement, key: string, max: number) {
+function getNewElementValues(element: HTMLInputElement, key: string, max: number) {
     var actualStart = element.selectionStart || 0;
     var start = actualStart > 1 ? 
         1 : 
@@ -21,43 +21,69 @@ function getElementNewValues(element: HTMLInputElement, key: string, max: number
     var val2 = (element.value || "").substr(start + 1);
 
     var value = parseInt(`${val1}${key}${val2}`);
-    if (value < 0 || value > max) return null;
+    if (value < 0)  return null;
+
+    if (value > max) {
+        if (!actualStart) {
+            // set last digit to 0 and try again
+            value -= value % 10;
+            if (value > max) return null;
+        }
+    }
 
     return {
         value,
-        position: actualStart + 1,
-        characterReplaced: actualStart ? 2 : 1
+        nextPosition: actualStart + 1
     };
 }
 
+type KeyPressDetailsValues =
+    {
+        handled?: boolean
+        value?: number
+        nextPosition?: number
+    }
+
 var numberKey = /^\d$/;
 var fKey = /^F\d+$/;
-function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: number) {
+function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: number): KeyPressDetailsValues {
 
     var handled = true;
     switch (e.key) {
         case "ArrowUp":
             return {
                 handled: true,
-                value: increase(element.value, max),
-                position: null,
-                characterReplaced: null
+                value: increase(element.value, max)
             };
         case "ArrowDown":
             return {
                 handled: true,
-                value: decrease(element.value, max),
-                position: null,
-                characterReplaced: null
+                value: decrease(element.value, max)
             };
         case "ArrowRight":
-            return {
-                handled: false
-            };
+            var nextPosition = (element.selectionStart || 0) + 1;
+            if (nextPosition > 2) {
+                return {
+                    handled: true,
+                    nextPosition
+                };
+            } else {
+                return {
+                    handled: false
+                };
+            }
         case "ArrowLeft":
-            return {
-                handled: false
-            };
+            var nextPosition = (element.selectionStart || 0) - 1;
+            if (nextPosition < 0) {
+                return {
+                    handled: true,
+                    nextPosition
+                };
+            } else {
+                return {
+                    handled: false
+                };
+            }
         case "Tab":
             return {
                 handled: false
@@ -66,7 +92,7 @@ function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: numbe
             if (numberKey.test(e.key)) {
                 return {
                     handled: true,
-                    ...getElementNewValues(element, e.key, max)
+                    ...getNewElementValues(element, e.key, max)
                 };
             } else if (fKey.test(e.key)) {
                 return {
@@ -117,11 +143,15 @@ abstract class NumberInput {
             this._set(details.value);
         }
 
-        if (details.position) {
-            this.input.selectionEnd = details.position;
-            this.input.selectionStart = details.position;
-            if (details.position > 1) {
-                this._onNextCallbacks.forEach(f => f());
+        if (details.nextPosition != null) {
+            if (details.nextPosition < 0) {
+                this._onPreviousCallbacks.forEach(f => f());
+            } else {
+                this.input.selectionEnd = details.nextPosition;
+                this.input.selectionStart = details.nextPosition;
+                if (details.nextPosition > 1) {
+                    this._onNextCallbacks.forEach(f => f());
+                }
             }
         }
     }
