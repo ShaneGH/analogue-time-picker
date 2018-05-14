@@ -136,14 +136,14 @@ class Clock {
         mouseTracker.onMouseUp(() => {
             mouseTracker.dispose();
             if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
-            
+
             if (this.hours.getVisible()) {
                 this.minutes.normalizeAngle(this.hours.value.angle);
                 this.showMinutes();
             } else if (this.closeOnSelect) {
                 this.okClick();
             } else {
-                this.ok.focus();
+                this.minutes.goNext();
             }
         });
 

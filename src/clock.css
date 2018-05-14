@@ -135,7 +135,7 @@
 }
 
 .smt-n-pad {
-    width: 0.5em;
+    width: 0.8em;
     height: 1px;
 }
 
@@ -249,7 +249,7 @@
 }
 
 .smt-b-pos-pm {
-    width: 2.05em;
+    width: 2.35em;
 }
 
 .smt-clock-btn {
@@ -268,7 +268,7 @@
 .smt-time .smt-hour,
 .smt-time .smt-minute {
     font-size: 100%;
-    width: 1.5em;
+    width: 1.3em;
     background: transparent;
     border: 0;
     color: white;
