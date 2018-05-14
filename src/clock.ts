@@ -34,13 +34,13 @@ class Clock {
         this.cancel = elements.cancelButton;
         this.clock = elements.clock;
 
-        this.hours.show();
-        this.minutes.hide();
-        this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
-        this.hours.numberInput.onNext(() => this.minutes.numberInput.focus());
-        this.minutes.numberInput.onNext(() => this.ok.focus());
+        this.hours.onNext(() => this.showMinutes());
         this.hours.onValueChanged(() => this.hourChangeOccurred());
+
+        this.minutes.onNext(() => this.ok.focus());
         this.minutes.onValueChanged(() => this.minuteChangeOccurred());
+
+        this.showHours();
 
         this._createTracker = registerMouseEvent(this.clock, "mousedown", e => this.createTracker(e));
         this._okPropagation = registerMouseEvent(this.ok, "mousedown", e => e.stopPropagation());
@@ -62,6 +62,18 @@ class Clock {
     _cancelCallbacks: (() => void | boolean)[] = [];
     onCancel(callback: (() => void | boolean)) {
         this._cancelCallbacks.push(callback);
+    }
+
+    showHours() {
+        this.hours.show();
+        this.minutes.hide();
+        this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
+    }
+
+    showMinutes() {
+        this.minutes.show();
+        this.hours.hide();
+        this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
     }
 
     getTime() {
@@ -124,11 +136,10 @@ class Clock {
         mouseTracker.onMouseUp(() => {
             mouseTracker.dispose();
             if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
+            
             if (this.hours.getVisible()) {
                 this.minutes.normalizeAngle(this.hours.value.angle);
-                this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
-                this.hours.hide();
-                this.minutes.show();
+                this.showMinutes();
             } else if (this.closeOnSelect) {
                 this.okClick();
             } else {

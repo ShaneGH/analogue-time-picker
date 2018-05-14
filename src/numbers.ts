@@ -49,6 +49,7 @@ abstract class Numbers {
         this.refreshOffsets();
         this.set(value);
         this.numberInput.onTimeChanged(v => this.set(v));
+        this.numberInput.onNext(() => this.goNext());
         this.highlightNumber();
 
         if (visible) this.show();
@@ -58,6 +59,17 @@ abstract class Numbers {
     _onValueChanged: ((x: number) => void)[] = [];
     onValueChanged(f: (x: number) => void) {
         this._onValueChanged.push(f);
+    }
+
+    _onNextCallbacks: (() => void)[] = []
+    onNext(f: () => void) {
+        this._onNextCallbacks.push(f);
+    }
+
+    goNext() {
+        this._onNextCallbacks
+            .slice(0)
+            .forEach(cb => cb());
     }
 
     /** re-calculate the width, height and position of the elements */
@@ -124,6 +136,10 @@ abstract class Numbers {
         var angle1 = angle % _360;
         var angle2 = this.value.angle % _360;
         this.value.angle = angle + angle2 - angle1;
+    }
+
+    dispose() {
+        this._onNextCallbacks.length = 0;
     }
 }
 
