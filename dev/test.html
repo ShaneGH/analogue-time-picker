@@ -39,6 +39,7 @@
             time.onOk((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
             time.onTimeChanged((h, m) => console.log("OK", `0${h}`.slice(-2) + ":" + `0${m}`.slice(-2)));
             time.onCancel(() => console.log("CANCEL"));
+            setTimeout(function() { time.setTime(7, 15); }, 1000);
         }(document.getElementById("test1")));
     </script>
 </body>

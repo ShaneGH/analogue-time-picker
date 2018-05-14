@@ -19,6 +19,7 @@ function publicClock(context: DiContext) {
     return {
         element,
         getTime: () => clock.getTime(),
+        setTime: (hours: number, minutes: number) => clock.setTime(hours, minutes),
         onTimeChanged: (callback: object) => {
             if (typeof callback !== "function") {
                 throw new Error("onOk callback must be a function");

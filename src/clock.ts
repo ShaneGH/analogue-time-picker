@@ -85,6 +85,11 @@ class Clock {
         };
     }
 
+    setTime(hours: number, minutes: number) {
+        this.hours.set(hours);
+        this.minutes.set(minutes);
+    }
+
     hourChangeOccurred() {
         if (this.hours.getVisible())
             this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
@@ -130,7 +135,7 @@ class Clock {
         this.hours.refreshOffsets();
         this.minutes.refreshOffsets();
 
-        this.setTime(e);
+        this.setTimeFromPosition(e);
 
         if (this.mouseTracker) return;
         var mouseTracker = this.mouseTracker = new MouseTracker();
@@ -149,10 +154,10 @@ class Clock {
             }
         });
 
-        mouseTracker.onMouseMove(e => this.setTime(e));
+        mouseTracker.onMouseMove(e => this.setTimeFromPosition(e));
     }
 
-    setTime(e: MouseEvent) {
+    private setTimeFromPosition(e: MouseEvent) {
         this.hours.getVisible() ?
             this.hours.setFromPosition(e.clientX, e.clientY) :
             this.minutes.setFromPosition(e.clientX, e.clientY);
