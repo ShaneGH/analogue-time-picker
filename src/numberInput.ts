@@ -1,17 +1,24 @@
 import { registerKeyEvent } from './utils';
 
 
+declare var XXX: number[];
+if (!(<any>window).XXX)(<any>window).XXX = [];
+
 function increase(val: string, max: number) {
+    XXX.push(36);
     var v = parseInt(val) + 1;
     return  v > max ? 0 : v;
 }
 
 function decrease(val: string, max: number) {
+    XXX.push(37);
     var v = parseInt(val) - 1;
     return v < 0 ? max : v;
 }
 
 function getNewElementValues(element: HTMLInputElement, key: string, max: number) {
+    XXX.push(38);
+
     var actualStart = element.selectionStart || 0;
     var start = actualStart > 1 ? 
         1 : 
@@ -47,6 +54,7 @@ type KeyPressDetailsValues =
 var numberKey = /^\d$/;
 var fKey = /^F\d+$/;
 function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: number): KeyPressDetailsValues {
+    XXX.push(39);
 
     var handled = true;
     switch (e.key) {
@@ -103,27 +111,33 @@ abstract class NumberInput {
 
     _onFocus: (() => void)[] = []
     onFocus(f: () => void) {
+        XXX.push(40);
+
         this._onFocus.push(f);
     }
 
     _onNextCallbacks: (() => void)[] = []
     onNext(f: () => void) {
+        XXX.push(41);
         this._onNextCallbacks.push(f);
     }
 
     _onPreviousCallbacks: (() => void)[] = []
     onPrevious(f: () => void) {
+        XXX.push(42);
         this._onPreviousCallbacks.push(f);
     }
     
     _timeChangedCallbacks: ((value: number) => void)[] = [];
     onTimeChanged(callback: ((value: number) => void)) {
+        XXX.push(43);
         this._timeChangedCallbacks.push(callback);
     }
 
     protected abstract getMaxValue(): number
 
     private keyDown(e: KeyboardEvent) {
+        XXX.push(44);
         var details = keyPressDetails(this.input, e, this.getMaxValue());
         
         if (details.handled) e.preventDefault();
@@ -145,17 +159,20 @@ abstract class NumberInput {
     }
 
     private focusOnInput() {
+        XXX.push(45);
         this._onFocus
             .slice(0)
             .forEach(f => f());
     }
 
     set(value: number) {
+        XXX.push(46);
         if (value < 0 || value > this.getMaxValue()) throw new Error(`Invalid value "${value}"`);
         this._set(parseInt(value.toFixed()));
     }
 
     _set(value: number) {
+        XXX.push(47);
         this.input.value = `0${value}`.slice(-2);
         this._timeChangedCallbacks
             .slice(0)
@@ -163,12 +180,14 @@ abstract class NumberInput {
     }
 
     focus() {
+        XXX.push(48);
         this.input.focus();
         this.input.selectionStart = 0;
         this.input.selectionEnd = 0;
     }
 
     dispose() {
+        XXX.push(49);
         this._focusHandler();
         this._keyPressHandler();
         

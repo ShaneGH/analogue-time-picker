@@ -1,5 +1,8 @@
 import { NumberInput } from './numberInput';
 
+declare var XXX: number[];
+if (!(<any>window).XXX)(<any>window).XXX = [];
+
 const _360 = Math.PI * 2;
 
 enum Position {
@@ -21,6 +24,7 @@ type GetValueResult =
 }
 
 function offset(el: HTMLElement | null, prop: "offsetLeft" | "offsetTop") {
+    XXX.push(18);
     var offset = -(prop === "offsetTop" ? window.pageYOffset : window.pageXOffset);
     while (el && el instanceof HTMLElement) {
         offset += el[prop];
@@ -60,37 +64,44 @@ abstract class Numbers {
 
     _onInputFocus: (() => void)[] = []
     onInputFocus(f: () => void) {
+        XXX.push(19);
         this._onInputFocus.push(f);
     }
 
     _onValueChanged: ((x: number) => void)[] = [];
     onValueChanged(f: (x: number) => void) {
+        XXX.push(20);
         this._onValueChanged.push(f);
     }
 
     _onNextCallbacks: (() => void)[] = []
     onNext(f: () => void) {
+        XXX.push(21);
         this._onNextCallbacks.push(f);
     }
 
     _onPreviousCallbacks: (() => void)[] = []
     onPrevious(f: () => void) {
+        XXX.push(22);
         this._onPreviousCallbacks.push(f);
     }
 
     private focusOnInput() {
+        XXX.push(23);
         this._onInputFocus
             .slice(0)
             .forEach(f => f());
     }
 
     goNext() {
+        XXX.push(24);
         this._onNextCallbacks
             .slice(0)
             .forEach(cb => cb());
     }
 
     goPrevious() {
+        XXX.push(25);
         this._onPreviousCallbacks
             .slice(0)
             .forEach(cb => cb());
@@ -98,6 +109,7 @@ abstract class Numbers {
 
     /** re-calculate the width, height and position of the elements */
     refreshOffsets() {
+        XXX.push(26);
         this.offsetLeft = offset(this.elements.containerElement, "offsetLeft");
         this.offsetTop = offset(this.elements.containerElement, "offsetTop");
         this.width = this.elements.containerElement.offsetWidth;
@@ -107,19 +119,25 @@ abstract class Numbers {
         this.fontSize = isNaN(fontSize) ? null : fontSize;
     }
 
-    getVisible() { return this.visible; }
+    getVisible() { 
+        XXX.push(27);
+        return this.visible; 
+    }
 
     setFromPosition (mouseX: number, mouseY: number) {
+        XXX.push(28);
         var v = this.getValuesFromPosition(mouseX - this.offsetLeft, mouseY - this.offsetTop);
         this._set(v);
     }
 
     set (value: number) {
+        XXX.push(29);
         var v = this.getValuesFromValue(value);
         this._set(v);
     }
 
     private _set (value: GetValueResult) {
+        XXX.push(30);
         if (this.value && this.value.value === value.value) return null;
 
         this.value = value;
@@ -131,6 +149,7 @@ abstract class Numbers {
     }
 
     highlightNumber() {
+        XXX.push(31);
         if (this.elements.selectedNumber) {
             this.elements.selectedNumber.classList.remove("smt-number-selected");
         }
@@ -143,6 +162,7 @@ abstract class Numbers {
     abstract getValuesFromValue(value: number): GetValueResult
 
     show() {
+        XXX.push(32);
         this.elements.containerElement.style.transform = "scale(1)";
         this.elements.containerElement.style.opacity = "1";
         this.visible = true;
@@ -150,6 +170,7 @@ abstract class Numbers {
     }
 
     hide() {
+        XXX.push(33);
         this.elements.containerElement.style.transform = "scale(0)";
         this.elements.containerElement.style.opacity = "0";
         this.visible = false;
@@ -157,12 +178,16 @@ abstract class Numbers {
 
     /** alter angle so that it is closest to the given angle, e.g. 500deg -> 140deg */
     normalizeAngle (angle: number) {
+        XXX.push(34);
+
         var angle1 = angle % _360;
         var angle2 = this.value.angle % _360;
         this.value.angle = angle + angle2 - angle1;
     }
 
     dispose() {
+        XXX.push(35);
+
         this._onPreviousCallbacks.length = 0;
         this._onNextCallbacks.length = 0;
         this._onInputFocus.length = 0;

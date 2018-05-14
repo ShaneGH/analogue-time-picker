@@ -4,6 +4,9 @@ import { Minutes } from './minutes';
 import { MouseTracker } from './mouseTracker';
 import { registerMouseEvent } from './utils';
 
+declare var XXX: number[];
+if (!(<any>window).XXX)(<any>window).XXX = [];
+
 type TimeInput =
     {
         hour: number
@@ -54,32 +57,38 @@ class Clock {
 
     _timeChangeCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
     onTimeChanged(callback: ((hour: number, minute: number) => void | boolean)) {
+        XXX.push(2);
         this._timeChangeCallbacks.push(callback);
     }
 
     _okCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
     onOk(callback: ((hour: number, minute: number) => void | boolean)) {
+        XXX.push(3);
         this._okCallbacks.push(callback);
     }
 
     _cancelCallbacks: (() => void | boolean)[] = [];
     onCancel(callback: (() => void | boolean)) {
+        XXX.push(4);
         this._cancelCallbacks.push(callback);
     }
 
     showHours() {
+        XXX.push(5);
         this.hours.show();
         this.minutes.hide();
         this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
     }
 
     showMinutes() {
+        XXX.push(6);
         this.minutes.show();
         this.hours.hide();
         this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
     }
 
     getTime() {
+        XXX.push(7);
         return {
             hour: this.hours.value.value,
             minute: this.minutes.value.value
@@ -87,6 +96,7 @@ class Clock {
     }
 
     setTime(hours: number, minutes: number) {
+        XXX.push(8);
         var timeHasChanged = this._timeMayChange();
         try {
             this.hours.set(hours);
@@ -97,6 +107,7 @@ class Clock {
     }
 
     hourChangeOccurred() {
+        XXX.push(9);
         if (this.hours.getVisible())
             this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
 
@@ -104,6 +115,7 @@ class Clock {
     }
 
     minuteChangeOccurred() {
+        XXX.push(10);
         if (this.minutes.getVisible())
             this.hand.setPositon(this.minutes.value.angle, this.minutes.value.position);
 
@@ -111,6 +123,7 @@ class Clock {
     }
 
     timeChangeOccurred() {
+        XXX.push(11);
         if (this._awaitingTimeChange) return;
 
         this._timeChangeCallbacks
@@ -119,6 +132,7 @@ class Clock {
     }
 
     okClick() {
+        XXX.push(12);
         var cancelDispose = this._okCallbacks
             .slice(0)
             .map(f => f(this.hours.value.value, this.minutes.value.value))
@@ -129,6 +143,7 @@ class Clock {
     }
 
     cancelClick() {
+        XXX.push(13);
         var cancelDispose = this._cancelCallbacks
             .slice(0)
             .map(f => f())
@@ -140,6 +155,7 @@ class Clock {
 
     private _awaitingTimeChange: {hour: number, minute: number, instance: number} | null
     private _timeMayChange() {
+        XXX.push(14);
 
         if (this._awaitingTimeChange) {
             this._awaitingTimeChange.instance++;
@@ -173,6 +189,7 @@ class Clock {
 
     mouseTracker: MouseTracker | null = null;
     createTracker(e: MouseEvent) {
+        XXX.push(15);
         this.hours.refreshOffsets();
         this.minutes.refreshOffsets();
 
@@ -199,12 +216,14 @@ class Clock {
     }
 
     private setTimeFromPosition(e: MouseEvent) {
+        XXX.push(16);
         this.hours.getVisible() ?
             this.hours.setFromPosition(e.clientX, e.clientY) :
             this.minutes.setFromPosition(e.clientX, e.clientY);
     }
     
     dispose() {
+        XXX.push(17);
 
         if (this.mouseTracker) {
             this.mouseTracker.dispose();
