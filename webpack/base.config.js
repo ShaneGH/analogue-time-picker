@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+    // "entry" in child config.js files
     
     output: {
         path: path.resolve("./"),
@@ -21,20 +22,6 @@ module.exports = {
                 query: {
                     configFileName: "./tsconfig.json"
                 }
-            },
-
-            {
-                test: /\.css$/,
-                use: 
-                [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            minimize: true
-                        }
-                    }
-                ]
             }
         ]
     }
