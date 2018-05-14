@@ -62,28 +62,16 @@ function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: numbe
             };
         case "ArrowRight":
             var nextPosition = (element.selectionStart || 0) + 1;
-            if (nextPosition > 2) {
-                return {
-                    handled: true,
-                    nextPosition
-                };
-            } else {
-                return {
-                    handled: false
-                };
-            }
+            return {
+                handled: nextPosition > 2,
+                nextPosition: nextPosition > 2 ? nextPosition : undefined
+            };
         case "ArrowLeft":
             var nextPosition = (element.selectionStart || 0) - 1;
-            if (nextPosition < 0) {
-                return {
-                    handled: true,
-                    nextPosition
-                };
-            } else {
-                return {
-                    handled: false
-                };
-            }
+            return {
+                handled: nextPosition < 0,
+                nextPosition: nextPosition < 0 ? nextPosition : undefined
+            };
         case "Tab":
             return {
                 handled: false

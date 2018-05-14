@@ -125,7 +125,7 @@ class DiContext {
     }
 
     buildMinutes() {
-        var min = new Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.hour, true);
+        var min = new Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.minute, true);
         this.disposables.push(min);
         return min;
     }
