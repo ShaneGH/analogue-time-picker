@@ -43,7 +43,7 @@ class DiContext {
         return this.htmlTree.element;
     }
 
-    private _getElement<T extends HTMLElement>(selector: string) {
+    getInnerElement<T extends HTMLElement>(selector: string) {
         var el = this.getRootElement().querySelectorAll(selector);
         if (el.length !== 1) {
             var message = el.length ? "Too many elements" : "Cannot find element";
@@ -77,23 +77,30 @@ class DiContext {
 
             
         return {
-            containerElement: this._getElement(".smt-hours"),
+            containerElement: this.getInnerElement(".smt-hours"),
             numbers: hours
         };
     }
 
+    hourInput: HourInput | undefined
     buildHoursInput() {
-        var el = this._getElement<HTMLInputElement>(".smt-hour");
-        var hours = new HourInput(el);
-        this.disposables.push(hours);
+        if (!this.hourInput) {
+            var el = this.getInnerElement<HTMLInputElement>(".smt-hour");
+            this.hourInput = new HourInput(el);
+            this.disposables.push(this.hourInput);
+        }
 
-        return hours;
+        return this.hourInput;
     }
 
+    hours: Hours | undefined
     buildHours() {
-        var hr = new Hours(this.buildHoursInput(), this.buildHoursElements(), this.config.time.hour, true);
-        this.disposables.push(hr);
-        return hr;
+        if (!this.hours) {
+            this.hours = new Hours(this.buildHoursInput(), this.buildHoursElements(), this.config.time.hour, true);
+            this.disposables.push(this.hours);
+        }
+        
+        return this.hours;
     }
     
     buildMinutesElementList() {
@@ -111,23 +118,30 @@ class DiContext {
 
     buildMinutesElements() {
         return {
-            containerElement: this._getElement(".smt-minutes"),
+            containerElement: this.getInnerElement(".smt-minutes"),
             numbers: this.buildMinutesElementList()
         };
     }
 
+    minuteInput: MinuteInput | undefined
     buildMinutesInput() {
-        var el = this._getElement<HTMLInputElement>(".smt-minute");
-        var hours = new MinuteInput(el);
-        this.disposables.push(hours);
+        if (!this.minuteInput) {
+            var el = this.getInnerElement<HTMLInputElement>(".smt-minute");
+            this.minuteInput = new MinuteInput(el);
+            this.disposables.push(this.minuteInput);
+        }
 
-        return hours;
+        return this.minuteInput;
     }
 
+    minutes: Minutes | undefined
     buildMinutes() {
-        var min = new Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.minute, true);
-        this.disposables.push(min);
-        return min;
+        if (!this.minutes) {
+            this.minutes = new Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.minute, true);
+            this.disposables.push(this.minutes);
+        }
+        
+        return this.minutes;
     }
     
     buildHandElements() {
@@ -137,29 +151,33 @@ class DiContext {
         };
     }
 
+    hand: Hand | undefined
     buildHand(): Hand {
-        return new Hand(this.buildHandElements());
+        return this.hand || (this.hand = new Hand(this.buildHandElements()));
     }
     
     buildClockElements() {
         return {
-            okButton: this._getElement(".smt-ok"),
-            cancelButton: this._getElement(".smt-cancel"),
-            clock: this._getElement(".smt-clock")
+            okButton: this.getInnerElement(".smt-ok"),
+            cancelButton: this.getInnerElement(".smt-cancel"),
+            clock: this.getInnerElement(".smt-clock")
         };
     }
 
+    clock: Clock | undefined
     buildClock() {
-        var clock = new Clock(
-            this.buildClockElements(), 
-            this.buildHours(), 
-            this.buildMinutes(), 
-            this.buildHand(), 
-            this.config.closeOnSelect);
+        if (!this.clock) {
+            this.clock = new Clock(
+                this.buildClockElements(), 
+                this.buildHours(), 
+                this.buildMinutes(), 
+                this.buildHand(), 
+                this.config.closeOnSelect);
 
-        this.disposables.push(clock);
+            this.disposables.push(this.clock);
+        }
         
-        return clock;
+        return this.clock;
     }
 
     dispose() {

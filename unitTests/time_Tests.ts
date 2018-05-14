@@ -3,7 +3,7 @@ import { AmPm } from "../src/distance";
 
 describe("time.ts", () => {
     describe("Test getHours", function() {
-        it("gets correct hour and hand angle for 0° AM", function() {
+        it("gets correct hour and hand angle for 0°, AM", function() {
 
             // arrange
             // act
@@ -14,7 +14,7 @@ describe("time.ts", () => {
             hour.handAngle.should.be.eql(0);
         });
         
-        it("gets correct hour and hand angle for 0° PM", function() {
+        it("gets correct hour and hand angle for 0°, PM", function() {
 
             // arrange
             // act
@@ -25,7 +25,7 @@ describe("time.ts", () => {
             hour.handAngle.should.be.eql(0);
         });
 
-        it("gets correct hour and hand angle for 150° AM", function() {
+        it("gets correct hour and hand angle for 150°, AM", function() {
 
             // arrange
             // act
@@ -36,7 +36,7 @@ describe("time.ts", () => {
             hour.handAngle.should.be.eql(2.617993877991494);
         });
         
-        it("gets correct hour and hand angle for 0° PM", function() {
+        it("gets correct hour and hand angle for 0°, PM", function() {
 
             // arrange
             // act
@@ -71,7 +71,7 @@ describe("time.ts", () => {
     });
 
     describe("Test getMinutes", function() {
-        it("gets correct minute and hand angle for 0°", function() {
+        it("gets correct minute and hand angle for 0°,", function() {
 
             // arrange
             // act
@@ -82,7 +82,7 @@ describe("time.ts", () => {
             minute.handAngle.should.be.eql(0);
         });
 
-        it("gets correct minute and hand angle for 150°", function() {
+        it("gets correct minute and hand angle for 150°,", function() {
 
             // arrange
             // act

@@ -87,8 +87,13 @@ class Clock {
     }
 
     setTime(hours: number, minutes: number) {
-        this.hours.set(hours);
-        this.minutes.set(minutes);
+        var timeHasChanged = this._timeMayChange();
+        try {
+            this.hours.set(hours);
+            this.minutes.set(minutes);
+        } finally {
+            timeHasChanged.complete();
+        }
     }
 
     hourChangeOccurred() {
@@ -106,6 +111,8 @@ class Clock {
     }
 
     timeChangeOccurred() {
+        if (this._awaitingTimeChange) return;
+
         this._timeChangeCallbacks
             .slice(0)
             .forEach(f => f(this.hours.value.value, this.minutes.value.value));
@@ -129,6 +136,39 @@ class Clock {
             .length;
 
         if (!cancelDispose) this.dispose();
+    }
+
+    private _awaitingTimeChange: {hour: number, minute: number, instance: number} | null
+    private _timeMayChange() {
+
+        if (this._awaitingTimeChange) {
+            this._awaitingTimeChange.instance++;
+        } else {
+            this._awaitingTimeChange = {
+                instance: 1,
+                ...this.getTime()
+            }
+        };
+
+        var c = false;
+        return {
+            complete: () => {
+                if (c) return;
+                c = true;
+
+                if (!this._awaitingTimeChange) return;
+                else if (this._awaitingTimeChange.instance > 1) this._awaitingTimeChange.instance--;
+                else {
+                    var t1 = this._awaitingTimeChange;
+                    this._awaitingTimeChange = null;
+
+                    var t2 = this.getTime();
+                    if (t1.hour != t2.hour || t1.minute != t2.minute) {
+                        this.timeChangeOccurred();
+                    }
+                }
+            }
+        };
     }
 
     mouseTracker: MouseTracker | null = null;

@@ -1,7 +1,23 @@
 import { Clock } from "./clock";
 import { DiContext } from "./di";
 
-function publicClock(context: DiContext) {
+type PublicClock =
+    {
+        element: HTMLElement
+        getTime: () => {hour: number, minute: number},
+        setTime: (hours: number, minutes: number) => void,
+        showHours: () => void,
+        showMinutes: () => void,
+        ok: () => void,
+        cancel: () => void,
+        onTimeChanged: (callback: object) => void,
+        onOk: (callback: object) => void,
+        onCancel: (callback: object) => void,
+        onDispose: (callback: object) => void,
+        dispose: () => void
+    }
+
+function publicClock(context: DiContext): PublicClock {
     var clock = context.buildClock();
     var element = context.getRootElement();
     
@@ -20,6 +36,10 @@ function publicClock(context: DiContext) {
         element,
         getTime: () => clock.getTime(),
         setTime: (hours: number, minutes: number) => clock.setTime(hours, minutes),
+        showHours: () => clock.showHours(),
+        showMinutes: () => clock.showMinutes(),
+        ok: () => clock.okClick(),
+        cancel: () => clock.cancelClick(),
         onTimeChanged: (callback: object) => {
             if (typeof callback !== "function") {
                 throw new Error("onOk callback must be a function");
@@ -47,10 +67,12 @@ function publicClock(context: DiContext) {
             }
 
             onDispose.push(callback);
-        }
+        },
+        dispose
     };
 }
 
 export {
-    publicClock
+    publicClock,
+    PublicClock
 }
