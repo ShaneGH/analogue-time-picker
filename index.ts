@@ -14,7 +14,7 @@ type Input =
         closeOnSelect?: boolean
     }
 
-function simpleMaterialTime(input?: Input) {
+function parseInputs(input?: Input) {
 
     if (!input) input = {};
 
@@ -54,7 +54,19 @@ function simpleMaterialTime(input?: Input) {
         }
     }
 
-    var context = new DiContext({ time, closeOnSelect: !!input.closeOnSelect }, element);
+    return {
+        config: {
+            time, 
+            closeOnSelect: !!input.closeOnSelect
+        },
+        element
+    };
+}
+
+function simpleMaterialTime(input?: Input) {
+    var _input = parseInputs(input);
+    
+    var context = new DiContext(_input.config, _input.element);
     return publicClock(context);
 }
 
