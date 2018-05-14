@@ -63,7 +63,7 @@ function parseInputs(input?: Input) {
     };
 }
 
-function simpleMaterialTime(input?: Input) {
+function materialTimeLite(input?: Input) {
     var _input = parseInputs(input);
     
     var context = new DiContext(_input.config, _input.element);
@@ -71,5 +71,5 @@ function simpleMaterialTime(input?: Input) {
 }
 
 export {
-    simpleMaterialTime
+    materialTimeLite
 }

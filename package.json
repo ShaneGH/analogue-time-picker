@@ -1,5 +1,5 @@
 {
-  "name": "simple-material-time",
+  "name": "material-time-lite",
   "version": "0.1.0",
   "description": "A small and simple time picker based on google material UI",
   "main": "index.js",

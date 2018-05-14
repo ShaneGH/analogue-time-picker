@@ -3,7 +3,7 @@ const base = require("./base.config");
 
 module.exports = merge(base, {
     entry: {
-        "simple-material-time": "./index.ts"
+        "material-time-lite": "./index.ts"
     },
 
     optimization: {
