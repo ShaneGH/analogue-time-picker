@@ -164,9 +164,14 @@ abstract class NumberInput {
     }
 
     focus() {
+        this.input.classList.add("focus");
         this.input.focus();
         this.input.selectionStart = 0;
         this.input.selectionEnd = 0;
+    }
+
+    blur() {
+        this.input.classList.remove("focus");
     }
 
     dispose() {

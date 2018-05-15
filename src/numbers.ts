@@ -153,6 +153,7 @@ abstract class Numbers {
         this.elements.containerElement.style.transform = "scale(0)";
         this.elements.containerElement.style.opacity = "0";
         this.visible = false;
+        this.numberInput.blur();
     }
 
     /** alter angle so that it is closest to the given angle, e.g. 500deg -> 140deg */
