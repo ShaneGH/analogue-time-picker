@@ -1,14 +1,20 @@
-<div class="smt smt-background-color">
+<div class="smt smt-background-color" role="form" aria-describedby="{{title}}">
+    <label style="display: none" id="{{title}}">Enter time</label>
     <div class="smt-time mdl-color--primary">
-        <input type="text" class="smt-hour" />:
-        <input type="text" class="smt-minute" />
+        <label style="display: none" for="{{hour}}" class="smt-hour-label">Hours</label>
+        <input type="text" class="smt-hour" id="{{hour}}" />:
+        <label style="display: none" for="{{minute}}" class="smt-minute-label">Minutes</label>
+        <input type="text" class="smt-minute" id="{{minute}}" />
         <div class="smt-ampm">
-            <button class="smt-am">am</button>
-            <button class="smt-pm">pm</button>
+            <label style="display: none" for="{{am}}">Change to AM</label>
+            <button class="smt-am" id="{{am}}">am</button>
+            <label style="display: none" for="{{pm}}">Change to PM</label>
+            <button class="smt-pm" id="{{pm}}">pm</button>
         </div>
     </div>
     <div class="smt-clock-cnt">
-        <div class="smt-clock">
+        <!-- hide clock from screen readers -->
+        <div class="smt-clock" aria-hidden="true">
             <div class="smt-face smt-face-color"></div>
             <div class="smt-h-cnt-cnt">
                 <div class="smt-h-cnt">
@@ -174,8 +180,8 @@
             </div>
         </div>
         <div class="smt-clock-btn">
-            <button class="smt-cancel mdl-button mdl-js-button mdl-button--primary smt-enforce-font-size">cancel</button>
             <button class="smt-ok mdl-button mdl-js-button mdl-button--primary smt-enforce-font-size">ok</button>
+            <button class="smt-cancel mdl-button mdl-js-button mdl-button--primary smt-enforce-font-size">cancel</button>
         </div>
     </div>
 </div>

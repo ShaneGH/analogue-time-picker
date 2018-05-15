@@ -12,6 +12,7 @@ type HoursElements = NumbersElements &
     {
         am: HTMLButtonElement
         pm: HTMLButtonElement
+        amPmButtons: HTMLElement
     }
 
 class Hours extends Numbers {
@@ -20,6 +21,7 @@ class Hours extends Numbers {
     _toAm: () => void
     pm: HTMLElement
     _toPm: () => void
+    amPmButtons: HTMLElement
 
     constructor (private hourInput: HourInput, elements: HoursElements, value: number, visible: boolean) {
         super(hourInput, elements, value, visible);
@@ -30,27 +32,35 @@ class Hours extends Numbers {
         this.pm = elements.pm;
         this._toPm = registerMouseEvent(this.pm, "click", () => this.setTo12Hr(AmPm.pm));
 
+        this.amPmButtons = elements.amPmButtons;
+
         this.showHideAmPm();
         this.onValueChanged(() => this.highlightAmPm());
     }
 
+    getLabel() { return `Hours ${this.mode}h format`; }
+
     showHideAmPm() {
         if (this.mode === 12) {
-            this.am.style.display = null;
-            this.pm.style.display = null;
+            this.amPmButtons.style.display = null;
+            this.amPmButtons.removeAttribute("aria-hidden");
         } else {
-            this.am.style.display = "none";
-            this.pm.style.display = "none"; 
+            this.amPmButtons.style.display = "none";
+            this.amPmButtons.setAttribute("aria-hidden", "true");
         }
     }
 
     private highlightAmPm() {
         if (!this.value.value || this.value.value > 12) {
             this.am.classList.remove("smt-focus");
+            this.am.removeAttribute("aria-pressed");
             this.pm.classList.add("smt-focus");
+            this.pm.setAttribute("aria-pressed", "");
         } else {
             this.pm.classList.remove("smt-focus");
+            this.pm.removeAttribute("aria-pressed");
             this.am.classList.add("smt-focus");
+            this.am.setAttribute("aria-pressed", "");
         }
     }
 
@@ -71,14 +81,9 @@ class Hours extends Numbers {
         try { this.hourInput.setTo12Hr(amPm); } 
         finally { ig(); }
         
+        // accessability label changes based on mode
+        this.setLabel();
         this.set(value);
-    }
-
-    hideHours() {
-        this.elements.numbers
-            .slice(0, 1)
-            .concat(this.elements.numbers.slice(13))
-            .forEach(x => x.style.display = "none");
     }
 
     setTo24Hr() {        
@@ -90,7 +95,16 @@ class Hours extends Numbers {
         try { this.hourInput.setTo24Hr(); } 
         finally { ig(); }
         
+        // accessability label changes based on mode
+        this.setLabel();
         this.set(this.value.value);
+    }
+
+    hideHours() {
+        this.elements.numbers
+            .slice(0, 1)
+            .concat(this.elements.numbers.slice(13))
+            .forEach(x => x.style.display = "none");
     }
 
     showHours() {

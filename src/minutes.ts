@@ -15,6 +15,8 @@ class Minutes extends Numbers {
             position: Position.far
         }
     }
+
+    getLabel() { return "Minutes"; }
     
     getValuesFromValue(value: number) {
         value = parseInt(value.toFixed()) % 60;

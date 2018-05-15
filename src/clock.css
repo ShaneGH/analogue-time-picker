@@ -256,7 +256,7 @@
 .smt-clock-btn {
     padding-top: 2em;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row-reverse;
 }
 
 .smt-time {
@@ -299,6 +299,7 @@
     display: block;
     text-transform: uppercase;
     color: white;
+    outline-width: 0;
     /* parent is at 350% */
     font-size: 28%;
     cursor: pointer;

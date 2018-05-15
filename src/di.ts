@@ -79,8 +79,10 @@ class DiContext {
         return {
             numbers: hours,
             containerElement: this.getInnerElement(".smt-hours"),
+            amPmButtons: this.getInnerElement(".smt-ampm"),
             am: this.getInnerElement<HTMLButtonElement>(".smt-am"),
-            pm: this.getInnerElement<HTMLButtonElement>(".smt-pm")
+            pm: this.getInnerElement<HTMLButtonElement>(".smt-pm"),
+            label: this.getInnerElement<HTMLButtonElement>(".smt-hour-label")
         };
     }
 
@@ -121,7 +123,8 @@ class DiContext {
     buildMinutesElements() {
         return {
             containerElement: this.getInnerElement(".smt-minutes"),
-            numbers: this.buildMinutesElementList()
+            numbers: this.buildMinutesElementList(),
+            label: this.getInnerElement<HTMLButtonElement>(".smt-minute-label")
         };
     }
 

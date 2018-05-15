@@ -10,6 +10,7 @@ enum Position {
 type NumbersElements =
     {
         containerElement: HTMLElement,
+        label: HTMLElement,
         numbers: HTMLElement[]
     }
 
@@ -76,7 +77,13 @@ abstract class Numbers {
 
         if (visible) this.show();
         else this.hide();
+
+        this.setLabel();
     }
+
+    abstract getValuesFromPosition(x: number, y: number): GetValueResult
+    abstract getLabel(): string
+    abstract getValuesFromValue(value: number): GetValueResult
 
     _onInputFocus: (() => void)[] = []
     onInputFocus(f: () => void) {
@@ -105,6 +112,10 @@ abstract class Numbers {
     _onPreviousCallbacks: (() => void)[] = []
     onPrevious(f: () => void) {
         this._onPreviousCallbacks.push(f);
+    }
+
+    setLabel() {
+        this.elements.label.innerHTML = this.getLabel();
     }
 
     private focusOnInput() {
@@ -186,9 +197,6 @@ abstract class Numbers {
     getSelectedNumber(): HTMLElement | null {
         return this.elements.numbers[this.value.value] || null;
     }
-
-    abstract getValuesFromPosition(x: number, y: number): GetValueResult
-    abstract getValuesFromValue(value: number): GetValueResult
 
     private numberInputTimeChanged(v: number) {
         if (!this.ignoreCount) this.set(v);
