@@ -17,13 +17,13 @@ function getAMPM(
     width: number, 
     height: number,
     fontSize: number | null) {
-
+        
     var w = width / 2;
     var x = w - left;
     var y = (height / 2) - top;
 
     var distance = Math.sqrt((x * x) + (y * y));
-    var maxPm = w - emToPx(2.5, fontSize);
+    var maxPm = w - emToPx(2.45, fontSize);
 
     return distance > maxPm ? AmPm.am : AmPm.pm;
 };

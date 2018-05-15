@@ -153,7 +153,10 @@ abstract class Numbers {
         this.width = this.elements.containerElement.offsetWidth;
         this.height = this.elements.containerElement.offsetHeight;
         
-        var fontSize = parseFloat(window.getComputedStyle(document.body).fontSize || "x");
+        var fontSize = parseFloat(window.getComputedStyle(this.elements.containerElement).fontSize || "x");
+        if (isNaN(fontSize))
+            fontSize = parseFloat(window.getComputedStyle(document.body).fontSize || "x");
+            
         this.fontSize = isNaN(fontSize) ? null : fontSize;
     }
 

@@ -9,11 +9,12 @@
 
 
     <div style="padding: 20px">
-        <div style="background-color: aqua">
-            <div id="test1" style="width: 300px; font-size: 15px">
+        <div>
+            <div id="test1" style="width: 900px; font-size: 45px">
             </div>
             <div id="time"></div>
             <div id="time2"></div>
+            <br />
             <button id="h12">12h</button>
             <button id="h24">24h</button>
         </div>
@@ -22,9 +23,9 @@
         (function (test1) {
             var x = materialTimeLite({
                 element: test1, 
-                time: {hour: 16, minute: 00},
+                time: {hour: 22, minute: 00},
                 closeOnSelect: false,
-                mode: 12
+                mode: 24
             });
 
             var i = 0;

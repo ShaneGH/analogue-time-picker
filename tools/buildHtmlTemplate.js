@@ -19,8 +19,8 @@ function jsFile() {
             .replace(/^\s*/g, "")
             // convert \ to \\
             .replace(/\\/g, "\\\\")
-            // convert " to \"
-            .replace(/"/g, "\\\""))
+            // convert ` to \`
+            .replace(/`/g, "\\`"))
         .join("")
         // remove comments
         .replace(/<!--.+?-->/g, "");
@@ -42,9 +42,10 @@ function jsFile() {
 
     templateSplit[templateSplit.length - 1] += template;
 
-    templateSplit = templateSplit.map(t => typeof t === "string" ?
-        `"${t}"` :
-        `(model: Model) => model ? model.${t.t} : ""`);
+    template = templateSplit.map(t => typeof t === "string" ?
+        t :
+        "${model." + t.t + "}")
+        .join("");
 
     typ = typ.reduce((s, v) => s.indexOf(v) === -1 ? s.concat([v]) : s, []);
 
@@ -56,13 +57,9 @@ function jsFile() {
         `        ${typ.map(t => `${t}: string`).join("\n        ")}`,
         "    }",
         "",
-        "var template = [",
-        `    ${templateSplit.join(",\n    ")}`,
-        "];",
-        "",
         "function create (model: Model) {",
         "    var el = document.createElement('div');",
-        "    el.innerHTML = template.map(t => typeof t === \"string\" ? t : t(model)).join(\"\");",
+        "    el.innerHTML = `" + template + "`",
         "    var fc = <HTMLElement>el.firstChild",
         "    el.innerHTML = \"\";",
         "    return fc;",
