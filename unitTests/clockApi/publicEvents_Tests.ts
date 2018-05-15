@@ -13,7 +13,8 @@ describe("publicEvents_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: false
+            closeOnSelect: false,
+            mode: 24
         }));
 
         document.body.appendChild(clock.element);
