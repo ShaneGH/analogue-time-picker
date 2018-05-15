@@ -29,9 +29,6 @@ function append(el: HTMLElement, model: Model) {
         el.classList.add(n.classList[i]);
     }
 
-    el.classList.add("smt");
-    el.classList.add("mtl-background-color");
- 
     return el;
 }
 
@@ -39,7 +36,7 @@ function remove(el: HTMLElement) {
     el.innerHTML = "";
     el.classList.remove("smt");
     el.classList.remove("mtl-background-color");
- 
+
     return el;
 }
 

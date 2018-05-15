@@ -1,47 +1,13 @@
-const path = require('path');
-const readline = require('readline');
-const fs = require('fs');
+const generateCssFile = require('./generateCssFile');
+const fs = require("fs");
+const path = require("path");
 
-var reader = readline.createInterface({
-    input: fs.createReadStream(path.resolve("./src/clock.css"))
-});
-
-var lines = [];
-reader.on("line", line => lines.push(line));
-
-function jsFile() {
-    var ls = lines
-        .map(l => l
-            .replace(/^\s*/g, "")
-            .replace(/\\/g, "\\\\")
-            .replace(/"/g, "\\\"")
-            .replace(/\s*\{\s*/g, "{")
-            .replace(/\s*:\s*/g, ":"))
-        .join("")
-        .replace(/\/\*.+?\*\//g, "");
-
-    // remove comments
-    ls = ls.replace(/\/\*.+?\*\//g, "");
-
-    return [
-        "// This is an auto-generated file, built with ./tools/buildCss.js",
-        "",
-        `var css = "${ls}";`,
-        "var enabled = false;",
-        "",
-        "function enable () {",
-        "\tif (enabled) return;",
-        "\tenabled = true;",
-        "",
-        "\tvar el = document.createElement('style');",
-        "\tel.innerHTML = css;",
-        "\t(document.head || document.body).appendChild(el);",
-        "}",
-        "",
-        "export {",
-        "\tenable",
-        "}"
-    ].join("\n");
-}
-
-reader.on("close", () => fs.writeFileSync(path.resolve("./src/css.ts"), jsFile()));
+generateCssFile()
+    .then(js => new Promise((resolve, reject) => {
+        fs.writeFile(
+            path.resolve(__dirname, "../src/css.ts"),
+            js,
+            err => err ? reject(err) : resolve());
+    }))
+    .then(() => console.log("Css file Complete"))
+    .catch(err => console.error(err));
