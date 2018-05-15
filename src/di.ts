@@ -74,11 +74,12 @@ class DiContext {
         // re-arrange numbers to put the 12 and 24 in the correct places
         hours.splice(11, 0, hours.splice(0, 1)[0]);
         hours.splice(0, 0, hours.splice(12, 1)[0]);
-
             
         return {
+            numbers: hours,
             containerElement: this.getInnerElement(".smt-hours"),
-            numbers: hours
+            am: this.getInnerElement<HTMLButtonElement>(".smt-am"),
+            pm: this.getInnerElement<HTMLButtonElement>(".smt-pm")
         };
     }
 
