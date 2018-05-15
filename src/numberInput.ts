@@ -23,20 +23,41 @@ function getNewElementValues(element: HTMLInputElement, key: string, max: number
     var val2 = (element.value || "").substr(start + 1);
 
     var value = parseInt(`${val1}${key}${val2}`);
-    if (value < 0)  return null;
+    if (isNaN(value) || value < 0) return null;
 
-    if (value > max) {
-        if (!actualStart) {
-            // set last digit to 0 and try again
-            value -= value % 10;
-            if (value > max) return null;
+    if (value <= max) {
+        var skip = 0;
+        if (!val1 && !val2 && value * 10 > max) {
+            // special case for when only 1 digit fits in the text box
+            skip++;
         }
+
+        return {
+            value,
+            nextPosition: actualStart + 1 + skip
+        };
     }
 
-    return {
-        value,
-        nextPosition: actualStart + 1
-    };
+    if (!actualStart) {
+        // set last digit to 0 and try again
+        value -= value % 10;
+        if (value <= max)
+            return {
+                value,
+                nextPosition: actualStart + 1
+            };
+            
+        // just use the key as is
+        value = parseInt(key);
+        if (!isNaN(value) && value <= max) 
+            return {
+                value,
+                // skipped an extra digit by using first key
+                nextPosition: actualStart + 2
+            };
+    }
+    
+    return null;
 }
 
 type KeyPressDetailsValues =
