@@ -58,7 +58,7 @@ class DiContext {
         var list: HTMLElement[] = [];
     
         for (var i = 0; i < 12; i++) {
-            list[i] = <HTMLElement>this.getRootElement().querySelectorAll(`.smt-hours .smt-n-${i}`)[index];
+            list[i] = <HTMLElement>this.getRootElement().querySelectorAll(`.mtl-hours .mtl-n-${i}`)[index];
         }
 
         return list.map((el, i) => {
@@ -78,18 +78,18 @@ class DiContext {
             
         return {
             numbers: hours,
-            containerElement: this.getInnerElement(".smt-hours"),
-            amPmButtons: this.getInnerElement(".smt-ampm"),
-            am: this.getInnerElement<HTMLButtonElement>(".smt-am"),
-            pm: this.getInnerElement<HTMLButtonElement>(".smt-pm"),
-            label: this.getInnerElement<HTMLButtonElement>(".smt-hour-label")
+            containerElement: this.getInnerElement(".mtl-hours"),
+            amPmButtons: this.getInnerElement(".mtl-ampm"),
+            am: this.getInnerElement<HTMLButtonElement>(".mtl-am"),
+            pm: this.getInnerElement<HTMLButtonElement>(".mtl-pm"),
+            label: this.getInnerElement<HTMLButtonElement>(".mtl-hour-label")
         };
     }
 
     hourInput: HourInput | undefined
     buildHoursInput() {
         if (!this.hourInput) {
-            var el = this.getInnerElement<HTMLInputElement>(".smt-hour");
+            var el = this.getInnerElement<HTMLInputElement>(".mtl-hour");
             this.hourInput = new HourInput(el);
             this.disposables.push(this.hourInput);
         }
@@ -111,7 +111,7 @@ class DiContext {
         var list: HTMLElement[] = [];
     
         for (var i = 0; i < 12; i++) {
-            list[(i * 5) % 60] = <HTMLElement>this.getRootElement().querySelectorAll(`.smt-minutes .smt-n-${i}`)[0];
+            list[(i * 5) % 60] = <HTMLElement>this.getRootElement().querySelectorAll(`.mtl-minutes .mtl-n-${i}`)[0];
         }
 
         return list.map((el, i) => {
@@ -122,16 +122,16 @@ class DiContext {
 
     buildMinutesElements() {
         return {
-            containerElement: this.getInnerElement(".smt-minutes"),
+            containerElement: this.getInnerElement(".mtl-minutes"),
             numbers: this.buildMinutesElementList(),
-            label: this.getInnerElement<HTMLButtonElement>(".smt-minute-label")
+            label: this.getInnerElement<HTMLButtonElement>(".mtl-minute-label")
         };
     }
 
     minuteInput: MinuteInput | undefined
     buildMinutesInput() {
         if (!this.minuteInput) {
-            var el = this.getInnerElement<HTMLInputElement>(".smt-minute");
+            var el = this.getInnerElement<HTMLInputElement>(".mtl-minute");
             this.minuteInput = new MinuteInput(el);
             this.disposables.push(this.minuteInput);
         }
@@ -151,8 +151,8 @@ class DiContext {
     
     buildHandElements() {
         return {
-            ballPostion: toArray<HTMLElement>(this.getRootElement().querySelectorAll(".smt-b-pos")),
-            hands: toArray<HTMLElement>(this.getRootElement().querySelectorAll(".smt-h-cnt"))
+            ballPostion: toArray<HTMLElement>(this.getRootElement().querySelectorAll(".mtl-b-pos")),
+            hands: toArray<HTMLElement>(this.getRootElement().querySelectorAll(".mtl-h-cnt"))
         };
     }
 
@@ -163,9 +163,9 @@ class DiContext {
     
     buildClockElements() {
         return {
-            okButton: this.getInnerElement(".smt-ok"),
-            cancelButton: this.getInnerElement(".smt-cancel"),
-            clock: this.getInnerElement(".smt-clock")
+            okButton: this.getInnerElement(".mtl-ok"),
+            cancelButton: this.getInnerElement(".mtl-cancel"),
+            clock: this.getInnerElement(".mtl-clock")
         };
     }
 

@@ -24,7 +24,7 @@ function jsFile() {
         .join("")
         // remove comments
         .replace(/<!--.+?-->/g, "");
-        
+
     var templateSplit = [""];
     var typ = [];
 
@@ -82,7 +82,7 @@ function jsFile() {
         "    }",
         "", 
         "    el.classList.add(\"smt\");", 
-        "    el.classList.add(\"smt-background-color\");",
+        "    el.classList.add(\"mtl-background-color\");",
         " ",
         "    return el;",
         "}",
@@ -90,7 +90,7 @@ function jsFile() {
         "function remove(el: HTMLElement) {",
         "    el.innerHTML = \"\";",
         "    el.classList.remove(\"smt\");", 
-        "    el.classList.remove(\"smt-background-color\");",
+        "    el.classList.remove(\"mtl-background-color\");",
         " ",
         "    return el;",
         "}",

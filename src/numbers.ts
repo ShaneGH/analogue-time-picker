@@ -187,11 +187,11 @@ abstract class Numbers {
 
     highlightNumber() {
         if (this.elements.selectedNumber) {
-            this.elements.selectedNumber.classList.remove("smt-number-selected");
+            this.elements.selectedNumber.classList.remove("mtl-number-selected");
         }
         
         this.elements.selectedNumber = this.getSelectedNumber();
-        if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("smt-number-selected");
+        if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("mtl-number-selected");
     }
 
     getSelectedNumber(): HTMLElement | null {

@@ -23,8 +23,8 @@ class Hand {
         this.elements.hands.forEach(h => h.style.transform = `rotate(${this.angle}rad)`);
         
         position === Position.near ?
-            this.elements.ballPostion.forEach(b => b.classList.add("smt-b-pos-pm")) :
-            this.elements.ballPostion.forEach(b => b.classList.remove("smt-b-pos-pm"));
+            this.elements.ballPostion.forEach(b => b.classList.add("mtl-b-pos-pm")) :
+            this.elements.ballPostion.forEach(b => b.classList.remove("mtl-b-pos-pm"));
     }
 }
 

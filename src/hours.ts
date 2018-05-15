@@ -52,14 +52,14 @@ class Hours extends Numbers {
 
     private highlightAmPm() {
         if (!this.value.value || this.value.value > 12) {
-            this.am.classList.remove("smt-focus");
+            this.am.classList.remove("mtl-focus");
             this.am.removeAttribute("aria-pressed");
-            this.pm.classList.add("smt-focus");
+            this.pm.classList.add("mtl-focus");
             this.pm.setAttribute("aria-pressed", "");
         } else {
-            this.pm.classList.remove("smt-focus");
+            this.pm.classList.remove("mtl-focus");
             this.pm.removeAttribute("aria-pressed");
-            this.am.classList.add("smt-focus");
+            this.am.classList.add("mtl-focus");
             this.am.setAttribute("aria-pressed", "");
         }
     }

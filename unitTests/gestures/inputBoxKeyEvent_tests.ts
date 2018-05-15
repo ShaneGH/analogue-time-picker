@@ -16,9 +16,9 @@ describe("inputBoxKeyEvent_tests.ts", () => {
             closeOnSelect: false
         }));
 
-        hours = ctxt.getInnerElement<HTMLInputElement>(".smt-hour");
-        minutes = ctxt.getInnerElement<HTMLInputElement>(".smt-minute");
-        ok = ctxt.getInnerElement(".smt-ok");
+        hours = ctxt.getInnerElement<HTMLInputElement>(".mtl-hour");
+        minutes = ctxt.getInnerElement<HTMLInputElement>(".mtl-minute");
+        ok = ctxt.getInnerElement(".mtl-ok");
 
         document.body.appendChild(clock.element);
     });

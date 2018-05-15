@@ -176,14 +176,14 @@ abstract class NumberInput {
     abstract transformInputValue(value: number): string
 
     focus() {
-        this.input.classList.add("smt-focus");
+        this.input.classList.add("mtl-focus");
         this.input.focus();
         this.input.selectionStart = 0;
         this.input.selectionEnd = 0;
     }
 
     blur() {
-        this.input.classList.remove("smt-focus");
+        this.input.classList.remove("mtl-focus");
     }
 
     dispose() {
