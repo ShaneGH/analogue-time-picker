@@ -44,6 +44,7 @@ class Hours extends Numbers {
     getLabel() { return `Hours ${this.mode}h format`; }
 
     showHideAmPm() {
+        XXX.push(64);
         if (this.mode === 12) {
             this.amPmButtons.style.display = null;
             this.amPmButtons.removeAttribute("aria-hidden");
@@ -54,6 +55,7 @@ class Hours extends Numbers {
     }
 
     private highlightAmPm() {
+        XXX.push(65);
         if (!this.value.value || this.value.value > 12) {
             this.am.classList.remove("mtl-focus");
             this.am.removeAttribute("aria-pressed");
@@ -69,6 +71,7 @@ class Hours extends Numbers {
 
     private mode: 12 | 24 = 24
     setTo12Hr(amPm?: AmPm) {
+        XXX.push(66);
         var value = this.value.value;
         if (amPm) {
             value = convert12hTo24h(
@@ -89,7 +92,8 @@ class Hours extends Numbers {
         this.set(value);
     }
 
-    setTo24Hr() {        
+    setTo24Hr() {   
+        XXX.push(67);     
         this.mode = 24;
         this.showHideAmPm();
         this.showHours();
@@ -104,6 +108,7 @@ class Hours extends Numbers {
     }
 
     hideHours() {
+        XXX.push(68);
         this.elements.numbers
             .slice(0, 1)
             .concat(this.elements.numbers.slice(13))
@@ -111,6 +116,7 @@ class Hours extends Numbers {
     }
 
     showHours() {
+        XXX.push(69);
         this.elements.numbers
             .slice(0, 1)
             .concat(this.elements.numbers.slice(13))
@@ -118,6 +124,7 @@ class Hours extends Numbers {
     }
 
     getSelectedNumber(): HTMLElement | null {
+        XXX.push(70);
         if (this.mode === 12) {
             return this.elements.numbers[convert24hTo12h(this.value.value)];
         }
@@ -155,6 +162,7 @@ class Hours extends Numbers {
     }
 
     dispose() {
+        XXX.push(71);
         super.dispose();
         this._toAm();
         this._toPm();

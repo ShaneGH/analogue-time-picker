@@ -76,6 +76,7 @@ class Clock {
     }
 
     setMode(mode: 12 | 24) {
+        XXX.push(72);
         switch (mode) {
             case 12:
                 this.hours.setTo12Hr();

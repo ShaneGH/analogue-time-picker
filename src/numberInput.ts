@@ -201,6 +201,7 @@ abstract class NumberInput {
     }
 
     blur() {
+        XXX.push(59);
         this.input.classList.remove("mtl-focus");
     }
 
@@ -221,6 +222,7 @@ class HourInput extends NumberInput {
 
     private mode: 12 | 24 = 24
     setTo12Hr(amPm?: AmPm) {
+        XXX.push(60);
         var value = this.value;
         if (amPm) {
             value = convert12hTo24h(
@@ -233,11 +235,13 @@ class HourInput extends NumberInput {
     }
 
     setTo24Hr() {
+        XXX.push(61);
         this.mode = 24;
         this.set(this.value);
     }
 
     transformInputValue(value: number) {
+        XXX.push(62);
         if (this.mode === 12) {
             if (!value) value = 12;
             else if (value > 12) value -= 12;
@@ -252,6 +256,7 @@ class HourInput extends NumberInput {
 class MinuteInput extends NumberInput {
     getMaxValue() { return 59; }
     transformInputValue(value: number) {
+        XXX.push(63);
         return `0${value}`.slice(-2);
     }
 }
