@@ -63,7 +63,6 @@ function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: numbe
                 value: decrease(element.value, max)
             };
         case "ArrowRight":
-            console.log("selectionStart", element.selectionStart);
             var nextPosition = (element.selectionStart || 0) + 1;
             return {
                 handled: nextPosition > 2,

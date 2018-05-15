@@ -173,9 +173,7 @@ abstract class Numbers {
         if (this.value && 
             this.value.value === value.value && 
             !compareAngles(this.value.angle, value.angle) && 
-        this.value.position === value.position) return;
-
-        console.log(value.value, value.angle, value.position);
+            this.value.position === value.position) return;
 
         this.value = value;
         this.numberInput.set(value.value);
