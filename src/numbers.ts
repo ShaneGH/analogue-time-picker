@@ -13,6 +13,7 @@ enum Position {
 type NumbersElements =
     {
         containerElement: HTMLElement,
+        label: HTMLElement,
         numbers: HTMLElement[]
     }
 
@@ -34,6 +35,25 @@ function offset(el: HTMLElement | null, prop: "offsetLeft" | "offsetTop") {
     return offset;
 }
 
+function round(x: number, decimals: number) {
+    return parseFloat(x.toFixed(decimals));
+}
+
+function sign(x: number) {
+    if (!x) return 0;
+    if (x > 0) return 1;
+    return -1;
+}
+
+function compareAngles(x: number, y: number) {
+    while (x < 0) x += _360;
+    while (x >= 0) x -= _360;
+    while (y < 0) y += _360;
+    while (y >= 0) y -= _360;
+
+    return sign(round(x, 5) - round(y, 5));
+}
+
 abstract class Numbers {
     offsetLeft: number
     offsetTop: number
@@ -52,15 +72,22 @@ abstract class Numbers {
         
         this.refreshOffsets();
         this.set(value);
-        this.numberInput.onTimeChanged(v => this.set(v));
+        this.numberInput.onTimeChanged(v => this.numberInputTimeChanged(v));
         this.numberInput.onNext(() => this.goNext());
         this.numberInput.onPrevious(() => this.goPrevious());
         this.highlightNumber();
         this.numberInput.onFocus(() => this.focusOnInput());
+        this.onRenderValuesChanged(rv => this.triggerValueChanged(rv.value));
 
         if (visible) this.show();
         else this.hide();
+
+        this.setLabel();
     }
+
+    abstract getValuesFromPosition(x: number, y: number): GetValueResult
+    abstract getLabel(): string
+    abstract getValuesFromValue(value: number): GetValueResult
 
     _onInputFocus: (() => void)[] = []
     onInputFocus(f: () => void) {
@@ -68,7 +95,16 @@ abstract class Numbers {
         this._onInputFocus.push(f);
     }
 
+    _onRenderValuesChanged: ((x: GetValueResult) => void)[] = [];
+
+    /** Triggers if value, angle or position changes */
+    onRenderValuesChanged(f: (x: GetValueResult) => void) {
+        this._onRenderValuesChanged.push(f);
+    }
+
     _onValueChanged: ((x: number) => void)[] = [];
+    
+    /** Triggers only if value changes */
     onValueChanged(f: (x: number) => void) {
         XXX.push(20);
         this._onValueChanged.push(f);
@@ -86,11 +122,25 @@ abstract class Numbers {
         this._onPreviousCallbacks.push(f);
     }
 
+    setLabel() {
+        this.elements.label.innerHTML = this.getLabel();
+    }
+
     private focusOnInput() {
         XXX.push(23);
         this._onInputFocus
             .slice(0)
             .forEach(f => f());
+    }
+
+    _triggerValue: number | null = null;
+    private triggerValueChanged(value: number) {
+        if (this._triggerValue === value) return;
+        this._triggerValue = value;
+
+        this._onValueChanged
+            .slice(0)
+            .forEach(f => f(value));
     }
 
     goNext() {
@@ -138,28 +188,50 @@ abstract class Numbers {
 
     private _set (value: GetValueResult) {
         XXX.push(30);
-        if (this.value && this.value.value === value.value) return null;
+        if (this.value && 
+            this.value.value === value.value && 
+            !compareAngles(this.value.angle, value.angle) && 
+        this.value.position === value.position) return;
+
+        console.log(value.value, value.angle, value.position);
 
         this.value = value;
         this.numberInput.set(value.value);
         this.highlightNumber();
-        this._onValueChanged
+        this._onRenderValuesChanged
             .slice(0)
-            .forEach(f => f(value.value));
+            .forEach(f => f(value));
     }
 
     highlightNumber() {
         XXX.push(31);
         if (this.elements.selectedNumber) {
-            this.elements.selectedNumber.classList.remove("smt-number-selected");
+            this.elements.selectedNumber.classList.remove("mtl-number-selected");
         }
         
-        this.elements.selectedNumber = this.elements.numbers[this.value.value];
-        if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("smt-number-selected");
+        this.elements.selectedNumber = this.getSelectedNumber();
+        if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("mtl-number-selected");
     }
 
-    abstract getValuesFromPosition(x: number, y: number): GetValueResult
-    abstract getValuesFromValue(value: number): GetValueResult
+    getSelectedNumber(): HTMLElement | null {
+        return this.elements.numbers[this.value.value] || null;
+    }
+
+    private numberInputTimeChanged(v: number) {
+        if (!this.ignoreCount) this.set(v);
+    }
+
+    private ignoreCount = 0
+    protected ignoreNumberInputChangeEvent() {
+        this.ignoreCount++;
+        var done = false;
+        return () => {
+            if (done) return;
+            done = true;
+
+            this.ignoreCount--;
+        };
+    }
 
     show() {
         XXX.push(32);
@@ -174,6 +246,7 @@ abstract class Numbers {
         this.elements.containerElement.style.transform = "scale(0)";
         this.elements.containerElement.style.opacity = "0";
         this.visible = false;
+        this.numberInput.blur();
     }
 
     /** alter angle so that it is closest to the given angle, e.g. 500deg -> 140deg */
@@ -187,15 +260,16 @@ abstract class Numbers {
 
     dispose() {
         XXX.push(35);
-
+        this._onValueChanged.length = 0;
         this._onPreviousCallbacks.length = 0;
         this._onNextCallbacks.length = 0;
         this._onInputFocus.length = 0;
-        this._onValueChanged.length = 0;
+        this._onRenderValuesChanged.length = 0;
     }
 }
 
 export {
     Numbers,
+    NumbersElements,
     Position
 }

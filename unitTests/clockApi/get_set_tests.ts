@@ -57,7 +57,7 @@ describe("get_set_tests.ts", () => {
         var hour = clock.setTime(23, 12);
 
         // assert
-        ctxt.getInnerElement<HTMLInputElement>(".smt-hour").value.should.be.eql("23");
+        ctxt.getInnerElement<HTMLInputElement>(".mtl-hour").value.should.be.eql("23");
     });
 
     it("sets minutes input element", function() {
@@ -67,7 +67,7 @@ describe("get_set_tests.ts", () => {
         var hour = clock.setTime(23, 12);
 
         // assert
-        ctxt.getInnerElement<HTMLInputElement>(".smt-minute").value.should.be.eql("12");
+        ctxt.getInnerElement<HTMLInputElement>(".mtl-minute").value.should.be.eql("12");
     });
 
     it("fires time changed event", function(done) {

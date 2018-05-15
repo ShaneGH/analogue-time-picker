@@ -37,6 +37,24 @@ function getHours (handAngle: number, amPm: AmPm) {
     }
 }
 
+function convert24hTo12h(value: number) {
+
+    if (!value) return 12;
+    else if (value > 12) return value - 12;
+    else return value;
+}
+
+function convert12hTo24h(value: number, amPm: AmPm) {
+
+    if (amPm === AmPm.am) return value;
+    else if (amPm === AmPm.pm) {
+        if (value === 12) return 0;
+        return value + 12;
+    } else {
+        throw new Error(`Expected "am" or "pm": "${amPm}"`);
+    }
+}
+
 function getMinutes (handAngle: number) {
     handAngle = snap(handAngle, _12);
 
@@ -50,7 +68,15 @@ function getMinutes (handAngle: number) {
     }
 }
 
+var defaultMode = (function (): 12 | 24 {
+    var locale = new Date("January 01, 2000 13:00:00 GMT+00:00").toLocaleTimeString();
+    return /(AM)|(PM)/i.test(locale) ? 12 : 24;
+} ());
+
 export {
+    defaultMode,
     getHours,
-    getMinutes
+    getMinutes,
+    convert12hTo24h,
+    convert24hTo12h
 }

@@ -19,6 +19,8 @@ class Minutes extends Numbers {
             position: Position.far
         }
     }
+
+    getLabel() { return "Minutes"; }
     
     getValuesFromValue(value: number) {
         XXX.push(56);

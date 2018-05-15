@@ -27,7 +27,7 @@ describe("closeOnSelect_Tests.ts", () => {
 
         // arrange
         clock.showMinutes();
-        var minutes = ctxt.getInnerElement<HTMLInputElement>(".smt-minute");
+        var minutes = ctxt.getInnerElement<HTMLInputElement>(".mtl-minute");
         minutes.selectionStart = 3;
         var ev = new Event("keydown");
         (<any>ev).key = "ArrowRight";
@@ -44,7 +44,7 @@ describe("closeOnSelect_Tests.ts", () => {
         // arrange
         clock.showMinutes();
         clock.setTime(22, 23);
-        var minutes = ctxt.getInnerElement<HTMLInputElement>(".smt-minute");
+        var minutes = ctxt.getInnerElement<HTMLInputElement>(".mtl-minute");
         minutes.selectionStart = 3;
         var ev = new Event("keydown");
         (<any>ev).key = "ArrowRight";
@@ -65,7 +65,7 @@ describe("closeOnSelect_Tests.ts", () => {
 
         // arrange
         clock.showMinutes();
-        var minutes = ctxt.getInnerElement<HTMLInputElement>(".smt-minute");
+        var minutes = ctxt.getInnerElement<HTMLInputElement>(".mtl-minute");
         minutes.selectionStart = 3;
         var ev = new Event("keydown");
         (<any>ev).key = "ArrowRight";

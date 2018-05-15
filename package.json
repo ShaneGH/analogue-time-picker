@@ -1,5 +1,5 @@
 {
-  "name": "simple-material-time",
+  "name": "material-time-lite",
   "version": "0.1.0",
   "description": "A small and simple time picker based on google material UI",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "build-dev": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\"",
     "build-prod": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/production.config.js\"",
     "build": "npm run build-css && npm run build-html-template && npm run build-dev && npm run build-prod",
-    "develop": "npm run build-css && node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch"
+    "develop": "npm run build-html-template && npm run build-css && node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch"
   },
   "keywords": [
     "ui",

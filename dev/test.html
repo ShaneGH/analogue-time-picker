@@ -1,26 +1,37 @@
 <html>
 
 <body>
-
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-cyan.min.css">
     <!-- <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
-    <script src="file:///C:/Dev/simple-material-time/simple-material-time.js"></script>
+    <script src="file:///C:/Dev/material-time-lite/material-time-lite.js"></script>
+
 
     <div style="padding: 20px">
         <div style="background-color: aqua">
-            <div id="test1" style="border: 1px solid black; width: 300px; font-size: 15px">
+            <div id="test1" style="width: 300px; font-size: 15px">
             </div>
+            <div id="time"></div>
+            <div id="time2"></div>
+            <button id="h12">12h</button>
+            <button id="h24">24h</button>
         </div>
     </div>
     <script>
         (function (test1) {
-            simpleMaterialTime({
+            var x = materialTimeLite({
                 element: test1, 
-                time: {hour: 18, minute: 00},
-                closeOnSelect: true
+                time: {hour: 16, minute: 00},
+                closeOnSelect: false,
+                mode: 12
             });
+
+            var i = 0;
+            x.onTimeChanged((h, m) => document.getElementById("time").innerHTML = `${++i}: ${`0${h}`.slice(-2)}:${`0${m}`.slice(-2)}`);
+
+            document.getElementById("h12").addEventListener("click", () => x.set12h());
+            document.getElementById("h24").addEventListener("click", () => x.set24h());
         }(document.getElementById("test1")));
     </script>
 </body>

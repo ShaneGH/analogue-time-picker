@@ -6,6 +6,8 @@ type PublicClock =
         element: HTMLElement
         getTime: () => {hour: number, minute: number},
         setTime: (hours: number, minutes: number) => void,
+        set12h: () => void,
+        set24h: () => void,
         showHours: () => void,
         showMinutes: () => void,
         ok: () => void,
@@ -36,6 +38,8 @@ function publicClock(context: DiContext): PublicClock {
         element,
         getTime: () => clock.getTime(),
         setTime: (hours: number, minutes: number) => clock.setTime(hours, minutes),
+        set12h: () => clock.setMode(12),
+        set24h: () => clock.setMode(24),
         showHours: () => clock.showHours(),
         showMinutes: () => clock.showMinutes(),
         ok: () => clock.okClick(),

@@ -1,2 +1,2 @@
-# simple-material-time
-A simple date picker based on Google's material UI
+# material-time-lite
+A small and simple time picker based on google material UI
