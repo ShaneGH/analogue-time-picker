@@ -30,6 +30,25 @@ function offset(el: HTMLElement | null, prop: "offsetLeft" | "offsetTop") {
     return offset;
 }
 
+function round(x: number, decimals: number) {
+    return parseFloat(x.toFixed(decimals));
+}
+
+function sign(x: number) {
+    if (!x) return 0;
+    if (x > 0) return 1;
+    return -1;
+}
+
+function compareAngles(x: number, y: number) {
+    while (x < 0) x += _360;
+    while (x >= 0) x -= _360;
+    while (y < 0) y += _360;
+    while (y >= 0) y -= _360;
+
+    return sign(round(x, 5) - round(y, 5));
+}
+
 abstract class Numbers {
     offsetLeft: number
     offsetTop: number
@@ -48,11 +67,12 @@ abstract class Numbers {
         
         this.refreshOffsets();
         this.set(value);
-        this.numberInput.onTimeChanged(v => this.set(v));
+        this.numberInput.onTimeChanged(v => this.numberInputTimeChanged(v));
         this.numberInput.onNext(() => this.goNext());
         this.numberInput.onPrevious(() => this.goPrevious());
         this.highlightNumber();
         this.numberInput.onFocus(() => this.focusOnInput());
+        this.onRenderValuesChanged(rv => this.triggerValueChanged(rv.value));
 
         if (visible) this.show();
         else this.hide();
@@ -63,7 +83,16 @@ abstract class Numbers {
         this._onInputFocus.push(f);
     }
 
+    _onRenderValuesChanged: ((x: GetValueResult) => void)[] = [];
+
+    /** Triggers if value, angle or position changes */
+    onRenderValuesChanged(f: (x: GetValueResult) => void) {
+        this._onRenderValuesChanged.push(f);
+    }
+
     _onValueChanged: ((x: number) => void)[] = [];
+    
+    /** Triggers only if value changes */
     onValueChanged(f: (x: number) => void) {
         this._onValueChanged.push(f);
     }
@@ -82,6 +111,16 @@ abstract class Numbers {
         this._onInputFocus
             .slice(0)
             .forEach(f => f());
+    }
+
+    _triggerValue: number | null = null;
+    private triggerValueChanged(value: number) {
+        if (this._triggerValue === value) return;
+        this._triggerValue = value;
+
+        this._onValueChanged
+            .slice(0)
+            .forEach(f => f(value));
     }
 
     goNext() {
@@ -120,14 +159,19 @@ abstract class Numbers {
     }
 
     private _set (value: GetValueResult) {
-        if (this.value && this.value.value === value.value) return null;
+        if (this.value && 
+            this.value.value === value.value && 
+            !compareAngles(this.value.angle, value.angle) && 
+        this.value.position === value.position) return;
+
+        console.log(value.value, value.angle, value.position);
 
         this.value = value;
         this.numberInput.set(value.value);
         this.highlightNumber();
-        this._onValueChanged
+        this._onRenderValuesChanged
             .slice(0)
-            .forEach(f => f(value.value));
+            .forEach(f => f(value));
     }
 
     highlightNumber() {
@@ -135,12 +179,32 @@ abstract class Numbers {
             this.elements.selectedNumber.classList.remove("smt-number-selected");
         }
         
-        this.elements.selectedNumber = this.elements.numbers[this.value.value];
+        this.elements.selectedNumber = this.getSelectedNumber();
         if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("smt-number-selected");
+    }
+
+    getSelectedNumber(): HTMLElement | null {
+        return this.elements.numbers[this.value.value] || null;
     }
 
     abstract getValuesFromPosition(x: number, y: number): GetValueResult
     abstract getValuesFromValue(value: number): GetValueResult
+
+    private numberInputTimeChanged(v: number) {
+        if (!this.ignoreCount) this.set(v);
+    }
+
+    private ignoreCount = 0
+    protected ignoreNumberInputChangeEvent() {
+        this.ignoreCount++;
+        var done = false;
+        return () => {
+            if (done) return;
+            done = true;
+
+            this.ignoreCount--;
+        };
+    }
 
     show() {
         this.elements.containerElement.style.transform = "scale(1)";
@@ -164,14 +228,16 @@ abstract class Numbers {
     }
 
     dispose() {
+        this._onValueChanged.length = 0;
         this._onPreviousCallbacks.length = 0;
         this._onNextCallbacks.length = 0;
         this._onInputFocus.length = 0;
-        this._onValueChanged.length = 0;
+        this._onRenderValuesChanged.length = 0;
     }
 }
 
 export {
     Numbers,
+    NumbersElements,
     Position
 }

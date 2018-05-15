@@ -23,7 +23,8 @@ type Config =
             hour: number
             minute: number
         },
-        closeOnSelect: boolean
+        closeOnSelect: boolean,
+        mode: 12 | 24
     }
 
 function toArray<T extends Element>(xs: NodeListOf<Element>): T[] {
@@ -173,7 +174,8 @@ class DiContext {
                 this.buildHours(), 
                 this.buildMinutes(), 
                 this.buildHand(), 
-                this.config.closeOnSelect);
+                this.config.closeOnSelect, 
+                this.config.mode);
 
             this.disposables.push(this.clock);
         }

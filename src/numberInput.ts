@@ -1,4 +1,6 @@
 import { registerKeyEvent } from './utils';
+import { AmPm } from './distance';
+import { convert12hTo24h, convert24hTo12h } from './time';
 
 
 function increase(val: string, max: number) {
@@ -97,6 +99,8 @@ abstract class NumberInput {
 
     _keyPressHandler: () => void
     _focusHandler: () => void
+
+    protected value = 0
     constructor(public input: HTMLInputElement) {
         this._keyPressHandler = registerKeyEvent(input, "keydown", e => this.keyDown(e));
         this._focusHandler = registerKeyEvent(input, "focus", e => this.focusOnInput());
@@ -156,22 +160,30 @@ abstract class NumberInput {
         this._set(parseInt(value.toFixed()));
     }
 
-    _set(value: number) {
-        this.input.value = `0${value}`.slice(-2);
-        this._timeChangedCallbacks
-            .slice(0)
-            .forEach(f => f(value));
+    private _set(value: number) {
+        var changed = this.value !== value;
+
+        this.value = value;
+        this.input.value = this.transformInputValue(value);
+
+        if (changed) {
+            this._timeChangedCallbacks
+                .slice(0)
+                .forEach(f => f(value));
+        }
     }
 
+    abstract transformInputValue(value: number): string
+
     focus() {
-        this.input.classList.add("focus");
+        this.input.classList.add("smt-focus");
         this.input.focus();
         this.input.selectionStart = 0;
         this.input.selectionEnd = 0;
     }
 
     blur() {
-        this.input.classList.remove("focus");
+        this.input.classList.remove("smt-focus");
     }
 
     dispose() {
@@ -187,10 +199,42 @@ abstract class NumberInput {
 
 class HourInput extends NumberInput {
     getMaxValue() { return 23; }
+
+    private mode: 12 | 24 = 24
+    setTo12Hr(amPm?: AmPm) {
+        var value = this.value;
+        if (amPm) {
+            value = convert12hTo24h(
+                convert24hTo12h(value), 
+                amPm);
+        }
+
+        this.mode = 12;
+        this.set(value);
+    }
+
+    setTo24Hr() {
+        this.mode = 24;
+        this.set(this.value);
+    }
+
+    transformInputValue(value: number) {
+        if (this.mode === 12) {
+            if (!value) value = 12;
+            else if (value > 12) value -= 12;
+
+            return value.toString();
+        }
+
+        return `0${value}`.slice(-2);
+    }
 }
 
 class MinuteInput extends NumberInput {
     getMaxValue() { return 59; }
+    transformInputValue(value: number) {
+        return `0${value}`.slice(-2);
+    }
 }
 
 export {

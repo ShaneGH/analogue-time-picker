@@ -10,10 +10,12 @@
 
     <div style="padding: 20px">
         <div style="background-color: aqua">
-                <div id="time"></div>
-                <div id="time2"></div>
             <div id="test1" style="width: 300px; font-size: 15px">
             </div>
+            <div id="time"></div>
+            <div id="time2"></div>
+            <button id="h12">12h</button>
+            <button id="h24">24h</button>
         </div>
     </div>
     <script>
@@ -21,10 +23,15 @@
             var x = materialTimeLite({
                 element: test1, 
                 time: {hour: 16, minute: 00},
-                closeOnSelect: false
+                closeOnSelect: false,
+                mode: null
             });
 
-            x.onTimeChanged((h, m) => document.getElementById("time").innerHTML = `${`0${h}`.slice(-2)}:${`0${m}`.slice(-2)}`);
+            var i = 0;
+            x.onTimeChanged((h, m) => document.getElementById("time").innerHTML = `${++i}: ${`0${h}`.slice(-2)}:${`0${m}`.slice(-2)}`);
+
+            document.getElementById("h12").addEventListener("click", () => x.set12h());
+            document.getElementById("h24").addEventListener("click", () => x.set24h());
         }(document.getElementById("test1")));
     </script>
 </body>

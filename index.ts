@@ -3,6 +3,7 @@ import { DiContext } from './src/di';
 import { publicClock } from './src/publicClock';
 import { append, create, remove } from './src/template';
 import { enable } from './src/css';
+import { defaultMode } from './src/time';
 
 // add css
 enable();
@@ -11,7 +12,8 @@ type Input =
     {
         element?: object, 
         time?: {hour: object | null, minute: object | null} | Date,
-        closeOnSelect?: boolean
+        closeOnSelect?: boolean,
+        mode?: object
     }
 
 function parseInputs(input?: Input) {
@@ -20,6 +22,7 @@ function parseInputs(input?: Input) {
 
     var element: HTMLElement | undefined;
     var time: TimeInput = {hour: 0, minute: 0};
+    var mode: 12 | 24;
 
     if (input.element) {
         if (input.element instanceof HTMLElement) {
@@ -27,6 +30,17 @@ function parseInputs(input?: Input) {
         } else {
             throw new Error("The element propery must be a html element, or undefined.");
         }
+    }
+
+    mode = defaultMode;
+    if (input.mode != null) {
+        if (typeof input.mode !== "number") {
+            throw new Error("The mode argument must be null, undefined, 12 or 24.");
+        }
+
+        if (input.mode === 12) mode = 12;
+        else if (input.mode === 24) mode = 24;
+        else throw new Error("The mode argument must be null, undefined, 12 or 24.");
     }
 
     if (input.time != null) {
@@ -57,7 +71,8 @@ function parseInputs(input?: Input) {
     return {
         config: {
             time, 
-            closeOnSelect: !!input.closeOnSelect
+            closeOnSelect: !!input.closeOnSelect,
+            mode
         },
         element
     };

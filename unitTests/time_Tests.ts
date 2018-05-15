@@ -1,4 +1,4 @@
-import { getHours, getMinutes } from "../src/time";
+import { getHours, getMinutes, convert24hTo12h, convert12hTo24h } from "../src/time";
 import { AmPm } from "../src/distance";
 
 describe("time.ts", () => {
@@ -113,6 +113,63 @@ describe("time.ts", () => {
             // assert
             minute.minute.should.be.eql(11);
             minute.handAngle.should.be.eql(2.722713633111154);
+        });
+    });
+
+    describe("Test convert24hTo12h", function() {
+        it("Infers am/pm if none specified", function() {
+
+            // arrange
+            // act
+            // assert
+            convert24hTo12h(10).should.be.eql(10, "1");
+            convert24hTo12h(22).should.be.eql(10, "2");
+        });
+        
+        it("Uses converts 12 and 24 values correctly", function() {
+
+            // arrange
+            // act
+            // assert
+            convert24hTo12h(12).should.be.eql(12, "1");
+            convert24hTo12h(0).should.be.eql(12, "2");
+        });
+        
+        it("Truncates value", function() {
+
+            // arrange
+            // act
+            // assert
+            convert24hTo12h(3).should.be.eql(3, "1");
+            convert24hTo12h(15).should.be.eql(3, "2");
+        });
+    });
+
+    describe("Test convert12hTo24h", function() {
+        
+        it("Uses converts 12 and 24 values correctly", function() {
+
+            // arrange
+            // act
+            // assert
+            convert12hTo24h(12, AmPm.am).should.be.eql(12);
+            convert12hTo24h(12, AmPm.pm).should.be.eql(0);
+        });
+        
+        it("Uses converts to am value", function() {
+
+            // arrange
+            // act
+            // assert
+            convert12hTo24h(3, AmPm.am).should.be.eql(3);
+        });
+        
+        it("Uses converts to pm value", function() {
+
+            // arrange
+            // act
+            // assert
+            convert12hTo24h(3, AmPm.pm).should.be.eql(15);
         });
     });
 });

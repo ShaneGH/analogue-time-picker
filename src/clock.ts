@@ -28,19 +28,19 @@ class Clock {
     _ok: () => void
     _cancel: () => void
 
-    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, closeOnSelect: boolean) {
+    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, closeOnSelect: boolean, mode: 12 | 24) {
 
         this.ok = elements.okButton;
         this.cancel = elements.cancelButton;
         this.clock = elements.clock;
 
         this.hours.onNext(() => this.showMinutes());
-        this.hours.onValueChanged(() => this.hourChangeOccurred());
+        this.hours.onRenderValuesChanged(() => this.hourChangeOccurred());
         this.hours.onInputFocus(() => this.showHours());
 
         this.minutes.onNext(() => closeOnSelect ? this.okClick() : this.ok.focus());
         this.minutes.onPrevious(() => this.showHours());
-        this.minutes.onValueChanged(() => this.minuteChangeOccurred());
+        this.minutes.onRenderValuesChanged(() => this.minuteChangeOccurred());
         this.minutes.onInputFocus(() => this.showMinutes());
 
         this.showHours();
@@ -50,6 +50,8 @@ class Clock {
         this._cancelPropagation = registerMouseEvent(this.cancel, "mousedown", e => e.stopPropagation());
         this._ok = registerMouseEvent(this.ok, "click", () => this.okClick());
         this._cancel = registerMouseEvent(this.cancel, "click", () => this.cancelClick());
+
+        this.setMode(mode);
     }
 
     _timeChangeCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
@@ -65,6 +67,17 @@ class Clock {
     _cancelCallbacks: (() => void | boolean)[] = [];
     onCancel(callback: (() => void | boolean)) {
         this._cancelCallbacks.push(callback);
+    }
+
+    setMode(mode: 12 | 24) {
+        switch (mode) {
+            case 12:
+                this.hours.setTo12Hr();
+                break;
+            case 24:
+                this.hours.setTo24Hr();
+                break;
+        }
     }
 
     showHours() {
