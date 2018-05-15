@@ -17,8 +17,6 @@ function buildJsFile(lines) {
     ls = ls.replace(/\/\*.+?\*\//g, "");
 
     return [
-        "// This is an auto-generated file, built with ./tools/buildCss.js",
-        "",
         `var css = "${ls}";`,
         "var enabled = false;",
         "",

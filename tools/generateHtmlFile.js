@@ -41,8 +41,6 @@ function jsFile(lines) {
     typ = typ.reduce((s, v) => s.indexOf(v) === -1 ? s.concat([v]) : s, []);
 
     return [
-        "// This is an auto-generated file, built with ./tools/buildHtmlTemplate.js",
-        "",
         "type Model =",
         "    {",
         `        ${typ.map(t => `${t}: string`).join("\n        ")}`,
