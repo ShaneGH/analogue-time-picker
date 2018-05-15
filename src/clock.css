@@ -279,8 +279,8 @@
 
 .mtl-hour.mtl-focus,
 .mtl-minute.mtl-focus,
-.mtl-am.mtl-focus,
-.mtl-pm.mtl-focus {
+.mtl-am[aria-pressed],
+.mtl-pm[aria-pressed] {
     opacity: 1;
 }
 
