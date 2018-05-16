@@ -1,6 +1,6 @@
 import { getHours, getMinutes } from "../src/time";
 import { AmPm } from "../src/distance";
-import { PublicClock, publicClock } from "../src/publicClock";
+import { Clock as PublicClock, publicClock } from "../src/publicClock";
 import { DiContext } from "../src/di";
 import { Clock } from "../src/clock";
 
@@ -13,7 +13,6 @@ describe("12hr_Tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: true,
             mode: 12
         }));
 
@@ -28,7 +27,7 @@ describe("12hr_Tests.ts", () => {
 
         // arrange
         // act
-        clock.setTime(1, 20);
+        clock.setTime(1 as any, 20 as any);
 
         // assert
         clock.getTime().hour.should.be.eql(1);
@@ -39,7 +38,7 @@ describe("12hr_Tests.ts", () => {
 
         // arrange
         // act
-        clock.setTime(13, 20);
+        clock.setTime(13 as any, 20 as any);
 
         // assert
         clock.getTime().hour.should.be.eql(13);
@@ -50,7 +49,7 @@ describe("12hr_Tests.ts", () => {
 
         // arrange
         // act
-        clock.setTime(13, 20);
+        clock.setTime(13 as any, 20 as any);
 
         // assert
         ctxt.getInnerElement<HTMLInputElement>(".mtl-hour").value.should.be.eql("1");
@@ -60,7 +59,7 @@ describe("12hr_Tests.ts", () => {
 
         // arrange
         // act
-        clock.setTime(13, 20);
+        clock.setTime(13 as any, 20 as any);
 
         // assert
         var ok = false;
@@ -84,7 +83,7 @@ describe("12hr_Tests.ts", () => {
 
         // arrange
         // act
-        clock.setTime(1, 20);
+        clock.setTime(1 as any, 20 as any);
 
         // assert
         var ok = false;

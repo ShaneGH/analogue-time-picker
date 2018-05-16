@@ -1,8 +1,5 @@
-import { getHours, getMinutes } from "../../src/time";
-import { AmPm } from "../../src/distance";
-import { PublicClock, publicClock } from "../../src/publicClock";
-import { DiContext } from "../../src/di";
-import { Clock } from "../../src/clock";
+import { DiContext } from '../../src/di';
+import { Clock as PublicClock, publicClock } from '../../src/publicClock';
 
 describe("get_set_tests.ts", () => {
 
@@ -13,7 +10,6 @@ describe("get_set_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: false,
             mode: 24
         }));
 
@@ -28,7 +24,7 @@ describe("get_set_tests.ts", () => {
     it("gets and sets time correctly", function() {
 
         // arrange
-        var hour = clock.setTime(23, 12);
+        var hour = clock.setTime(23 as any, 12 as any);
 
         // act
         var time = clock.getTime();
@@ -38,24 +34,24 @@ describe("get_set_tests.ts", () => {
         time.minute.should.be.eql(12);
     });
 
-    it("rounds decimal points", function() {
+    it("removes decimal points", function() {
 
         // arrange
-        var hour = clock.setTime(23.2, 12.5);
+        var hour = clock.setTime(23.2 as any, 12.8 as any);
 
         // act
         var time = clock.getTime();
 
         // assert
         time.hour.should.be.eql(23);
-        time.minute.should.be.eql(13);
+        time.minute.should.be.eql(12);
     });
 
     it("sets hours input element", function() {
 
         // arrange
         // act
-        var hour = clock.setTime(23, 12);
+        var hour = clock.setTime(23 as any, 12 as any);
 
         // assert
         ctxt.getInnerElement<HTMLInputElement>(".mtl-hour").value.should.be.eql("23");
@@ -65,7 +61,7 @@ describe("get_set_tests.ts", () => {
 
         // arrange
         // act
-        var hour = clock.setTime(23, 12);
+        var hour = clock.setTime(23 as any, 12 as any);
 
         // assert
         ctxt.getInnerElement<HTMLInputElement>(".mtl-minute").value.should.be.eql("12");
@@ -83,14 +79,14 @@ describe("get_set_tests.ts", () => {
         });
 
         // act
-        var hour = clock.setTime(23, 12);
+        var hour = clock.setTime(23 as any, 12 as any);
     });
 
     it("changes from hours to minutes and sets hand to correct angle", function() {
 
         // arrange
         // act
-        var hour = clock.setTime(23, 12);
+        var hour = clock.setTime(23 as any, 12 as any);
 
         // assert
         var assertHour = () => ctxt

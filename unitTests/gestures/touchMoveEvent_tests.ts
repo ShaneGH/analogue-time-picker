@@ -1,7 +1,7 @@
 import { DiContext } from '../../src/di';
 import { Clock as PublicClock, publicClock } from '../../src/publicClock';
 
-describe("mouseMoveEvent_tests.ts", () => {
+describe("touchMoveEvent_tests.ts", () => {
 
     var clock: PublicClock, ctxt: DiContext
     beforeEach(() => {
@@ -27,37 +27,53 @@ describe("mouseMoveEvent_tests.ts", () => {
     // Note, these tests aren't really verifyable.
     // They are just smoke tests and to see if anything has changed
 
-    it("alters hours when mouse moves", function() {
+    it("alters hours when touch moves", function() {
 
         // arrange
         var clockElement = ctxt.getInnerElement(".mtl-clock");
-        var moveEvent = new Event("mousemove");
-        (<any>moveEvent).clientX = 900;
-        (<any>moveEvent).clientY = 600;
+        var beginEvent = new Event("touchstart");
+        (<any>beginEvent).touches = [{
+            clientX: 900,
+            clientY: 600
+        }];
+        
+        var moveEvent = new Event("touchmove");
+        (<any>moveEvent).touches = [{
+            clientX: 900,
+            clientY: 600
+        }];
 
         // act
-        clockElement.dispatchEvent(new Event("mousedown"));
+        clockElement.dispatchEvent(beginEvent);
         document.dispatchEvent(moveEvent);
-        document.dispatchEvent(new Event("mouseup"));
+        document.dispatchEvent(new Event("touchend"));
 
         // assert
         clock.getTime().hour.should.not.be.eql(0);
         clock.getTime().minute.should.be.eql(0);
     });
 
-    it("alters minutes when mouse moves", function() {
+    it("alters minutes when touch moves", function() {
 
         // arrange
         var clockElement = ctxt.getInnerElement(".mtl-clock");
-        var moveEvent = new Event("mousemove");
-        (<any>moveEvent).clientX = 100;
-        (<any>moveEvent).clientY = 200;
+        var beginEvent = new Event("touchstart");
+        (<any>beginEvent).touches = [{
+            clientX: 100,
+            clientY: 200
+        }];
+
+        var moveEvent = new Event("touchmove");
+        (<any>moveEvent).touches = [{
+            clientX: 100,
+            clientY: 200
+        }];
         clock.showMinutes();
 
         // act
-        clockElement.dispatchEvent(new Event("mousedown"));
+        clockElement.dispatchEvent(beginEvent);
         document.dispatchEvent(moveEvent);
-        document.dispatchEvent(new Event("mouseup"));
+        document.dispatchEvent(new Event("touchend"));
 
         // assert
         clock.getTime().minute.should.not.be.eql(0);

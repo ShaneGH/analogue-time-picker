@@ -5,10 +5,9 @@
   "main": "index.js",
   "scripts": {
     "clear-old-tests": "node \"./unitTests/deleteTestBin.js\"",
-    "build-tests": "node \"./node_modules/typescript/lib/tsc.js\" -p \"./test.tsconfig.json\"",
-    "build-test-html": "node \"./unitTests/buildTestPage.js\"",
+    "build-tests": "node \"./unitTests/buildTestPage.js\" && node \"./node_modules/typescript/lib/tsc.js\" -p \"./test.tsconfig.json\"",
     "mocha-test": "chrome \"./testBin/unitTest.html\"",
-    "test": "npm run clear-old-tests && npm run build-tests && npm run build-test-html && npm run mocha-test",
+    "test": "npm run clear-old-tests && npm run build-tests && npm run mocha-test",
     "build-css": "node ./tools/buildCss.js",
     "build-html-template": "node ./tools/buildHtmlTemplate.js",
     "build-dev": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\"",

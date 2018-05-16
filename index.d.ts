@@ -1,4 +1,3 @@
-
 /** The inputs for a new clock. */
 export type Input =
 {
@@ -8,14 +7,14 @@ export type Input =
     /** The initial time to show. If a Date is used, it's "getHours()" and "getMinutes()" functions will be called to get the time */
     time?: {
         /** The hour in 24hour format. 24 is not a valid hour, use 0 instead */
-        hour?: number, 
-        /** The minute */
-        minute?: number
+        hour?: number | string, 
+        /** The minute. 60 is not a valid hour, use 0 instead */
+        minute?: number | string
     } | Date,
 
     /** Specify a 12 or 24 hour clock. If not specified, the user browser default will be used.
      * If the clock is in 12h mode, the times used as inputs, in getTime, setTime and onOk will still be in 24h format  */
-    mode?: 12 | 24
+    mode?: 12 | 24 | "12" | "24"
 }
 
 /** The clock returned to the calling project. */
@@ -27,8 +26,8 @@ export type Clock =
         /** Return the current time */
         getTime: () => {hour: number, minute: number},
         
-        /** Set the current time programmatically */
-        setTime: (hours: number, minutes: number) => void,
+        /** Set the current time programmatically. Always in 24h format */
+        setTime: (hours: number | string, minutes: number | string) => void,
         
         /** Set the clock to 12 hour mode. 
          * If the clock is in 12h mode, the times used in getTime, setTime and onOk will still be in 24h format */

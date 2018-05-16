@@ -10,8 +10,6 @@ enable();
 /** The inputs for a new clock. */
 type Input =
 {
-    closeOnSelect?: boolean,
-
     /** The element to create the clock inside. If not specified, a new div will be created */
     element?: object, 
 
@@ -46,12 +44,9 @@ function parseInputs(input?: Input) {
 
     mode = defaultMode;
     if (input.mode != null) {
-        if (typeof input.mode !== "number") {
-            throw new Error("The mode argument must be null, undefined, 12 or 24.");
-        }
-
-        if (input.mode === 12) mode = 12;
-        else if (input.mode === 24) mode = 24;
+        var md = parseInt(input.mode as any);
+        if (md === 12) mode = 12;
+        else if (md === 24) mode = 24;
         else throw new Error("The mode argument must be null, undefined, 12 or 24.");
     }
 
@@ -61,20 +56,20 @@ function parseInputs(input?: Input) {
             time.minute = input.time.getMinutes();
         } else {
             if (input.time.hour != null) {
-                if (typeof input.time.hour === "number") {
-                    if (input.time.hour < 0 || input.time.hour > 23) throw new Error("The time.hour argument must be between 1 and 24.");
-                    time.hour = input.time.hour;
+                var h = parseInt(input.time.hour as any);
+                if (isNaN(h) || h < 0 || h > 23) {
+                    throw new Error(`The time.hour (${input.time.hour}) argument must be between 0 and 23.`);
                 } else {
-                    throw new Error("The time.hour argument must be a number.");
+                    time.hour = h
                 }
             }
             
             if (input.time.minute != null) {
-                if (typeof input.time.minute === "number") {
-                    if (input.time.minute < 0 || input.time.minute > 59) throw new Error("The time.minute argument must be between 0 and 59.");
-                    time.minute = input.time.minute;
+                var m = parseInt(input.time.minute as any);
+                if (isNaN(m) || m < 0 || m > 59) {
+                    throw new Error(`The time.minute (${input.time.minute}) argument must be between 0 and 59.`);
                 } else {
-                    throw new Error("The time.minute argument must be a number.");
+                    time.minute = m
                 }
             }
         }
@@ -82,8 +77,7 @@ function parseInputs(input?: Input) {
 
     return {
         config: {
-            time, 
-            closeOnSelect: !!input.closeOnSelect,
+            time,
             mode
         },
         element
@@ -99,5 +93,6 @@ function timePicker(input?: Input) {
 }
 
 export {
+    Input,
     timePicker
 }

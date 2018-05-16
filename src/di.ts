@@ -23,7 +23,6 @@ type Config =
             hour: number
             minute: number
         },
-        closeOnSelect: boolean,
         mode: 12 | 24
     }
 
@@ -177,8 +176,7 @@ class DiContext {
                 this.buildClockElements(), 
                 this.buildHours(), 
                 this.buildMinutes(), 
-                this.buildHand(), 
-                this.config.closeOnSelect, 
+                this.buildHand(),
                 this.config.mode);
 
             this.disposables.push(this.clock);

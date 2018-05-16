@@ -1,6 +1,6 @@
 import { getHours, getMinutes } from "../../src/time";
 import { AmPm } from "../../src/distance";
-import { PublicClock, publicClock } from "../../src/publicClock";
+import { Clock as PublicClock, publicClock } from "../../src/publicClock";
 import { DiContext } from "../../src/di";
 import { Clock } from "../../src/clock";
 
@@ -13,7 +13,6 @@ describe("inputBoxKeyEvent_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: false,
             mode: 24
         }));
 
@@ -47,7 +46,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
             // arrange
             var ev = new Event("keydown");
             (<any>ev).key = "ArrowUp";
-            clock.setTime(23, 0);
+            clock.setTime(23 as any, 0 as any);
 
             // act
             hours.dispatchEvent(ev);
@@ -74,7 +73,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
             // arrange
             var ev = new Event("keydown");
             (<any>ev).key = "ArrowUp";
-            clock.setTime(0, 59);
+            clock.setTime(0 as any, 59 as any);
 
             // act
             minutes.dispatchEvent(ev);
@@ -90,7 +89,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
             // arrange
             var ev = new Event("keydown");
             (<any>ev).key = "ArrowDown";
-            clock.setTime(20, 0);
+            clock.setTime(20 as any, 0 as any);
 
             // act
             hours.dispatchEvent(ev);
@@ -117,7 +116,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
             // arrange
             var ev = new Event("keydown");
             (<any>ev).key = "ArrowDown";
-            clock.setTime(0, 30);
+            clock.setTime(0 as any, 30 as any);
 
             // act
             minutes.dispatchEvent(ev);
@@ -268,7 +267,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("sets hour top possible value when cursor on 0th position", function() {
 
             // arrange
-            clock.setTime(19, 0);
+            clock.setTime(19 as any, 0 as any);
 
             hours.focus();
             var ev = new Event("keydown");

@@ -1,8 +1,5 @@
-import { getHours, getMinutes } from "../../src/time";
-import { AmPm } from "../../src/distance";
-import { PublicClock, publicClock } from "../../src/publicClock";
-import { DiContext } from "../../src/di";
-import { Clock } from "../../src/clock";
+import { DiContext } from '../../src/di';
+import { Clock as PublicClock, publicClock } from '../../src/publicClock';
 
 describe("publicEvents_tests.ts", () => {
 
@@ -13,7 +10,6 @@ describe("publicEvents_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            closeOnSelect: false,
             mode: 24
         }));
 
@@ -37,7 +33,7 @@ describe("publicEvents_tests.ts", () => {
         });
 
         // act
-        clock.setTime(23, 12);
+        clock.setTime(23 as any, 12 as any);
     });
 
     it("fires ok event", function(done) {

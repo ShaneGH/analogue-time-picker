@@ -1,6 +1,6 @@
 import { DiContext } from './di';
 
-/** The clock returned to the calling project. All inputs are "objects" so as to force sanatization */
+/** The clock returned to the calling project. All inputs are optional "objects" so as to force sanatization */
 type Clock =
     {
         /** The element which contains the clock */
@@ -47,14 +47,6 @@ type Clock =
         dispose: () => void
     }
 
-const nan = parseInt("x");
-function parse(value?: object) {
-    if (typeof value === "number") return value;
-    if (typeof value === "string") return parseInt(value);
-    
-    return nan;
-}
-
 /**Wrap a DI context in a new public Clock object.
  * The pulic Clock is more fault tolerant and is made 
  * to interact with js rather than ts
@@ -78,11 +70,14 @@ function publicClock(context: DiContext): Clock {
         element,
         getTime: () => clock.getTime(),
         setTime: (hours?: object, minutes?: object) => {
-            var h = parse(hours);
+            var h = parseInt(hours as any);
             if (isNaN(h)) throw new Error(`The hours value "${hours}" must be a number`);
             
-            var m = parse(minutes);
+            var m = parseInt(minutes as any);
             if (isNaN(m)) throw new Error(`The minutes value "${minutes}" must be a number`);
+
+            if (h < 0 || h > 23) throw new Error(`The hours value "${h}" must be between 0 and 23`);
+            if (m < 0 || m > 59) throw new Error(`The minutes value "${m}" must be between 0 and 59`);
 
             clock.setTime(h, m)
         },

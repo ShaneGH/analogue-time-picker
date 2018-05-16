@@ -31,7 +31,7 @@ class Clock {
     _ok: () => void
     _cancel: () => void
 
-    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, closeOnSelect: boolean, mode: 12 | 24) {
+    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, mode: 12 | 24) {
 
         this.ok = elements.okButton;
         this.cancel = elements.cancelButton;
@@ -43,7 +43,7 @@ class Clock {
         this.hours.onInputFocus(() => this.showHours());
 
         // register events for when something happens with the "minutes"
-        this.minutes.onNext(() => closeOnSelect ? this.okClick() : this.ok.focus());
+        this.minutes.onNext(() => this.ok.focus());
         this.minutes.onPrevious(() => this.showHours());
         this.minutes.onRenderValuesChanged(() => this.minuteChangeOccurred());
         this.minutes.onInputFocus(() => this.showMinutes());
@@ -207,9 +207,9 @@ class Clock {
     }
 
     mouseTracker: GestureTracker<MouseEvent> | null = null;
-    /** Create an object to track the mouse over the entire screen */
+    /** Create an object to track the mousemove on the entire screen */
     createMouseTracker(e: MouseEvent) {
-        // touch takes precedence of mouse
+        // touch takes precedence over mouse
         if (this.touchTracker) return;
 
         // use this as an opportunity to see if the clock html element has moved
@@ -237,15 +237,15 @@ class Clock {
     }
 
     touchTracker: GestureTracker<TouchEvent> | null = null;
-    /** Create an object to track the mouse over the entire screen */
+    /** Create an object to track the touchmove over the entire screen */
     createTouchTracker(e: TouchEvent) {
-        // touch takes precedence of mouse
+        // touch takes precedence over mouse
         if (this.mouseTracker) {
             this.mouseTracker.dispose();
             this.mouseTracker = null;
         }
         
-        // stop scrolling
+        // prevent scrolling
         e.preventDefault();
 
         // use this as an opportunity to see if the clock html element has moved
@@ -261,7 +261,7 @@ class Clock {
         if (this.touchTracker) return;
         var touchTracker = this.touchTracker = new GestureTracker<TouchEvent>(["touchmove"], ["touchend", "touchcancel"]);
 
-        // dispose when mouse released
+        // dispose when touch released
         touchTracker.onFinished(() => {
             touchTracker.dispose();
             if (touchTracker === this.touchTracker) this.touchTracker = null;
@@ -272,7 +272,7 @@ class Clock {
         });
 
         touchTracker.onMove(e => {
-            // stop scrolling
+            // prevent scrolling
             e.preventDefault();
             if (e.touches.length) {
                 this.setTimeFromPosition(e.touches[0].clientX, e.touches[0].clientY);
