@@ -1,8 +1,7 @@
 import { TimeInput } from './src/clock';
+import { enable } from './src/css';
 import { DiContext } from './src/di';
 import { publicClock } from './src/publicClock';
-import { append, create, remove } from './src/template';
-import { enable } from './src/css';
 import { defaultMode } from './src/time';
 
 // add css

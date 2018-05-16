@@ -1,4 +1,4 @@
-import { create, append, remove } from "./template";
+import { append, create, remove } from './template';
 
 var getId = (function() {
     var i = Math.floor(Math.random() * 100000);

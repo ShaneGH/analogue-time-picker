@@ -1,9 +1,9 @@
-import { getAngle } from "./angle";
-import { Numbers, Position, NumbersElements } from "./numbers";
-import { getAMPM, AmPm } from "./distance";
-import { getHours, convert24hTo12h, convert12hTo24h } from "./time";
-import { NumberInput, HourInput } from "./numberInput";
-import { registerMouseEvent } from "./utils";
+import { getAngle } from './angle';
+import { AmPm, getAMPM } from './distance';
+import { HourInput } from './numberInput';
+import { Numbers, NumbersElements, Position } from './numbers';
+import { convert12hTo24h, convert24hTo12h, getHours } from './time';
+import { registerMouseEvent } from './utils';
 
 const _90 = Math.PI / 2;
 const _30 = Math.PI / 6;

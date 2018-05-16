@@ -1,10 +1,9 @@
 import { Clock } from './clock';
 import { Hand } from './hand';
 import { Hours } from './hours';
+import { HtmlTree } from './htmlTree';
 import { Minutes } from './minutes';
 import { HourInput, MinuteInput } from './numberInput';
-import { create, append, remove } from './template';
-import { HtmlTree } from './htmlTree';
 
 type DIResult<T> =
     {

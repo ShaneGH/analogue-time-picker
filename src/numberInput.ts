@@ -1,6 +1,6 @@
-import { registerKeyEvent } from './utils';
 import { AmPm } from './distance';
 import { convert12hTo24h, convert24hTo12h } from './time';
+import { registerKeyEvent } from './utils';
 
 
 function increase(val: string, max: number) {

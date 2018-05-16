@@ -1,4 +1,4 @@
-import { AmPm } from "./distance";
+import { AmPm } from './distance';
 
 const _30 = Math.PI / 6;
 const _12 = Math.PI / 30;

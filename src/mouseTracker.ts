@@ -1,4 +1,4 @@
-import { registerMouseEvent } from "./utils";
+import { registerMouseEvent } from './utils';
 
 class MouseTracker {
 

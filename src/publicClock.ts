@@ -1,4 +1,4 @@
-import { DiContext } from "./di";
+import { DiContext } from './di';
 
 /** The clock returned to the calling project. All inputs are "objects" so as to force sanatization */
 type Clock =

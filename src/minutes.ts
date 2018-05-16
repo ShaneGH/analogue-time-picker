@@ -1,6 +1,6 @@
-import { Numbers, Position } from "./numbers";
-import { getAngle } from "./angle";
-import { getMinutes } from "./time";
+import { getAngle } from './angle';
+import { Numbers, Position } from './numbers';
+import { getMinutes } from './time';
 
 const _90 = Math.PI / 2;
 const _6 = Math.PI / 30;
