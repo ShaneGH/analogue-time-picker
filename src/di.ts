@@ -3,7 +3,8 @@ import { Hand } from './hand';
 import { Hours } from './hours';
 import { HtmlTree } from './htmlTree';
 import { Minutes } from './minutes';
-import { HourInput, MinuteInput } from './numberInput';
+import { HourInput } from './hourInput';
+import { MinuteInput } from './minuteInput';
 
 type DIResult<T> =
     {
@@ -30,6 +31,7 @@ function toArray<T extends Element>(xs: NodeListOf<Element>): T[] {
     return Array.prototype.slice.call(xs);
 }
 
+/** A DI container which creates components and manages their lifecycles */
 class DiContext {
     disposables: Disposable[] = [];
     htmlTree: HtmlTree;
@@ -71,7 +73,7 @@ class DiContext {
             .buildHoursElementList(0)
             .concat(this.buildHoursElementList(1));
     
-        // re-arrange numbers to put the 12 and 24 in the correct places
+        // re-arrange numbers to put the 12 and 00 at the correct indexes
         hours.splice(11, 0, hours.splice(0, 1)[0]);
         hours.splice(0, 0, hours.splice(12, 1)[0]);
             

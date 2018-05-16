@@ -50,6 +50,7 @@ function compareAngles(x: number, y: number) {
     return sign(round(x, 5) - round(y, 5));
 }
 
+/** Base class for a number value (e.g. hours, minutes) */
 abstract class Numbers {
     offsetLeft: number
     offsetTop: number
@@ -59,7 +60,7 @@ abstract class Numbers {
     value: GetValueResult
     elements: NumbersElements & { selectedNumber: HTMLElement | null }
 
-    constructor (public numberInput: NumberInput, elements: NumbersElements, value: number, private visible: boolean) {
+    constructor (public numberInput: NumberInput, elements: NumbersElements, value: number, private focused: boolean) {
 
         this.elements = {
             ...elements,
@@ -75,14 +76,19 @@ abstract class Numbers {
         this.numberInput.onFocus(() => this.focusOnInput());
         this.onRenderValuesChanged(rv => this.triggerValueChanged(rv.value));
 
-        if (visible) this.show();
-        else this.hide();
+        if (focused) this.focus();
+        else this.blur();
 
         this.setLabel();
     }
 
+    /** Get the value, angle, etc... based on the mouse position */
     abstract getValuesFromPosition(x: number, y: number): GetValueResult
+    
+    /** Returns a label. The label is for accessability/screen reading purposes */
     abstract getLabel(): string
+    
+    /** Get the value, angle, etc... based on the mouse position */
     abstract getValuesFromValue(value: number): GetValueResult
 
     _onInputFocus: (() => void)[] = []
@@ -99,21 +105,26 @@ abstract class Numbers {
 
     _onValueChanged: ((x: number) => void)[] = [];
     
-    /** Triggers only if value changes */
+    /** Triggers only if value (e.g hour) changes */
     onValueChanged(f: (x: number) => void) {
         this._onValueChanged.push(f);
     }
 
     _onNextCallbacks: (() => void)[] = []
+    
+    /** Triggers when the component decides it should move on (like tab) */
     onNext(f: () => void) {
         this._onNextCallbacks.push(f);
     }
 
     _onPreviousCallbacks: (() => void)[] = []
+
+    /** Triggers when the component decides it should move back (like shift tab) */
     onPrevious(f: () => void) {
         this._onPreviousCallbacks.push(f);
     }
 
+    /** Set the label. This is for accessability purposes only */
     setLabel() {
         this.elements.label.innerHTML = this.getLabel();
     }
@@ -134,12 +145,14 @@ abstract class Numbers {
             .forEach(f => f(value));
     }
 
+    /** Specify that this component is finished with input (like tab) */
     goNext() {
         this._onNextCallbacks
             .slice(0)
             .forEach(cb => cb());
     }
 
+    /** Specify that this component is finished with input (like shift tab) */
     goPrevious() {
         this._onPreviousCallbacks
             .slice(0)
@@ -160,13 +173,15 @@ abstract class Numbers {
         this.fontSize = isNaN(fontSize) ? null : fontSize;
     }
 
-    getVisible() { return this.visible; }
+    getFocused() { return this.focused; }
 
+    /** Set the value based on the mouse position */
     setFromPosition (mouseX: number, mouseY: number) {
         var v = this.getValuesFromPosition(mouseX - this.offsetLeft, mouseY - this.offsetTop);
         this._set(v);
     }
 
+    /** Set the value */
     set (value: number) {
         var v = this.getValuesFromValue(value);
         this._set(v);
@@ -186,16 +201,17 @@ abstract class Numbers {
             .forEach(f => f(value));
     }
 
+    /** Highlight a number in the clock */
     highlightNumber() {
         if (this.elements.selectedNumber) {
             this.elements.selectedNumber.classList.remove("mtl-number-selected");
         }
         
-        this.elements.selectedNumber = this.getSelectedNumber();
+        this.elements.selectedNumber = this.getSelectedNumberElement();
         if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("mtl-number-selected");
     }
 
-    getSelectedNumber(): HTMLElement | null {
+    getSelectedNumberElement(): HTMLElement | null {
         return this.elements.numbers[this.value.value] || null;
     }
 
@@ -204,6 +220,7 @@ abstract class Numbers {
     }
 
     private ignoreCount = 0
+    /** Ignore change events coming from the numberInput property */
     protected ignoreNumberInputChangeEvent() {
         this.ignoreCount++;
         var done = false;
@@ -215,17 +232,19 @@ abstract class Numbers {
         };
     }
 
-    show() {
+    /** Focus this component */
+    focus() {
         this.elements.containerElement.style.transform = "scale(1)";
         this.elements.containerElement.style.opacity = "1";
-        this.visible = true;
+        this.focused = true;
         this.numberInput.focus();
     }
 
-    hide() {
+    /** Blur this component */
+    blur() {
         this.elements.containerElement.style.transform = "scale(0)";
         this.elements.containerElement.style.opacity = "0";
-        this.visible = false;
+        this.focused = false;
         this.numberInput.blur();
     }
 

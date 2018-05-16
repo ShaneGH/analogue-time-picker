@@ -11,6 +11,8 @@ function emToPx(em: number, fontSize: number | null) {
             "12")) * em;
 }
 
+/** With a 24 hour clock box (width/height) and a mouse position (left/top), 
+ * determine whether the use is pointing at an AM hour or a PM hour */
 function getAMPM(
     left: number, 
     top: number, 

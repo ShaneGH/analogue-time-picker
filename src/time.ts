@@ -5,6 +5,7 @@ const _12 = Math.PI / 30;
 const _360 = Math.PI * 2;
 const _90 = Math.PI / 2;
 
+/** Snap an angle to a given step. E.g. if angle = 22° and step = 10°, round down to 20° */
 function snap(angle: number, step: number) {
 
     var a = angle;
@@ -18,6 +19,7 @@ function snap(angle: number, step: number) {
     return angle - diff + step;
 }
 
+/** Calculate the hour from the hand angle */
 function getHours (handAngle: number, amPm: AmPm) {
     handAngle = snap(handAngle, _30);
 
@@ -33,6 +35,20 @@ function getHours (handAngle: number, amPm: AmPm) {
 
     return {
         hour,
+        handAngle
+    }
+}
+
+/** Calculate the minute from the hand angle */
+function getMinutes (handAngle: number) {
+    handAngle = snap(handAngle, _12);
+
+    var minute = parseInt((((handAngle - _90) % _360) / _12).toFixed());
+    while (minute < 0) minute += 60;
+    while (minute >= 60) minute -= 60;
+    
+    return {
+        minute,
         handAngle
     }
 }
@@ -55,19 +71,7 @@ function convert12hTo24h(value: number, amPm: AmPm) {
     }
 }
 
-function getMinutes (handAngle: number) {
-    handAngle = snap(handAngle, _12);
-
-    var minute = parseInt((((handAngle - _90) % _360) / _12).toFixed());
-    while (minute < 0) minute += 60;
-    while (minute >= 60) minute -= 60;
-    
-    return {
-        minute,
-        handAngle
-    }
-}
-
+/** The default time format (12h/24h) based on the value of Date.prototype.toLocaleTimeString */
 var defaultMode = (function (): 12 | 24 {
     var locale = new Date("January 01, 2000 13:00:00 GMT+00:00").toLocaleTimeString();
     return /(AM)|(PM)/i.test(locale) ? 12 : 24;

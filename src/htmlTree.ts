@@ -16,6 +16,7 @@ function buildHtmlModel() {
     };
 }
 
+/** Creates or uses existing element and populates it with the html template */
 class HtmlTree {
     dispose: () => void
     element: HTMLElement;

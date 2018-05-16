@@ -1,5 +1,6 @@
 import { registerMouseEvent } from './utils';
 
+/** Track the mouse position over the entire screen and report back */
 class MouseTracker {
 
     _mouseUp: () => void

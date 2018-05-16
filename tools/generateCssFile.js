@@ -2,24 +2,32 @@ const path = require('path');
 const readline = require('readline');
 const fs = require('fs');
 
-function buildJsFile(lines) {
+/** Create the js content of the file to add css */
+function buildJsFileContent(lines) {
     var ls = lines
         .map(l => l
+            // remove space at beginning of line
             .replace(/^\s*/g, "")
+            // remove space at end of line
+            .replace(/\s*$/g, "")
+            // convert \ to \\
             .replace(/\\/g, "\\\\")
+            // convert " to \"
             .replace(/"/g, "\\\"")
+            // convert " { " to "{"
             .replace(/\s*\{\s*/g, "{")
+            // convert " : " to ":"
             .replace(/\s*:\s*/g, ":"))
         .join("")
+        // remove comments
         .replace(/\/\*.+?\*\//g, "");
 
-    // remove comments
-    ls = ls.replace(/\/\*.+?\*\//g, "");
-
     return [
+        // add css string
         `var css = "${ls}";`,
         "var enabled = false;",
         "",
+        // add function which injects css into page
         "function enable () {",
         "\tif (enabled) return;",
         "\tenabled = true;",
@@ -35,6 +43,7 @@ function buildJsFile(lines) {
     ].join("\n");
 }
 
+/** Build a promise which will generate css -> js file contents */
 function buildFile() {
     var reader = readline.createInterface({
         input: fs.createReadStream(path.resolve("./src/clock.css"))
@@ -44,7 +53,7 @@ function buildFile() {
     reader.on("line", line => lines.push(line));
 
     return new Promise(resolve => {
-        reader.on("close", () => resolve(buildJsFile(lines)));
+        reader.on("close", () => resolve(buildJsFileContent(lines)));
     });
 }
 

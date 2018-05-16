@@ -5,6 +5,7 @@ import { getMinutes } from './time';
 const _90 = Math.PI / 2;
 const _6 = Math.PI / 30;
 class Minutes extends Numbers {
+    /** Get the minute, angle, etc... based on the mouse position */
     getValuesFromPosition(x: number, y: number) {
         var angle = getAngle(x, y, this.elements.containerElement.offsetWidth, this.elements.containerElement.offsetHeight);
         var value = getMinutes(angle);
@@ -16,8 +17,10 @@ class Minutes extends Numbers {
         }
     }
 
+    /** Returns a label. The label is for accessability/screen reading purposes */
     getLabel() { return "Minutes"; }
     
+    /** Get the minute, angle, etc... based on the minute */
     getValuesFromValue(value: number) {
         value = parseInt(value.toFixed()) % 60;
         var angle = (value * _6) + _90;

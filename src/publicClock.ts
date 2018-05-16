@@ -55,6 +55,10 @@ function parse(value?: object) {
     return nan;
 }
 
+/**Wrap a DI context in a new public Clock object.
+ * The pulic Clock is more fault tolerant and is made 
+ * to interact with js rather than ts
+ * It also has dispose logic and an onDispose event */
 function publicClock(context: DiContext): Clock {
     var clock = context.buildClock();
     var element = context.getRootElement();

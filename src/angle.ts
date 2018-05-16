@@ -1,6 +1,7 @@
 const _90 = Math.PI / 2;
 const _360 = Math.PI * 2;
 
+/** Get the angle of the left/top co-ordinate from the center of the width.height box */
 function getAngle(
     left: number, 
     top: number,
@@ -23,8 +24,9 @@ function getAngle(
     return angle;
 }
 
-function getAngleDelta(previous: number, next: number) {
-    var diff = next - previous;
+/** Calculate the smallest difference between 2 angles. e.g. 90° is smaller than 450° */
+function getAngleDelta(a1: number, a2: number) {
+    var diff = a2 - a1;
     while (diff > Math.PI) {
         diff -= _360;
     }

@@ -2,7 +2,7 @@ const path = require('path');
 const readline = require('readline');
 const fs = require('fs');
 
-function jsFile(lines) {
+function buildJsFileContents(lines) {
     var match = /\{\{.+?\}\}/;
     var template = lines
         .map(l => l
@@ -16,36 +16,48 @@ function jsFile(lines) {
         // remove comments
         .replace(/<!--.+?-->/g, "");
 
-    var templateSplit = [""];
-    var typ = [];
+    var templateSplit = [];
+    var modelType = [];
 
     var m;
+    // when a template token is found (e.g. {{something}})
     while (m = match.exec(template)) {
-        templateSplit[templateSplit.length - 1] += template.substr(0, m.index);
+        // add the text before the token to the output
+        templateSplit.push(template.substr(0, m.index));
+
+        // get the token
         var token = template.substr(m.index + 2, m[0].length - 4);
 
+        // mark the position of the token
         templateSplit.push({t: token});
-        typ.push(token);
 
-        templateSplit.push("");
+        // add the token to the model type
+        modelType.push(token);
+
+        // remove the processed text
         template = template.substr(m.index + m[0].length);
     }
 
-    templateSplit[templateSplit.length - 1] += template;
+    // add the final template text
+    templateSplit.push(template);
 
+    // create the template as a single string using js template literals
     template = templateSplit.map(t => typeof t === "string" ?
         t :
         "${model." + t.t + "}")
         .join("");
 
-    typ = typ.reduce((s, v) => s.indexOf(v) === -1 ? s.concat([v]) : s, []);
+    // get distinct modl properties
+    modelType = modelType.reduce((s, v) => s.indexOf(v) === -1 ? s.concat([v]) : s, []);
 
     return [
+        // build the model
         "type Model =",
         "    {",
-        `        ${typ.map(t => `${t}: string`).join("\n        ")}`,
+        `        ${modelType.map(t => `${t}: string`).join("\n        ")}`,
         "    }",
         "",
+        // build a function to create a html element
         "function create (model: Model) {",
         "    var el = document.createElement('div');",
         "    el.innerHTML = `" + template + "`",
@@ -54,6 +66,7 @@ function jsFile(lines) {
         "    return fc;",
         "}",
         "",
+        // build a function to append template to an existing html element
         "function append(el: HTMLElement, model: Model) {",
         "    var n = create(model);",
 
@@ -70,9 +83,10 @@ function jsFile(lines) {
         "    return el;",
         "}",
         "",
+        // build a function to remove the template from an existing element
         "function remove(el: HTMLElement) {",
         "    el.innerHTML = \"\";",
-        "    el.classList.remove(\"smt\");", 
+        "    el.classList.remove(\"smt\");", //TODO: there are more nodes which need to be handled (e.g. role, aria-describedby)
         "    el.classList.remove(\"mtl-background-color\");",
         "",
         "    return el;",
@@ -86,6 +100,7 @@ function jsFile(lines) {
     ].join("\n");
 }
 
+/** Build a promise which will generate css -> js file contents */
 function buildFile() {
     var reader = readline.createInterface({
         input: fs.createReadStream(path.resolve("./src/template.html"))
@@ -95,7 +110,7 @@ function buildFile() {
     reader.on("line", line => lines.push(line));
 
     return new Promise(resolve => {
-        reader.on("close", () => resolve(jsFile(lines)));
+        reader.on("close", () => resolve(buildJsFileContents(lines)));
     });
 }
 

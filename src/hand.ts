@@ -9,6 +9,7 @@ type BallElements =
 
 const _90 = Math.PI / 2;
 
+/**The hand of the clock which rotates to show the minute/hour */
 class Hand {
     private angle = _90;
     constructor(public elements: BallElements) {
