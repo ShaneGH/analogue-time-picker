@@ -54,18 +54,18 @@ class Clock {
         this.setMode(mode);
     }
 
-    _timeChangeCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
-    onTimeChanged(callback: ((hour: number, minute: number) => void | boolean)) {
+    _timeChangeCallbacks: ((hour: number, minute: number) => void)[] = [];
+    onTimeChanged(callback: ((hour: number, minute: number) => void)) {
         this._timeChangeCallbacks.push(callback);
     }
 
-    _okCallbacks: ((hour: number, minute: number) => void | boolean)[] = [];
-    onOk(callback: ((hour: number, minute: number) => void | boolean)) {
+    _okCallbacks: ((hour: number, minute: number) => void)[] = [];
+    onOk(callback: ((hour: number, minute: number) => void)) {
         this._okCallbacks.push(callback);
     }
 
-    _cancelCallbacks: (() => void | boolean)[] = [];
-    onCancel(callback: (() => void | boolean)) {
+    _cancelCallbacks: (() => void)[] = [];
+    onCancel(callback: (() => void)) {
         this._cancelCallbacks.push(callback);
     }
 
@@ -133,23 +133,15 @@ class Clock {
     }
 
     okClick() {
-        var cancelDispose = this._okCallbacks
+        this._okCallbacks
             .slice(0)
-            .map(f => f(this.hours.value.value, this.minutes.value.value))
-            .filter(r => r === false)
-            .length;
-
-        if (!cancelDispose) this.dispose();
+            .forEach(f => f(this.hours.value.value, this.minutes.value.value));
     }
 
     cancelClick() {
-        var cancelDispose = this._cancelCallbacks
+        this._cancelCallbacks
             .slice(0)
-            .map(f => f())
-            .filter(r => r === false)
-            .length;
-
-        if (!cancelDispose) this.dispose();
+            .forEach(f => f());
     }
 
     private _awaitingTimeChange: {hour: number, minute: number, instance: number} | null

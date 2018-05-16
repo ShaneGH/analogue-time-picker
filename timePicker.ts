@@ -8,13 +8,26 @@ import { defaultMode } from './src/time';
 // add css
 enable();
 
+/** The inputs for a new clock. */
 type Input =
-    {
-        element?: object, 
-        time?: {hour: object | null, minute: object | null} | Date,
-        closeOnSelect?: boolean,
-        mode?: object
-    }
+{
+    closeOnSelect?: boolean,
+
+    /** The element to create the clock inside. If not specified, a new div will be created */
+    element?: object, 
+
+    /** The initial time to show. If a Date is used, it's "getHours()" and "getMinutes()" functions will be called to get the time */
+    time?: {
+        /** The hour in 24hour format. 24 is not a valid hour, use 0 instead */
+        hour?: object, 
+        /** The minute */
+        minute?: object
+    } | Date,
+
+    /** Specify a 12 or 24 hour clock. If not specified, the user browser default will be used.
+     * If the clock is in 12h mode, the times used as inputs, in getTime, setTime and onOk will still be in 24h format  */
+    mode?: object
+}
 
 function parseInputs(input?: Input) {
 
@@ -78,6 +91,7 @@ function parseInputs(input?: Input) {
     };
 }
 
+/** Create a new time picker. The timepicker lives in the "element" return value which can then be appended to the DOM */
 function timePicker(input?: Input) {
     var _input = parseInputs(input);
     
