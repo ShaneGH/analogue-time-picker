@@ -1,4 +1,5 @@
 const path = require('path');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
     // "entry" in child config.js files
@@ -24,5 +25,14 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+
+    plugins: [
+        new WebpackShellPlugin({
+            onBuildStart: [
+                "node ./tools/buildHtmlTemplate.js",
+                "node ./tools/buildCss.js"
+            ]
+        })
+    ],
 };

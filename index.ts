@@ -78,7 +78,7 @@ function parseInputs(input?: Input) {
     };
 }
 
-function materialTimeLite(input?: Input) {
+function timePicker(input?: Input) {
     var _input = parseInputs(input);
     
     var context = new DiContext(_input.config, _input.element);
@@ -86,5 +86,5 @@ function materialTimeLite(input?: Input) {
 }
 
 export {
-    materialTimeLite
+    timePicker
 }

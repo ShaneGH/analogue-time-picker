@@ -13,8 +13,8 @@
     "build-html-template": "node ./tools/buildHtmlTemplate.js",
     "build-dev": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\"",
     "build-prod": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/production.config.js\"",
-    "build": "npm run build-css && npm run build-html-template && npm run build-dev && npm run build-prod",
-    "develop": "npm run build-html-template && npm run build-css && node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch"
+    "build": "npm run build-dev && npm run build-prod",
+    "develop": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch"
   },
   "keywords": [
     "ui",
@@ -36,6 +36,7 @@
     "typescript": "^2.8.3",
     "webpack": "^4.7.0",
     "webpack-cli": "^2.1.2",
-    "webpack-merge": "^4.1.2"
+    "webpack-merge": "^4.1.2",
+    "webpack-shell-plugin": "^0.5.0"
   }
 }

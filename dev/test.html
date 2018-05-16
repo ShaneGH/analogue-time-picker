@@ -1,16 +1,16 @@
 <html>
 
 <body>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-cyan.min.css">
+    <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-cyan.min.css"> -->
     <!-- <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script> -->
-    <script src="file:///C:/Dev/material-time-lite/material-time-lite.js"></script>
+    <script src="file:///C:/Dev/material-time-lite/dist/material-time-lite.min.js"></script>
 
 
     <div style="padding: 20px">
         <div>
-            <div id="test1" style="width: 900px; font-size: 45px">
+            <div id="test1" style="width: 300px; font-size: 15px">
             </div>
             <div id="time"></div>
             <div id="time2"></div>
@@ -21,18 +21,21 @@
     </div>
     <script>
         (function (test1) {
-            var x = materialTimeLite({
-                element: test1, 
-                time: {hour: 22, minute: 00},
-                closeOnSelect: false,
-                mode: 24
-            });
 
-            var i = 0;
-            x.onTimeChanged((h, m) => document.getElementById("time").innerHTML = `${++i}: ${`0${h}`.slice(-2)}:${`0${m}`.slice(-2)}`);
+            setTimeout(() => {                
+                var x = timePicker({
+                    element: test1, 
+                    time: {hour: 22, minute: 00},
+                    closeOnSelect: false,
+                    mode: 24
+                });
 
-            document.getElementById("h12").addEventListener("click", () => x.set12h());
-            document.getElementById("h24").addEventListener("click", () => x.set24h());
+                var i = 0;
+                x.onTimeChanged((h, m) => document.getElementById("time").innerHTML = `${++i}: ${`0${h}`.slice(-2)}:${`0${m}`.slice(-2)}`);
+
+                document.getElementById("h12").addEventListener("click", () => x.set12h());
+                document.getElementById("h24").addEventListener("click", () => x.set24h());
+            }, 200);
         }(document.getElementById("test1")));
     </script>
 </body>
