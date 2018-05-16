@@ -30,7 +30,14 @@ function registerKeyEvent(element: EventElement, event: string, fun: (e: Keyboar
     return registerEvent(element, event, fun);
 }
 
+/** Add an event listener to an element and return a function which will dispose of the listener */
+function registerTouchEvent(element: EventElement, event: string, fun: (e: TouchEvent) => void) {
+    return registerEvent(element, event, fun);
+}
+
 export {
+    registerEvent,
     registerKeyEvent,
-    registerMouseEvent
+    registerMouseEvent,
+    registerTouchEvent
 }

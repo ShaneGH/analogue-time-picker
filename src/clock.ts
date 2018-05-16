@@ -2,7 +2,8 @@ import { Hand } from './hand';
 import { Hours } from './hours';
 import { Minutes } from './minutes';
 import { MouseTracker } from './mouseTracker';
-import { registerMouseEvent } from './utils';
+import { registerMouseEvent, registerTouchEvent } from './utils';
+import { GestureTracker } from './gestureTracker';
 
 type TimeInput =
     {
@@ -23,7 +24,8 @@ class Clock {
     cancel: HTMLElement
     clock: HTMLElement
 
-    _createTracker: () => void
+    _createMouseTracker: () => void
+    _createTouchTracker: () => void
     _okPropagation: () => void
     _cancelPropagation: () => void
     _ok: () => void
@@ -50,7 +52,9 @@ class Clock {
         this.showHours();
 
         // register dom events on clock face, ok and cancel buttons
-        this._createTracker = registerMouseEvent(this.clock, "mousedown", e => this.createTracker(e));
+        this._createMouseTracker = registerMouseEvent(this.clock, "mousedown", e => this.createMouseTracker(e));
+        this._createTouchTracker = registerTouchEvent(this.clock, "touchstart", e => this.createTouchTracker(e));
+
         this._okPropagation = registerMouseEvent(this.ok, "mousedown", e => e.stopPropagation());
         this._cancelPropagation = registerMouseEvent(this.cancel, "mousedown", e => e.stopPropagation());
         this._ok = registerMouseEvent(this.ok, "click", () => this.okClick());
@@ -202,22 +206,25 @@ class Clock {
         };
     }
 
-    mouseTracker: MouseTracker | null = null;
+    mouseTracker: GestureTracker<MouseEvent> | null = null;
     /** Create an object to track the mouse over the entire screen */
-    createTracker(e: MouseEvent) {
+    createMouseTracker(e: MouseEvent) {
+        // touch takes precedence of mouse
+        if (this.touchTracker) return;
+
         // use this as an opportunity to see if the clock html element has moved
         this.hours.refreshOffsets();
         this.minutes.refreshOffsets();
 
         // Set the current hours or minutes
-        this.setTimeFromPosition(e);
+        this.setTimeFromPosition(e.clientX, e.clientY);
 
         // create a new tracker
         if (this.mouseTracker) return;
-        var mouseTracker = this.mouseTracker = new MouseTracker();
+        var mouseTracker = this.mouseTracker = new GestureTracker<MouseEvent>(["mousemove"], ["mouseup"]);
 
         // dispose when mouse released
-        mouseTracker.onMouseUp(() => {
+        mouseTracker.onFinished(() => {
             mouseTracker.dispose();
             if (mouseTracker === this.mouseTracker) this.mouseTracker = null;
 
@@ -226,13 +233,57 @@ class Clock {
                 this.minutes.goNext();
         });
 
-        mouseTracker.onMouseMove(e => this.setTimeFromPosition(e));
+        mouseTracker.onMove(e => this.setTimeFromPosition(e.clientX, e.clientY));
     }
 
-    private setTimeFromPosition(e: MouseEvent) {
+    touchTracker: GestureTracker<TouchEvent> | null = null;
+    /** Create an object to track the mouse over the entire screen */
+    createTouchTracker(e: TouchEvent) {
+        // touch takes precedence of mouse
+        if (this.mouseTracker) {
+            this.mouseTracker.dispose();
+            this.mouseTracker = null;
+        }
+        
+        // stop scrolling
+        e.preventDefault();
+
+        // use this as an opportunity to see if the clock html element has moved
+        this.hours.refreshOffsets();
+        this.minutes.refreshOffsets();
+
+        // Set the current hours or minutes
+        if (e.touches.length) {
+            this.setTimeFromPosition(e.touches[0].clientX, e.touches[0].clientY);
+        }
+
+        // create a new tracker
+        if (this.touchTracker) return;
+        var touchTracker = this.touchTracker = new GestureTracker<TouchEvent>(["touchmove"], ["touchend", "touchcancel"]);
+
+        // dispose when mouse released
+        touchTracker.onFinished(() => {
+            touchTracker.dispose();
+            if (touchTracker === this.touchTracker) this.touchTracker = null;
+
+            this.hours.getFocused() ?
+                this.hours.goNext() :
+                this.minutes.goNext();
+        });
+
+        touchTracker.onMove(e => {
+            // stop scrolling
+            e.preventDefault();
+            if (e.touches.length) {
+                this.setTimeFromPosition(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        });
+    }
+
+    private setTimeFromPosition(clientX: number, clientY: number) {
         this.hours.getFocused() ?
-            this.hours.setFromPosition(e.clientX, e.clientY) :
-            this.minutes.setFromPosition(e.clientX, e.clientY);
+            this.hours.setFromPosition(clientX, clientY) :
+            this.minutes.setFromPosition(clientX, clientY);
     }
     
     dispose() {
@@ -246,7 +297,8 @@ class Clock {
         this._okCallbacks.length = 0;
         this._cancelCallbacks.length = 0;
         
-        this._createTracker();
+        this._createMouseTracker();
+        this._createTouchTracker();
         this._okPropagation();
         this._cancelPropagation();
         this._ok();
