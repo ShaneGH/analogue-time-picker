@@ -1,7 +1,6 @@
 # Auto gen files
 testBin/
-material-time-lite.min.js
-material-time-lite.js
+dist/
 
 # Logs
 logs
