@@ -12,6 +12,12 @@ function offset(el: HTMLElement | null, prop: "offsetLeft" | "offsetTop") {
     return offset;
 }
 
+/** Remove the child of an element if the element contains this child */
+function removeChildSafe(parent: HTMLElement, child: HTMLElement) {
+    if (child.parentElement === parent) parent.removeChild(child);
+}
+
+/** Track the number of modals on screen, and the initial overflow of the body element */
 var modalInstance: {overflowX: string | null, overflowY: string | null, instance: number} | null = null;
 
 /** Render the given element as a modal, and return a function to close the modal */
@@ -22,6 +28,7 @@ function createModal(content: HTMLElement) {
     modal.appendChild(content);
     document.body.appendChild(modal);
 
+    // cache the body overflow
     if (!modalInstance) {
         modalInstance = {
             overflowX: document.body.style.overflowX,
@@ -35,6 +42,7 @@ function createModal(content: HTMLElement) {
         modalInstance.instance ++;
     }
     
+    // register close events
     var onClickOrEsc: (() => void)[] = [];
     var disposeOnClick = registerEvent(modal, "click", (e) => {
         if (e.target !== modal) return;
@@ -50,6 +58,7 @@ function createModal(content: HTMLElement) {
     return {
         /** Add an event lisener to the mask being clicked or the escape key being pressed */
         onClickOrEsc: (f: () => void) => onClickOrEsc.push(f),
+        /** Remove the modal from the screen */
         dispose: () => {
             if (done) return;
             done = true;
@@ -58,8 +67,10 @@ function createModal(content: HTMLElement) {
             disposeOnEsc();
             onClickOrEsc.length = 0;
 
-            document.body.removeChild(modal);
+            removeChildSafe(modal, content);
+            removeChildSafe(document.body, modal);
 
+            // reset the body overflow if this is the last modal
             if (modalInstance) {
                 if (modalInstance.instance > 1) {
                     modalInstance.instance--;
@@ -75,5 +86,6 @@ function createModal(content: HTMLElement) {
 
 export {
     createModal,
-    offset
+    offset,
+    removeChildSafe
 }

@@ -1,4 +1,5 @@
 import { create } from './template';
+import { removeChildSafe } from './html';
 
 var getId = (function() {
     var i = Math.floor(Math.random() * 100000);
@@ -27,7 +28,7 @@ function getPxValue(width: string) {
 
     document.body.appendChild(test);
     var w = test.offsetWidth;
-    document.body.removeChild(test);
+    removeChildSafe(document.body, test);
 
     return w;
 }

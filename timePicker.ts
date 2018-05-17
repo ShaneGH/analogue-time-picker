@@ -1,12 +1,12 @@
 import { TimeInput } from './src/clock';
-import { enable } from './src/css';
+import { enable as enableCss } from './src/css';
 import { DiContext } from './src/di';
 import { publicClock } from './src/publicClock';
 import { defaultMode } from './src/time';
 import { createModal } from "./src/html"
 
-// add css
-enable();
+// add css to page
+enableCss();
 
 /** Common inputs for all time picker types */
 type CommonInputs =
@@ -107,25 +107,35 @@ function parseInputs(input?: TimePickerInput) {
     };
 }
 
-/** Create a new time picker and render as a modal */
+function create(input?: TimePickerInput) {
+    var _input = parseInputs(input);
+    
+    var context = new DiContext(_input.config, _input.element);
+    return {
+        timePicker: publicClock(context),
+        context
+    };
+}
+
+/** Create a new time picker and render in a modal */
 function timePickerModal(input?: CommonInputs) {
     if (input && (<TimePickerInput>input).element) {
         throw new Error("You cannot specify a container element when rendering in a modal.");
     }
 
-    var p = timePicker(input);
-    var disposeModal = createModal(p.element);
-    disposeModal.onClickOrEsc(() => p.cancel());
-    p.onDispose(disposeModal.dispose);
-    return p;
+    var p = create(input);
+    var modal = createModal(p.timePicker.element);
+    modal.onClickOrEsc(() => p.timePicker.cancel());
+    p.timePicker.onDispose(modal.dispose);
+
+    p.context.getInnerElement<HTMLInputElement>(".mtl-hour").focus();
+
+    return p.timePicker;
 }
 
 /** Create a new time picker. The timepicker lives in the "element" return value which can then be appended to the DOM */
 function timePicker(input?: TimePickerInput) {
-    var _input = parseInputs(input);
-    
-    var context = new DiContext(_input.config, _input.element);
-    return publicClock(context);
+    return create(input).timePicker;
 }
 
 export {
