@@ -1,4 +1,4 @@
-import { offset } from "../src/html";
+import { offset } from "../src/utils/html";
 
 describe("html.ts", function() {
     describe("Test offset", function() {

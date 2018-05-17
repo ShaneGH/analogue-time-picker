@@ -1,9 +1,8 @@
+import { registerMouseEvent, registerTouchEvent } from '../utils/utils';
+import { GestureTracker } from './gestureTracker';
 import { Hand } from './hand';
 import { Hours } from './hours';
 import { Minutes } from './minutes';
-import { MouseTracker } from './mouseTracker';
-import { registerMouseEvent, registerTouchEvent } from './utils';
-import { GestureTracker } from './gestureTracker';
 
 type TimeInput =
     {

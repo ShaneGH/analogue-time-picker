@@ -1,5 +1,5 @@
 import { DiContext } from '../../src/di';
-import { Clock as PublicClock, publicClock } from '../../src/publicClock';
+import { Clock as PublicClock, publicClock } from '../../src/init/publicClock';
 
 describe("get_set_tests.ts", () => {
 

@@ -44,7 +44,8 @@ function createModal(content: HTMLElement) {
     
     // register close events
     var onClickOrEsc: (() => void)[] = [];
-    var disposeOnClick = registerEvent(modal, "click", (e) => {
+    // using mouse down as click might fire on mouse up, if mouse down was not on this element
+    var disposeOnMouseDown = registerEvent(modal, "mousedown", (e) => {
         if (e.target !== modal) return;
         onClickOrEsc.slice(0).forEach(f => f());
     });
@@ -63,7 +64,7 @@ function createModal(content: HTMLElement) {
             if (done) return;
             done = true;
 
-            disposeOnClick();
+            disposeOnMouseDown();
             disposeOnEsc();
             onClickOrEsc.length = 0;
 

@@ -10,7 +10,7 @@ generateHtmlFile()
 
         // write file
         fs.writeFile(
-            path.resolve(__dirname, "../src/template.ts"),
+            path.resolve(__dirname, "../src/assets/template.ts"),
             js,
             err => err ? reject(err) : resolve());
     }))

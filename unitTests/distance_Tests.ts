@@ -1,4 +1,4 @@
-import { getAMPM, AmPm } from "../src/distance";
+import { getAMPM, AmPm } from "../src/utils/distance";
 
 describe("distance.ts", function() {
     describe("Test getAMPM", function() {

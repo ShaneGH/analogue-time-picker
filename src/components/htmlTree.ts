@@ -1,5 +1,5 @@
-import { create } from './template';
-import { removeChildSafe } from './html';
+import { create } from '../assets/template';
+import { removeChildSafe } from '../utils/html';
 
 var getId = (function() {
     var i = Math.floor(Math.random() * 100000);

@@ -1,4 +1,4 @@
-import { registerEvent } from './utils';
+import { registerEvent } from '../utils/utils';
 
 /** Track the mouse position over the entire screen and report back */
 class GestureTracker<T extends UIEvent> {

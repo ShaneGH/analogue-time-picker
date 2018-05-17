@@ -1,5 +1,5 @@
 
-import { getAngle, getAngleDelta } from '../src/angle';
+import { getAngle, getAngleDelta } from '../src/utils/angle';
 
 describe("angle.ts", function() {
     describe("Test getAngle", function() {

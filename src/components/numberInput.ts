@@ -1,5 +1,5 @@
-import { keyPressDetails } from './numberKeyPressInterpreters';
-import { registerKeyEvent } from './utils';
+import { keyPressDetails } from '../utils/numberKeyPressInterpreters';
+import { registerKeyEvent } from '../utils/utils';
 
 /** Component to manage the number number textbox (e.g. the hour/minute) */
 abstract class NumberInput {

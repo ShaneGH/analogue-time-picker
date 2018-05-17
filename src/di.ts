@@ -1,10 +1,10 @@
-import { Clock } from './clock';
-import { Hand } from './hand';
-import { Hours } from './hours';
-import { HtmlTree } from './htmlTree';
-import { Minutes } from './minutes';
-import { HourInput } from './hourInput';
-import { MinuteInput } from './minuteInput';
+import { Clock } from './components/clock';
+import { Hand } from './components/hand';
+import { Hours } from './components/hours';
+import { HtmlTree } from './components/htmlTree';
+import { Minutes } from './components/minutes';
+import { HourInput } from './components/hourInput';
+import { MinuteInput } from './components/minuteInput';
 
 type DIResult<T> =
     {

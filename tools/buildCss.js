@@ -10,7 +10,7 @@ generateCssFile()
 
         // write file
         fs.writeFile(
-            path.resolve(__dirname, "../src/css.ts"),
+            path.resolve(__dirname, "../src/assets/style.ts"),
             css,
             err => err ? reject(err) : resolve());
     }))

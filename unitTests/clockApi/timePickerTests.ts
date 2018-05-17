@@ -1,8 +1,5 @@
-import { getHours, getMinutes } from "../../src/time";
-import { AmPm } from "../../src/distance";
-import { Clock, publicClock } from "../../src/publicClock";
-import { DiContext } from "../../src/di";
-import { timePicker, TimePickerInput } from "../../timePicker";
+import { Clock } from '../../src/init/publicClock';
+import { create, TimePickerData } from '../../src/init/timePicker';
 
 function expectError(f: () => void) {
     var ok = true;
@@ -17,7 +14,7 @@ function expectError(f: () => void) {
 
 describe("timePicker_Tests.ts", () => {
 
-    var validInput: TimePickerInput
+    var validInput: TimePickerData
     beforeEach(() => {
         validInput = {
             element: document.createElement("div"),
@@ -33,7 +30,7 @@ describe("timePicker_Tests.ts", () => {
 
         // arrange
         // act
-        var tp = timePicker(validInput);
+        var tp = create(validInput);
         
         // assert
         tp.getTime().hour.should.eql(12);
@@ -49,7 +46,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.element = undefined;
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.element.tagName.should.eql("DIV");
@@ -62,7 +59,7 @@ describe("timePicker_Tests.ts", () => {
 
                 // act
                 // assert
-                expectError(() => timePicker(validInput));
+                expectError(() => create(validInput));
             });
         });
 
@@ -74,7 +71,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).hour = undefined;
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(0);
@@ -87,7 +84,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).hour = "22";
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(22);
@@ -101,7 +98,7 @@ describe("timePicker_Tests.ts", () => {
 
                 // act
                 // assert
-                expectError(() => timePicker(validInput));
+                expectError(() => create(validInput));
             });
 
             it("throws error with hour too large", function() {
@@ -111,7 +108,7 @@ describe("timePicker_Tests.ts", () => {
 
                 // act
                 // assert
-                expectError(() => timePicker(validInput));
+                expectError(() => create(validInput));
             });
         });
 
@@ -123,7 +120,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).minute = undefined;
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -136,7 +133,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).minute = "22";
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -150,7 +147,7 @@ describe("timePicker_Tests.ts", () => {
 
                 // act
                 // assert
-                expectError(() => timePicker(validInput));
+                expectError(() => create(validInput));
             });
 
             it("throws error with minute too large", function() {
@@ -160,7 +157,7 @@ describe("timePicker_Tests.ts", () => {
 
                 // act
                 // assert
-                expectError(() => timePicker(validInput));
+                expectError(() => create(validInput));
             });
         });
 
@@ -172,7 +169,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.mode = 12 as any;
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -185,7 +182,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.mode = "24" as any;
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -198,7 +195,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.mode = "12" as any;
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -212,7 +209,7 @@ describe("timePicker_Tests.ts", () => {
 
                 // act
                 // assert
-                expectError(() => timePicker(validInput));
+                expectError(() => create(validInput));
             });
         });
 
@@ -224,7 +221,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.time = undefined;
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(0);
@@ -237,7 +234,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.time = new Date(2000, 1, 1, 13, 13);
 
                 // act
-                var tp = timePicker(validInput);
+                var tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(13);
@@ -249,7 +246,7 @@ describe("timePicker_Tests.ts", () => {
 
             var clock: Clock
             beforeEach(() => {
-                clock = timePicker(validInput)
+                clock = create(validInput)
             });
 
             it("sets time with valid inputs", function() {

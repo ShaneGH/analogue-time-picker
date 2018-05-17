@@ -1,8 +1,5 @@
-import { getHours, getMinutes } from "../../src/time";
-import { AmPm } from "../../src/distance";
-import { Clock as PublicClock, publicClock } from "../../src/publicClock";
-import { DiContext } from "../../src/di";
-import { Clock } from "../../src/clock";
+import { DiContext } from '../../src/di';
+import { Clock as PublicClock, publicClock } from '../../src/init/publicClock';
 
 describe("12hr_Tests.ts", () => {
 

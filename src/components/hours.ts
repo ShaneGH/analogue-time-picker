@@ -1,9 +1,9 @@
-import { getAngle } from './angle';
-import { AmPm, getAMPM } from './distance';
-import { Numbers, NumbersElements, Position } from './numbers';
-import { convert12hTo24h, convert24hTo12h, getHours } from './time';
-import { registerMouseEvent } from './utils';
+import { getAngle } from '../utils/angle';
+import { AmPm, getAMPM } from '../utils/distance';
+import { convert12hTo24h, convert24hTo12h, getHours } from '../utils/time';
+import { registerMouseEvent } from '../utils/utils';
 import { HourInput } from './hourInput';
+import { Numbers, NumbersElements, Position } from './numbers';
 
 const _90 = Math.PI / 2;
 const _30 = Math.PI / 6;
@@ -37,6 +37,7 @@ class Hours extends Numbers {
 
         this.showHideAmPm();
         this.onValueChanged(() => this.highlightAmPm());
+        this.highlightAmPm();
     }
 
     /** Returns a label. The label is for accessability/screen reading purposes */

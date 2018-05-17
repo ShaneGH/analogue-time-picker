@@ -46,7 +46,7 @@ function buildJsFileContent(lines) {
 /** Build a promise which will generate css -> js file contents */
 function buildFile() {
     var reader = readline.createInterface({
-        input: fs.createReadStream(path.resolve("./src/clock.css"))
+        input: fs.createReadStream(path.resolve("./src/assets/style.css"))
     });
     
     var lines = [];

@@ -1,4 +1,4 @@
-import { getAngleDelta } from './angle';
+import { getAngleDelta } from '../utils/angle';
 import { Position } from './numbers';
 
 type BallElements =

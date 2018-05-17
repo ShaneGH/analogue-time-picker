@@ -1,5 +1,5 @@
-import { getHours, getMinutes, convert24hTo12h, convert12hTo24h } from "../src/time";
-import { AmPm } from "../src/distance";
+import { AmPm } from '../src/utils/distance';
+import { convert12hTo24h, convert24hTo12h, getHours, getMinutes } from '../src/utils/time';
 
 describe("time.ts", () => {
     describe("Test getHours", function() {

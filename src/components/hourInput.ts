@@ -1,6 +1,6 @@
-import { NumberInput } from "./numberInput";
-import { convert12hTo24h, convert24hTo12h } from "./time";
-import { AmPm } from "./distance";
+import { AmPm } from '../utils/distance';
+import { convert12hTo24h, convert24hTo12h } from '../utils/time';
+import { NumberInput } from './numberInput';
 
 /** An input to manage hours */
 class HourInput extends NumberInput {
