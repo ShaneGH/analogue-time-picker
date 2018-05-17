@@ -50,5 +50,9 @@ var page = `<html>
   </body>
 </html>`;
 
+var testBin = path.resolve(__dirname, "../testBin");
+if (!fs.existsSync(testBin)){
+  fs.mkdirSync(testBin);
+}
 
-fs.writeFileSync(path.resolve(__dirname, "../testBin/unitTest.html"), page);
+fs.writeFileSync(path.resolve(testBin, "unitTest.html"), page);

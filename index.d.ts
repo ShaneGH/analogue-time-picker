@@ -1,9 +1,7 @@
-/** The inputs for a new clock. */
-export type Input =
-{
-    /** The element to create the clock inside. If not specified, a new div will be created */
-    element?: HTMLElement, 
 
+/** Common inputs for all time picker types */
+export type CommonInputs =
+{
     /** The initial time to show. If a Date is used, it's "getHours()" and "getMinutes()" functions will be called to get the time */
     time?: {
         /** The hour in 24hour format. 24 is not a valid hour, use 0 instead */
@@ -18,8 +16,15 @@ export type Input =
 
     /** The width of the component. Default 300px. If set, will also ajust the font-size.
      * If a % value is used, the control will grow to fit parent element size. In this case, font-size must also be set on the parent.
-     * If an em value is used, the font-size will be un altered. This may have some unexpected outcomes. */
+     * If an em value is used, the font-size will be un-altered. This may have some unexpected outcomes. */
     width?: string | number
+}
+
+/** The inputs for a new clock. */
+export type TimePickerInput = CommonInputs &
+{
+    /** The element to create the clock inside. If not specified, a new div will be created */
+    element?: HTMLElement
 }
 
 /** The clock returned to the calling project. */
@@ -72,5 +77,8 @@ export type Clock =
         dispose: () => void
     }
 
-/** Create a new time picker. The timepicker lives in the "element" return value which can then be appended to the DOM */
-export function timePicker(input?: Input) : Clock
+    /** Create a new time picker. The timepicker is a HTML element which is in the "element" property of the return value */
+    export function timePicker(input?: TimePickerInput) : Clock
+
+    /** Create a new time picker and render in a modal */
+    export function timePickerModal(input?: CommonInputs) : Clock

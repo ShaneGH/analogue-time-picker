@@ -13,7 +13,7 @@ describe("html.ts", function() {
         });
         
         afterEach(() => {
-            // document.body.removeChild(el);
+            document.body.removeChild(el);
         });
 
         it("gets offset from padding", function() {

@@ -17,6 +17,9 @@ function buildHtmlModel() {
 }
 
 function getPxValue(width: string) {
+    // if value has no units, interpret as px
+    if (/^\s*\d+(\.\d*)?\s*$/.test(width)) width += "px";
+    
     if (/px\s*$/.test(width)) return parseFloat(width);
 
     var test = document.createElement("div");

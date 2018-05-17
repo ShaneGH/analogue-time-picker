@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clear-old-tests": "node \"./unitTests/deleteTestBin.js\"",
-    "build-tests": "node \"./unitTests/buildTestPage.js\" && node \"./node_modules/typescript/lib/tsc.js\" -p \"./test.tsconfig.json\"",
+    "build-tests": "node \"./node_modules/typescript/lib/tsc.js\" -p \"./test.tsconfig.json\" && node \"./unitTests/buildTestPage.js\"",
     "mocha-test": "chrome \"./testBin/unitTest.html\"",
     "test": "npm run clear-old-tests && npm run build-tests && npm run mocha-test",
     "build-css": "node ./tools/buildCss.js",

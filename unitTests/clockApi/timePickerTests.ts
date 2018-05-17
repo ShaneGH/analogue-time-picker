@@ -2,7 +2,7 @@ import { getHours, getMinutes } from "../../src/time";
 import { AmPm } from "../../src/distance";
 import { Clock, publicClock } from "../../src/publicClock";
 import { DiContext } from "../../src/di";
-import { timePicker, Input } from "../../timePicker";
+import { timePicker, TimePickerInput } from "../../timePicker";
 
 function expectError(f: () => void) {
     var ok = true;
@@ -17,7 +17,7 @@ function expectError(f: () => void) {
 
 describe("timePicker_Tests.ts", () => {
 
-    var validInput: Input
+    var validInput: TimePickerInput
     beforeEach(() => {
         validInput = {
             element: document.createElement("div"),
