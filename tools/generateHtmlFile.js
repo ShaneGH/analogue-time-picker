@@ -66,36 +66,8 @@ function buildJsFileContents(lines) {
         "    return fc;",
         "}",
         "",
-        // build a function to append template to an existing html element
-        "function append(el: HTMLElement, model: Model) {",
-        "    var n = create(model);",
-
-        "    el.innerHTML = n.innerHTML;",
-        "    n.innerHTML = \"\";",
-        "    for (var i = 0; i < n.attributes.length; i++) {",  
-        "        if (n.attributes[i].name !== \"class\") el.setAttribute(n.attributes[i].name, n.attributes[i].value);", 
-        "    }", 
-        "", 
-        "    for (var i = 0; i < n.classList.length; i++) {",  
-        "        el.classList.add(n.classList[i]);", 
-        "    }",
-        "",
-        "    return el;",
-        "}",
-        "",
-        // build a function to remove the template from an existing element
-        "function remove(el: HTMLElement) {",
-        "    el.innerHTML = \"\";",
-        "    el.classList.remove(\"smt\");", //TODO: there are more nodes which need to be handled (e.g. role, aria-describedby)
-        "    el.classList.remove(\"mtl-background-color\");",
-        "",
-        "    return el;",
-        "}",
-        "",
         "export { ",
-        "    append,",
-        "    create,",
-        "    remove",
+        "    create",
         "}"
     ].join("\n");
 }

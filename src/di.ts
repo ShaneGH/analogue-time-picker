@@ -23,7 +23,8 @@ type Config =
             hour: number
             minute: number
         },
-        mode: 12 | 24
+        mode: 12 | 24,
+        width: string
     }
 
 function toArray<T extends Element>(xs: NodeListOf<Element>): T[] {
@@ -36,7 +37,7 @@ class DiContext {
     htmlTree: HtmlTree;
 
     constructor(public config: Config, rootHtmlElement?: HTMLElement) {
-        this.htmlTree = new HtmlTree(rootHtmlElement);
+        this.htmlTree = new HtmlTree(config.width, rootHtmlElement);
         this.disposables.push(this.htmlTree);
     }
 

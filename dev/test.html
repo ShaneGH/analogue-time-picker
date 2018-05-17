@@ -10,7 +10,7 @@
 
 
     <div style="padding: 20px">
-        <div id="test1" style="width: 300px; font-size: 15px">
+        <div id="test1">
         </div>
         <div id="time"></div>
         <div id="time2"></div>
@@ -24,7 +24,8 @@
             var x = timePicker({
                 element: test1, 
                 time: {hour: 22, minute: 00},
-                mode: 24
+                mode: 24,
+                width: "250px"
             });
 
             var i = 0;

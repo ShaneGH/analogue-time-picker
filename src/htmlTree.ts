@@ -1,4 +1,4 @@
-import { append, create, remove } from './template';
+import { create } from './template';
 
 var getId = (function() {
     var i = Math.floor(Math.random() * 100000);
@@ -8,33 +8,63 @@ var getId = (function() {
 function buildHtmlModel() {
     var id = getId();
     return {
-        hour: `hour-${id}`,
-        minute: `minute-${id}`,
-        am: `am-${id}`,
-        pm: `pm-${id}`,
-        title: `title-${id}`
+        hour: `${id}-hour`,
+        minute: `${id}-minute`,
+        am: `${id}-am`,
+        pm: `${id}-pm`,
+        title: `${id}-title`
     };
+}
+
+function getPxValue(width: string) {
+    if (/px\s*$/.test(width)) return parseFloat(width);
+
+    var test = document.createElement("div");
+    test.style.width = width;
+
+    document.body.appendChild(test);
+    var w = test.offsetWidth;
+    document.body.removeChild(test);
+
+    return w;
+}
+
+const fontMultiplier = 4 / 75;
+function getFontSize(width: string) {
+    // don't set font size for em or %
+    if (/(em|%)\s*$/.test(width)) return null;
+
+    var widthPx = getPxValue(width);
+    if (isNaN(widthPx)) throw new Error(`Invalid width value: ${width}`);
+    if (widthPx <= 0) console.warn(`Width value "${width}" came to ${widthPx}px`);
+
+    return widthPx * fontMultiplier;
 }
 
 /** Creates or uses existing element and populates it with the html template */
 class HtmlTree {
-    dispose: () => void
     element: HTMLElement;
 
-    constructor(rootHtmlElement?: HTMLElement) {
-        var id = getId();
-        if (!rootHtmlElement) {
-            var el = rootHtmlElement = create(buildHtmlModel());
-
-            this.dispose = () => el.parentElement ? 
-                el.parentElement.removeChild(el) : 
-                null;
-        } else {
-            var el = rootHtmlElement = append(rootHtmlElement, buildHtmlModel());
-            this.dispose = () => remove(el);
+    constructor(width: string, rootHtmlElement?: HTMLElement) {
+        this.element = create(buildHtmlModel());
+        if (rootHtmlElement) {
+            rootHtmlElement.innerHTML = "";
+            rootHtmlElement.appendChild(this.element);
         }
+        
+        this.setWidth(width);
+    }
 
-        this.element = rootHtmlElement;
+    setWidth(widthValue: string) {
+        this.element.style.width = widthValue;
+        var fs = getFontSize(widthValue);
+        this.element.style.fontSize = fs != null ? `${fs}px` : null;
+    }
+
+    dispose() {
+        if (this.element.parentElement) {
+            this.element.parentElement.removeChild(this.element);
+        }
     }
 }
 

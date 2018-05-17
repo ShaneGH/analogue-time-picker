@@ -1,8 +1,8 @@
-import { getHours, getMinutes } from "../src/time";
-import { AmPm } from "../src/distance";
-import { Clock as PublicClock, publicClock } from "../src/publicClock";
-import { DiContext } from "../src/di";
-import { Clock } from "../src/clock";
+import { getHours, getMinutes } from "../../src/time";
+import { AmPm } from "../../src/distance";
+import { Clock as PublicClock, publicClock } from "../../src/publicClock";
+import { DiContext } from "../../src/di";
+import { Clock } from "../../src/clock";
 
 describe("12hr_Tests.ts", () => {
 
@@ -13,7 +13,8 @@ describe("12hr_Tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            mode: 12
+            mode: 12,
+            width: "100%"
         }));
 
         document.body.appendChild(clock.element);

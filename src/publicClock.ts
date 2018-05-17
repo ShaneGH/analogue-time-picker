@@ -6,42 +6,45 @@ type Clock =
         /** The element which contains the clock */
         element: HTMLElement
 
+        /** Set the width of the time picker. The height is proportional to the width.  */
+        setWidth: (width: object) => void
+
         /** Return the current time */
-        getTime: () => {hour: number, minute: number},
+        getTime: () => {hour: number, minute: number}
         
         /** Set the current time programmatically */
-        setTime: (hours?: object, minutes?: object) => void,
+        setTime: (hours?: object, minutes?: object) => void
         
         /** Set the clock to 12 hour mode. 
          * If the clock is in 12h mode, the times used in getTime, setTime and onOk will still be in 24h format */
-        set12h: () => void,
+        set12h: () => void
         
         /** Set the clock to 24 hour mode */
-        set24h: () => void,
+        set24h: () => void
         
         /** Show the hour hand */
-        showHours: () => void,
+        showHours: () => void
         
         /** Show the minute hand */
-        showMinutes: () => void,
+        showMinutes: () => void
         
         /** Dispose of the clock and invoke any "onOk" event handlers */
-        ok: () => void,
+        ok: () => void
         
         /** Dispose of the clock and invoke any "onCancel" event handlers */
-        cancel: () => void,
+        cancel: () => void
         
         /** Add an event handler for when the time changes */
-        onTimeChanged: (callback: object) => void,
+        onTimeChanged: (callback: object) => void
         
         /** Add an event handler for when the set time operation completes successfully */
-        onOk: (callback: object) => void,
+        onOk: (callback: object) => void
         
         /** Add an event handler for when the set time operation is canceled */
-        onCancel: (callback: object) => void,
+        onCancel: (callback: object) => void
         
         /** Add an event handler for when the clock is disposed of */
-        onDispose: (callback: object) => void,
+        onDispose: (callback: object) => void
         
         /** Manually dispose of the clock */
         dispose: () => void
@@ -68,6 +71,12 @@ function publicClock(context: DiContext): Clock {
 
     return {
         element,
+        setWidth: (width: object) => {
+            context.htmlTree.setWidth(
+                width == null || <any>width === "" ?
+                    "100%" :
+                    typeof width === "number" ? `${width}px` : width.toString());
+        },
         getTime: () => clock.getTime(),
         setTime: (hours?: object, minutes?: object) => {
             var h = parseInt(hours as any);

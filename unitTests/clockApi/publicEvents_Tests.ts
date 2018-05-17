@@ -10,7 +10,8 @@ describe("publicEvents_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            mode: 24
+            mode: 24,
+            width: "100%"
         }));
 
         document.body.appendChild(clock.element);

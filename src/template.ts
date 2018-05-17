@@ -17,31 +17,6 @@ function create (model: Model) {
     return fc;
 }
 
-function append(el: HTMLElement, model: Model) {
-    var n = create(model);
-    el.innerHTML = n.innerHTML;
-    n.innerHTML = "";
-    for (var i = 0; i < n.attributes.length; i++) {
-        if (n.attributes[i].name !== "class") el.setAttribute(n.attributes[i].name, n.attributes[i].value);
-    }
-
-    for (var i = 0; i < n.classList.length; i++) {
-        el.classList.add(n.classList[i]);
-    }
-
-    return el;
-}
-
-function remove(el: HTMLElement) {
-    el.innerHTML = "";
-    el.classList.remove("smt");
-    el.classList.remove("mtl-background-color");
-
-    return el;
-}
-
 export { 
-    append,
-    create,
-    remove
+    create
 }

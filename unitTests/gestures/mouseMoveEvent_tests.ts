@@ -10,7 +10,8 @@ describe("mouseMoveEvent_tests.ts", () => {
                 hour: 0,
                 minute: 0
             },
-            mode: 24
+            mode: 24,
+            width: "100%"
         }));
 
         clock.element.style.width = "600px";
