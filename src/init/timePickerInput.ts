@@ -4,6 +4,14 @@ import { CommonData, InitializeTimeData, parseMode, parseTimeInput, parseTimeVal
 import { create as createModal } from './timePickerModal';
 import { TimePicker } from './publicTimePicker';
 
+/** The results of a timepicker input */
+type TimePickerInput =
+    {
+        getTime: () => {hour: number, minute: number},
+        setTime: (hour: object, minute: object, force?: boolean) => void,
+        dispose:  () => void,
+    }
+
 /** The inputs for a new time picker, which launches when an input receives focus */
 type TimePickerInputData = CommonData & InitializeTimeData &
     {
@@ -12,7 +20,7 @@ type TimePickerInputData = CommonData & InitializeTimeData &
     }
 
 /** Create a new time picker and render in a modal each time an input is focused */
-function create(input?: TimePickerInputData) {
+function create(input?: TimePickerInputData): TimePickerInput {
     if (!input || !(input.inputElement instanceof HTMLInputElement)) {
         throw new Error("The inputElement must be a html input element");
     }
