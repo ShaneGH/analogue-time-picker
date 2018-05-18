@@ -68,17 +68,17 @@ var timePicker = timePicker({
 
 | Name | Type | Optional | Description | Default |
 | - | - | - | - | - |
-| element | HTMLElement | true | An element to append the clock element to. | undefined |
+| element | HTMLElement | true | An element to append the time picker html to. | undefined |
 | mode | number/string | true | 12 hour or 24 hour mode. Accepts 12, 24, "12", "24". | The default browser culture of the user |
-| width | number/string | true | The width of the component. Will also be used to calculate the font size. If `%` or `em` are used, the font sized cannot be auto calculated, and must be specified manually | "300px" |
-| time | obj or Date | true | The initial time of the component in 24h format | { hour: 0, minute: 0 } |
+| width | number/string | true | The width of the component. Will also be used to calculate the font size. If `%` or `em` are used, the font sized cannot be auto calculated, and must be specified manually via css | "300px" |
+| time | {hour: number &#124; string, minute: number &#124; string} or Date | true | The initial time of the component in 24h format | { hour: 0, minute: 0 } |
 
 **Output**
 
 | Name | Type | Description |
 | - | - | - |
-| element | HTMLElement | The element which contains the clock |
-| setWidth | (width: number &#124; string) => void | Set the width of the time picker. The height is proportional to the width.  |
+| element | HTMLElement | The element which contains the time picker |
+| setWidth | (width: number &#124; string) => void | See width input.  |
 | getTime | () => {hour: number, minute: number} | Return the current time |
 | setTime | (hours?: number &#124; string, minutes?: number &#124; string) => void | Set the current time programmatically |
 | set12h | () => void | Set the clock to 12 hour mode. If the clock is in 12h mode, the times used in getTime, setTime and onOk will still be in 24h format |
