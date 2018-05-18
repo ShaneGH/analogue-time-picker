@@ -243,14 +243,14 @@
 }
 
 .mtl-b-pos {
-    width: 0.355em;
+    width: 0.32em;
     transition: width 0.1s;
     height: 1px;
     display: inline-block;
 }
 
 .mtl-b-pos-pm {
-    width: 2.45em
+    width: 2.42em
 }
 
 .mtl-clock-btn {

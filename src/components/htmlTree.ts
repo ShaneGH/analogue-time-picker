@@ -33,6 +33,7 @@ function getPxValue(width: string) {
     return w;
 }
 
+// const fontMultiplier = 6 / 75;
 const fontMultiplier = 4 / 75;
 function getFontSize(width: string) {
     // don't set font size for em or %
