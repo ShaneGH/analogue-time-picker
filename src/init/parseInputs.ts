@@ -24,6 +24,29 @@ type CommonData =
         width?: object
     }
 
+function parseTimeValues (hour?: object, minute?: object) {
+    var h = 0;
+    if (hour != null) {
+        h = parseInt(hour as any);
+        if (isNaN(h) || h < 0 || h > 23) {
+            throw new Error(`The hr (${hour}) argument must be between 0 and 23.`);
+        }
+    }
+    
+    var m = 0;
+    if (minute != null) {
+        m = parseInt(minute as any);
+        if (isNaN(m) || m < 0 || m > 59) {
+            throw new Error(`The mn (${minute}) argument must be between 0 and 59.`);
+        }
+    }
+
+    return {
+        hour: h,
+        minute: m
+    };
+}
+
 function parseTimeInput (time?: {hour?: object, minute?: object} | Date) {
     if (!time) return {hour: 0, minute: 0};
 
@@ -33,31 +56,15 @@ function parseTimeInput (time?: {hour?: object, minute?: object} | Date) {
             minute: time.getMinutes()
         };
     } else {
-        var hour = 0;
-        if (time.hour != null) {
-            hour = parseInt(time.hour as any);
-            if (isNaN(hour) || hour < 0 || hour > 23) {
-                throw new Error(`The time.hour (${time.hour}) argument must be between 0 and 23.`);
-            }
-        }
-        
-        var minute = 0;
-        if (time.minute != null) {
-            minute = parseInt(time.minute as any);
-            if (isNaN(minute) || minute < 0 || minute > 59) {
-                throw new Error(`The time.minute (${time.minute}) argument must be between 0 and 59.`);
-            }
-        }
-
-        return {
-            hour,
-            minute
-        };
+        return parseTimeValues(time.hour, time.minute);
     }
 }
 
 function parseHtmlElement(el?: object) {
-    return el instanceof HTMLElement ? el : undefined;
+    if (el == null) return undefined;
+    if (el instanceof HTMLElement) return el;
+    
+    throw new Error("The element must be a HTMLElement");
 }
 
 function parseMode(mode?: object) {
@@ -84,6 +91,7 @@ function parseWidth(width?: object) {
 
 export {
     parseTimeInput,
+    parseTimeValues,
     parseHtmlElement,
     parseMode,
     parseWidth,
