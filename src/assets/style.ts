@@ -9,7 +9,11 @@ function enable () {
 
 	var el = document.createElement('style');
 	el.innerHTML = css;
-	(document.head || document.body).appendChild(el);
+
+	var parent = document.head || document.body;
+	parent.firstChild ?
+		parent.insertBefore(parent.firstChild, el) :
+		parent.appendChild(el);
 }
 
 export {
