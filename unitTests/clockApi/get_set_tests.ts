@@ -1,11 +1,11 @@
 import { DiContext } from '../../src/di';
-import { Clock as PublicClock, publicClock } from '../../src/init/publicClock';
+import { TimePicker as PublicClock, publicTimePicker } from '../../src/init/publicTimePicker';
 
 describe("get_set_tests.ts", () => {
 
     var clock: PublicClock, ctxt: DiContext
     beforeEach(() => {
-        clock = publicClock(ctxt = new DiContext({
+        clock = publicTimePicker(ctxt = new DiContext({
             time: {
                 hour: 0,
                 minute: 0

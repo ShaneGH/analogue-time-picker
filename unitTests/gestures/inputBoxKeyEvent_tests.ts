@@ -1,5 +1,5 @@
 import { DiContext } from '../../src/di';
-import { Clock as PublicClock, publicClock } from '../../src/init/publicClock';
+import { TimePicker, publicTimePicker } from '../../src/init/publicTimePicker';
 
 var isIe = (function() {
     try {
@@ -21,9 +21,9 @@ function createEvent(name: string) {
 
 describe("inputBoxKeyEvent_tests.ts", () => {
 
-    var clock: PublicClock, ctxt: DiContext, hours: HTMLInputElement, minutes: HTMLInputElement, ok: HTMLElement
+    var clock: TimePicker, ctxt: DiContext, hours: HTMLInputElement, minutes: HTMLInputElement, ok: HTMLElement
     beforeEach(() => {
-        clock = publicClock(ctxt = new DiContext({
+        clock = publicTimePicker(ctxt = new DiContext({
             time: {
                 hour: 0,
                 minute: 0

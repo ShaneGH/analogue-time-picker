@@ -1,10 +1,10 @@
 import { parseTime, timeToString } from '../utils/time';
 import { registerEvent } from '../utils/utils';
 import { CommonData, InitializeTimeData, parseMode, parseTimeInput, parseTimeValues } from './parseInputs';
-import { create as modal } from './timePickerModal';
-import { Clock } from './publicClock';
+import { create as createModal } from './timePickerModal';
+import { TimePicker } from './publicTimePicker';
 
-/** The inputs for a new clock, which launches when an input receives focus */
+/** The inputs for a new time picker, which launches when an input receives focus */
 type TimePickerInputData = CommonData & InitializeTimeData &
     {
         /** The input element */
@@ -17,21 +17,21 @@ function create(input?: TimePickerInputData) {
         throw new Error("The inputElement must be a html input element");
     }
 
-    var clock: Clock | null = null;
+    var modal: TimePicker | null = null;
     var el = input.inputElement;    
     var displayModal = () => {
-        clock = modal({
+        modal = createModal({
             mode: input.mode,
             width: input.width,
             time: parseTime(el.value) as any
         });
 
-        clock.onOk((h: number, m: number) => {
+        modal.onOk((h: number, m: number) => {
             // assuming that the timePickerModal call will have validated the mode
             el.value = timeToString(h, m, <any>input.mode || 24);
         });
 
-        clock.onDispose(() => clock = null);
+        modal.onDispose(() => modal = null);
     }
 
     var dispose = [
@@ -53,22 +53,22 @@ function create(input?: TimePickerInputData) {
 
     return {
         getTime: () => {
-            if (clock) return clock.getTime();
+            if (modal) return modal.getTime();
             return parseTime(el.value || "");
         },
         setTime: (hour: object, minute: object, force = false) => {
-            if (clock) {
-                clock.setTime(hour, minute);
+            if (modal) {
+                modal.setTime(hour, minute);
             }
 
-            if (!clock || force) {
+            if (!modal || force) {
                 var time = parseTimeValues(hour, minute);
                 el.value = timeToString(time.hour, time.minute, mode);
             }
         },
         dispose: () => {
-            if (clock) clock.dispose();
-            
+            if (modal) modal.dispose();
+
             dispose
                 .splice(0, Number.MAX_VALUE)
                 .forEach(f => f());

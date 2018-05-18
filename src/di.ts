@@ -1,4 +1,4 @@
-import { Clock } from './components/clock';
+import { TimePicker } from './components/timePicker';
 import { Hand } from './components/hand';
 import { Hours } from './components/hours';
 import { HtmlTree } from './components/htmlTree';
@@ -162,7 +162,7 @@ class DiContext {
         return this.hand || (this.hand = new Hand(this.buildHandElements()));
     }
     
-    buildClockElements() {
+    buildTimePickerElements() {
         return {
             okButton: this.getInnerElement(".mtl-ok"),
             cancelButton: this.getInnerElement(".mtl-cancel"),
@@ -170,20 +170,20 @@ class DiContext {
         };
     }
 
-    clock: Clock | undefined
-    buildClock() {
-        if (!this.clock) {
-            this.clock = new Clock(
-                this.buildClockElements(), 
+    timePicker: TimePicker | undefined
+    buildTimePicker() {
+        if (!this.timePicker) {
+            this.timePicker = new TimePicker(
+                this.buildTimePickerElements(), 
                 this.buildHours(), 
                 this.buildMinutes(), 
                 this.buildHand(),
                 this.config.mode);
 
-            this.disposables.push(this.clock);
+            this.disposables.push(this.timePicker);
         }
         
-        return this.clock;
+        return this.timePicker;
     }
 
     dispose() {

@@ -1,4 +1,4 @@
-import { Clock } from '../../src/init/publicClock';
+import { TimePicker } from '../../src/init/publicTimePicker';
 import { create, TimePickerData } from '../../src/init/timePicker';
 
 function expectError(f: () => void) {
@@ -244,7 +244,7 @@ describe("timePicker_Tests.ts", () => {
 
         describe("setTime", () => {
 
-            var clock: Clock
+            var clock: TimePicker
             beforeEach(() => {
                 clock = create(validInput)
             });

@@ -1,7 +1,7 @@
 import { DiContext } from '../di';
 
-/** The clock returned to the calling project. All inputs are optional "objects" so as to force sanatization */
-type Clock =
+/** The time picker returned to the calling project. All inputs are optional "objects" so as to force sanatization */
+type TimePicker =
     {
         /** The element which contains the clock */
         element: HTMLElement
@@ -28,10 +28,10 @@ type Clock =
         /** Show the minute hand */
         showMinutes: () => void
         
-        /** Dispose of the clock and invoke any "onOk" event handlers */
+        /** Dispose of the time picker and invoke any "onOk" event handlers */
         ok: () => void
         
-        /** Dispose of the clock and invoke any "onCancel" event handlers */
+        /** Dispose of the time picker and invoke any "onCancel" event handlers */
         cancel: () => void
         
         /** Add an event handler for when the time changes */
@@ -43,19 +43,19 @@ type Clock =
         /** Add an event handler for when the set time operation is canceled */
         onCancel: (callback: object) => void
         
-        /** Add an event handler for when the clock is disposed of */
+        /** Add an event handler for when the time picker is disposed of */
         onDispose: (callback: object) => void
         
-        /** Manually dispose of the clock */
+        /** Manually dispose of the time picker */
         dispose: () => void
     }
 
-/**Wrap a DI context in a new public Clock object.
- * The pulic Clock is more fault tolerant and is made 
+/**Wrap a DI context in a new public TimePicker object.
+ * The pulic TimePicker is more fault tolerant and is made 
  * to interact with js rather than ts
  * It also has dispose logic and an onDispose event */
-function publicClock(context: DiContext): Clock {
-    var clock = context.buildClock();
+function publicTimePicker(context: DiContext): TimePicker {
+    var timePicker = context.buildTimePicker();
     var element = context.getRootElement();
     
     var onDispose: (() => void)[] = [];
@@ -66,8 +66,8 @@ function publicClock(context: DiContext): Clock {
             .forEach(f => f());
     }
 
-    clock.onOk(dispose);    
-    clock.onCancel(dispose);
+    timePicker.onOk(dispose);    
+    timePicker.onCancel(dispose);
 
     return {
         element,
@@ -77,7 +77,7 @@ function publicClock(context: DiContext): Clock {
                     "100%" :
                     typeof width === "number" ? `${width}px` : width.toString());
         },
-        getTime: () => clock.getTime(),
+        getTime: () => timePicker.getTime(),
         setTime: (hours?: object, minutes?: object) => {
             var h = parseInt(hours as any);
             if (isNaN(h)) throw new Error(`The hours value "${hours}" must be a number`);
@@ -88,34 +88,34 @@ function publicClock(context: DiContext): Clock {
             if (h < 0 || h > 23) throw new Error(`The hours value "${h}" must be between 0 and 23`);
             if (m < 0 || m > 59) throw new Error(`The minutes value "${m}" must be between 0 and 59`);
 
-            clock.setTime(h, m)
+            timePicker.setTime(h, m)
         },
-        set12h: () => clock.setMode(12),
-        set24h: () => clock.setMode(24),
-        showHours: () => clock.showHours(),
-        showMinutes: () => clock.showMinutes(),
-        ok: () => clock.okClick(),
-        cancel: () => clock.cancelClick(),
+        set12h: () => timePicker.setMode(12),
+        set24h: () => timePicker.setMode(24),
+        showHours: () => timePicker.showHours(),
+        showMinutes: () => timePicker.showMinutes(),
+        ok: () => timePicker.okClick(),
+        cancel: () => timePicker.cancelClick(),
         onTimeChanged: (callback: object) => {
             if (typeof callback !== "function") {
                 throw new Error("onOk callback must be a function");
             }
 
-            clock.onTimeChanged(callback);
+            timePicker.onTimeChanged(callback);
         },
         onOk: (callback: object) => {
             if (typeof callback !== "function") {
                 throw new Error("onOk callback must be a function");
             }
 
-            clock.onOk(callback);
+            timePicker.onOk(callback);
         },
         onCancel: (callback: object) => {
             if (typeof callback !== "function") {
                 throw new Error("onCancel callback must be a function");
             }
 
-            clock.onCancel(callback);
+            timePicker.onCancel(callback);
         },
         onDispose: (callback: object) => {
             if (typeof callback !== "function") {
@@ -129,6 +129,6 @@ function publicClock(context: DiContext): Clock {
 }
 
 export {
-    publicClock,
-    Clock
+    publicTimePicker,
+    TimePicker
 }

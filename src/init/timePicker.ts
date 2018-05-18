@@ -1,11 +1,11 @@
 import { DiContext } from '../di';
 import { CommonData, InitializeTimeData, parseHtmlElement, parseMode, parseTimeInput, parseWidth } from './parseInputs';
-import { publicClock } from './publicClock';
+import { publicTimePicker } from './publicTimePicker';
 
-/** The inputs for a new clock */
+/** The inputs for a new time picker */
 type TimePickerData = CommonData & InitializeTimeData &
     {
-        /** The element to create the clock inside. If not specified, a new div will be created */
+        /** The element to create the time picker inside. If not specified, a new div will be created */
         element?: object
     }
 
@@ -27,7 +27,7 @@ function create(input?: TimePickerData) {
     var _input = parseTimePickerData(input);
     
     var context = new DiContext(_input.config, _input.element);
-    return publicClock(context);
+    return publicTimePicker(context);
 }
 
 export {

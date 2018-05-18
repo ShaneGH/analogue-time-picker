@@ -17,8 +17,8 @@ type Elements =
         cancelButton: HTMLElement
     }
 
-/**The clock component which contains all other components */
-class Clock {
+/**The time picker component which contains all other components */
+class TimePicker {
     ok: HTMLElement
     cancel: HTMLElement
     clock: HTMLElement
@@ -306,6 +306,6 @@ class Clock {
 }
 
 export {
-    Clock,
+    TimePicker,
     TimeInput
 }

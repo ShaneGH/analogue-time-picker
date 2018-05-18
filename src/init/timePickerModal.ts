@@ -1,7 +1,7 @@
 import { DiContext } from '../di';
 import { createModal } from '../utils/html';
 import { CommonData, InitializeTimeData, parseMode, parseTimeInput, parseWidth } from './parseInputs';
-import { publicClock } from './publicClock';
+import { publicTimePicker } from './publicTimePicker';
 
 /** The inputs for a new modal time picker */
 type TimePickerModalData = CommonData & InitializeTimeData
@@ -23,16 +23,16 @@ function create(input?: TimePickerModalData) {
     var _input = parseInputs(input);
     
     var context = new DiContext(_input.config);
-    var clock = publicClock(context);
-    var modal = createModal(clock.element);
+    var timePicker = publicTimePicker(context);
+    var modal = createModal(timePicker.element);
 
-    modal.onClickOrEsc(() => clock.cancel());
-    clock.onDispose(modal.dispose);
+    modal.onClickOrEsc(() => timePicker.cancel());
+    timePicker.onDispose(modal.dispose);
     
-    // focus on the first textbox in the clock
+    // focus on the first textbox in the time picker
     context.getInnerElement<HTMLInputElement>(".mtl-hour").focus();
 
-    return clock;
+    return timePicker;
 }
 
 export {
