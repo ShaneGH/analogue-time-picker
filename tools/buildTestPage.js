@@ -3,11 +3,11 @@ const path = require("path");
 const walk = require('fs-walker');
 
 function mochaUrl (mochaFile) {
-    return path.resolve(__dirname, "../node_modules/mocha/", mochaFile);
+    return "file:///" + path.resolve(__dirname, "../node_modules/mocha/", mochaFile).replace(/\\/g, "/");
 }
 
 function chaiUrl (mochaFile) {
-    return path.resolve(__dirname, "../node_modules/chai/", mochaFile);
+    return "file:///" + path.resolve(__dirname, "../node_modules/chai/", mochaFile).replace(/\\/g, "/");
 }
 
 var files = [];    
@@ -31,7 +31,7 @@ var page = `<html>
   <body>
     <script src="${mochaUrl("mocha.js")}"></script>
     <script src="${chaiUrl("chai.js")}"></script>
-    <script src="${path.resolve(__dirname, "../node_modules/requirejs/require.js")}"></script>
+    <script src="file:///${path.resolve(__dirname, "../node_modules/requirejs/require.js").replace(/\\/g, "/")}"></script>
 
     <div>Test page generated using ${__filename}</div>
 
