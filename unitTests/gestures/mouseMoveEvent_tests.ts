@@ -31,7 +31,7 @@ describe("mouseMoveEvent_tests.ts", () => {
     it("alters hours when mouse moves", function() {
 
         // arrange
-        var clockElement = ctxt.getInnerElement(".mtl-clock");
+        var clockElement = ctxt.getInnerElement(".atp-clock");
         var moveEvent = new Event("mousemove");
         (<any>moveEvent).clientX = 900;
         (<any>moveEvent).clientY = 600;
@@ -49,7 +49,7 @@ describe("mouseMoveEvent_tests.ts", () => {
     it("alters minutes when mouse moves", function() {
 
         // arrange
-        var clockElement = ctxt.getInnerElement(".mtl-clock");
+        var clockElement = ctxt.getInnerElement(".atp-clock");
         var moveEvent = new Event("mousemove");
         (<any>moveEvent).clientX = 100;
         (<any>moveEvent).clientY = 200;

@@ -7,7 +7,7 @@ import { TimePicker } from './publicTimePicker';
 /** The results of a timepicker input */
 type TimePickerInput =
     {
-        getTime: () => {hour: number, minute: number},
+        getTime: () => {hour: number, minute: number} | null,
         setTime: (hour: object, minute: object, force?: boolean) => void,
         dispose:  () => void,
     }

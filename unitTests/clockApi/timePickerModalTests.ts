@@ -41,14 +41,14 @@ describe("timePicker_Tests.ts", () => {
     it("shows modal on open", function() {
 
         // arrange
-        document.getElementsByClassName("mtl-modal").length.should.be.eql(0);
+        document.getElementsByClassName("atp-modal").length.should.be.eql(0);
 
         // act
         var tp = create(validInput);
         
         // assert
-        document.getElementsByClassName("mtl-modal").length.should.be.eql(1);
-        document.getElementsByClassName("mtl-modal")[0].querySelectorAll(".mtl").length.should.be.eql(1);
+        document.getElementsByClassName("atp-modal").length.should.be.eql(1);
+        document.getElementsByClassName("atp-modal")[0].querySelectorAll(".atp").length.should.be.eql(1);
 
         // cleanup
         tp.dispose();
@@ -62,7 +62,7 @@ describe("timePicker_Tests.ts", () => {
         tp.cancel();
         
         // assert
-        document.getElementsByClassName("mtl-modal").length.should.be.eql(0);
+        document.getElementsByClassName("atp-modal").length.should.be.eql(0);
     });
 
     it("hides modal on ok", function() {
@@ -73,7 +73,7 @@ describe("timePicker_Tests.ts", () => {
         tp.ok();
         
         // assert
-        document.getElementsByClassName("mtl-modal").length.should.be.eql(0);
+        document.getElementsByClassName("atp-modal").length.should.be.eql(0);
     });
 
     it("hides modal on dispose", function() {
@@ -84,6 +84,6 @@ describe("timePicker_Tests.ts", () => {
         tp.dispose();
         
         // assert
-        document.getElementsByClassName("mtl-modal").length.should.be.eql(0);
+        document.getElementsByClassName("atp-modal").length.should.be.eql(0);
     });
 });

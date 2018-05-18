@@ -31,7 +31,7 @@ describe("touchMoveEvent_tests.ts", () => {
     it("alters hours when touch moves", function() {
 
         // arrange
-        var clockElement = ctxt.getInnerElement(".mtl-clock");
+        var clockElement = ctxt.getInnerElement(".atp-clock");
         var beginEvent = new Event("touchstart");
         (<any>beginEvent).touches = [{
             clientX: 900,
@@ -57,7 +57,7 @@ describe("touchMoveEvent_tests.ts", () => {
     it("alters minutes when touch moves", function() {
 
         // arrange
-        var clockElement = ctxt.getInnerElement(".mtl-clock");
+        var clockElement = ctxt.getInnerElement(".atp-clock");
         var beginEvent = new Event("touchstart");
         (<any>beginEvent).touches = [{
             clientX: 100,

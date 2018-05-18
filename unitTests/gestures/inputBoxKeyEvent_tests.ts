@@ -32,9 +32,9 @@ describe("inputBoxKeyEvent_tests.ts", () => {
             width: "100%"
         }));
 
-        hours = ctxt.getInnerElement<HTMLInputElement>(".mtl-hour");
-        minutes = ctxt.getInnerElement<HTMLInputElement>(".mtl-minute");
-        ok = ctxt.getInnerElement(".mtl-ok");
+        hours = ctxt.getInnerElement<HTMLInputElement>(".atp-hour");
+        minutes = ctxt.getInnerElement<HTMLInputElement>(".atp-minute");
+        ok = ctxt.getInnerElement(".atp-ok");
 
         document.body.appendChild(clock.element);
     });

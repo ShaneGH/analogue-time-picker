@@ -50,7 +50,7 @@ describe("12hr_Tests.ts", () => {
         clock.setTime(13 as any, 20 as any);
 
         // assert
-        ctxt.getInnerElement<HTMLInputElement>(".mtl-hour").value.should.be.eql("1");
+        ctxt.getInnerElement<HTMLInputElement>(".atp-hour").value.should.be.eql("1");
     });
 
     it("should highlight pm when pm time set", function() {

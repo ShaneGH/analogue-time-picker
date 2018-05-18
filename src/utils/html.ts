@@ -23,7 +23,7 @@ var modalInstance: {overflowX: string | null, overflowY: string | null, instance
 /** Render the given element as a modal, and return a function to close the modal */
 function createModal(content: HTMLElement) {
     var modal = document.createElement("div");
-    modal.className = "mtl-modal";
+    modal.className = "atp-modal";
 
     modal.appendChild(content);
     document.body.appendChild(modal);

@@ -204,11 +204,11 @@ abstract class Numbers {
     /** Highlight a number in the clock */
     highlightNumber() {
         if (this.elements.selectedNumber) {
-            this.elements.selectedNumber.classList.remove("mtl-number-selected");
+            this.elements.selectedNumber.classList.remove("atp-number-selected");
         }
         
         this.elements.selectedNumber = this.getSelectedNumberElement();
-        if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("mtl-number-selected");
+        if (this.elements.selectedNumber) this.elements.selectedNumber.classList.add("atp-number-selected");
     }
 
     getSelectedNumberElement(): HTMLElement | null {
