@@ -37,7 +37,7 @@ function buildJsFileContent(lines) {
         "",
         "\tvar parent = document.head || document.body;",
         "\tparent.firstChild ?",
-        "\t\tparent.insertBefore(parent.firstChild, el) :",
+        "\t\tparent.insertBefore(el, parent.firstChild) :",
         "\t\tparent.appendChild(el);",
         "}",
         "",
