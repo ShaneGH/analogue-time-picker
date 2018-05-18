@@ -1,6 +1,24 @@
 import { DiContext } from '../../src/di';
 import { Clock as PublicClock, publicClock } from '../../src/init/publicClock';
 
+var isIe = (function() {
+    try {
+        return new Event("keydown"), false;
+    } catch (e) {
+        return true;
+    }
+}())
+
+function createEvent(name: string) {
+    if (isIe) {
+        var ev = document.createEvent("Event");
+        ev.initEvent(name, true, true);
+        return ev;
+    }
+
+    return new Event(name);
+}
+
 describe("inputBoxKeyEvent_tests.ts", () => {
 
     var clock: PublicClock, ctxt: DiContext, hours: HTMLInputElement, minutes: HTMLInputElement, ok: HTMLElement
@@ -27,10 +45,9 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
     describe("ArrowUp", () => {
         it("increases hours when up is pressed", function() {
-
             // arrange
-            var ev = new Event("keydown");
-            (<any>ev).key = "ArrowUp";
+            var ev = createEvent("keydown");
+            (<any>ev).key = "Up";
 
             // act
             hours.dispatchEvent(ev);
@@ -42,7 +59,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("passes 0 hours when up is pressed", function() {
 
             // arrange
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowUp";
             clock.setTime(23 as any, 0 as any);
 
@@ -56,7 +73,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("increases minutes when up is pressed", function() {
 
             // arrange
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowUp";
 
             // act
@@ -69,7 +86,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("passes 0 minutes when up is pressed", function() {
 
             // arrange
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowUp";
             clock.setTime(0 as any, 59 as any);
 
@@ -85,7 +102,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("decreases hours when down is pressed", function() {
 
             // arrange
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowDown";
             clock.setTime(20 as any, 0 as any);
 
@@ -99,7 +116,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("passes 0 hours when down is pressed", function() {
 
             // arrange
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowDown";
 
             // act
@@ -112,7 +129,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("decreases minutes when down is pressed", function() {
 
             // arrange
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowDown";
             clock.setTime(0 as any, 30 as any);
 
@@ -126,7 +143,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
         it("passes 0 minutes when down is pressed", function() {
 
             // arrange
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowDown";
 
             // act
@@ -142,7 +159,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             hours.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowRight";
             hours.selectionStart = 1;
 
@@ -157,7 +174,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             hours.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowRight";
             hours.selectionStart = 2;
 
@@ -172,7 +189,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             minutes.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowRight";
             minutes.selectionStart = 1;
 
@@ -187,7 +204,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             minutes.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowRight";
             minutes.selectionStart = 2;
 
@@ -204,7 +221,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             minutes.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowLeft";
             minutes.selectionStart = 1;
 
@@ -219,7 +236,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             minutes.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "ArrowLeft";
             minutes.selectionStart = 0;
 
@@ -236,7 +253,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             hours.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "1";
             hours.selectionStart = 0;
 
@@ -251,7 +268,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             hours.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "1";
             hours.selectionStart = 1;
 
@@ -268,7 +285,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
             clock.setTime(19 as any, 0 as any);
 
             hours.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "2";
             hours.selectionStart = 0;
 
@@ -283,7 +300,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             hours.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "1";
             hours.selectionStart = 1;
 
@@ -298,7 +315,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             minutes.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "1";
             minutes.selectionStart = 0;
 
@@ -313,7 +330,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             minutes.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "1";
             minutes.selectionStart = 1;
 
@@ -328,7 +345,7 @@ describe("inputBoxKeyEvent_tests.ts", () => {
 
             // arrange
             minutes.focus();
-            var ev = new Event("keydown");
+            var ev = createEvent("keydown");
             (<any>ev).key = "1";
             minutes.selectionStart = 1;
 

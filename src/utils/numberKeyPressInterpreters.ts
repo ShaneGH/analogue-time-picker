@@ -71,26 +71,29 @@ var fKey = /^F\d+$/;
 
 /** Get values which can inform a decision on what to do when a key is pressed */
 function keyPressDetails(element: HTMLInputElement, e: KeyboardEvent, max: number): KeyPressDetailsValues {
-
     var handled = true;
     switch (e.key) {
         case "ArrowUp":
+        case "Up":
             return {
                 handled: true,
                 value: increase(element.value, max)
             };
         case "ArrowDown":
+        case "Down":
             return {
                 handled: true,
                 value: decrease(element.value, max)
             };
         case "ArrowRight":
+        case "Right":
             var nextPosition = (element.selectionStart || 0) + 1;
             return {
                 handled: nextPosition > 2,
                 nextPosition: nextPosition > 2 ? nextPosition : undefined
             };
         case "ArrowLeft":
+        case "Left":
             var nextPosition = (element.selectionStart || 0) - 1;
             return {
                 handled: nextPosition < 0,

@@ -11,7 +11,7 @@ function expectError(f: () => void) {
     ok.should.be.eql(false, "exected an error");
 }
 
-describe("timePicker_Tests.ts", () => {
+describe("timePickerInputTests.ts", () => {
 
     var input: HTMLInputElement
     var validInput: TimePickerInputData

@@ -46,7 +46,7 @@ class Hours extends Numbers {
     /** Show/hide the AM/PM buttons based on the current "mode" */
     showHideAmPm() {
         if (this.mode === 12) {
-            this.amPmButtons.style.display = null;
+            this.amPmButtons.style.display = "";
             this.amPmButtons.removeAttribute("aria-hidden");
         } else {
             this.amPmButtons.style.display = "none";
@@ -117,7 +117,7 @@ class Hours extends Numbers {
         this.elements.numbers
             .slice(0, 1)
             .concat(this.elements.numbers.slice(13))
-            .forEach(x => x.style.display = null);
+            .forEach(x => x.style.display = "");
     }
 
     /** Get the html element of the number currently selected */
