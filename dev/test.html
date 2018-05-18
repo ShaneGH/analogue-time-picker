@@ -1,12 +1,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-teal.min.css" />
+    <!-- <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-teal.min.css" /> -->
+    
 </head>
 <body>
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
-    <script src="file:///C:/Dev/material-time-lite/dist/material-time-lite.js"></script>
+    <script src="file:///C:/Dev/analog-time-picker/dist/material-time-lite.js"></script>
 
     <div style="padding: 20px">
         <input type="text" id="inpt" style="text-align: right; padding: 8px; font-size: 120%; margin-bottom: 20px;" value="   3   :   5    pm     " />
@@ -24,8 +25,8 @@
             var x = timePicker({
                 element: test1, 
                 time: {hour: 2, minute: 00},
-                mode: 24,
-                width: "300px"
+                mode: 12,
+                width: "200px"
             });
 
             timePickerInput({
@@ -33,7 +34,7 @@
                 // element: test1, 
                 mode: 12,
                 time: {hour: 2, minute: 00},
-                width: "500px"
+                width: "200px"
             });
 
             var i = 0;

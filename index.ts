@@ -10,7 +10,7 @@ const timePickerInput = _timePickerInput.create
 // add css to page
 enableCss();
 
-export {
+export { 
     timePicker,
     timePickerModal,
     timePickerInput
