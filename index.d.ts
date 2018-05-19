@@ -96,6 +96,9 @@ export type TimePickerData =
     {
         /** The element to create the time picker inside. If not specified, a new div will be created */
         element?: HTMLElement
+        
+        /** If set to true, the "hours" input will be focused on render. Default false */
+        focus?: boolean
     }
 
 /** The inputs for a new modal time picker */

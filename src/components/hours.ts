@@ -24,8 +24,8 @@ class Hours extends Numbers {
     _toPm: () => void
     amPmButtons: HTMLElement
 
-    constructor (private hourInput: HourInput, elements: HoursElements, value: number, visible: boolean) {
-        super(hourInput, elements, value, visible);
+    constructor (private hourInput: HourInput, elements: HoursElements, value: number) {
+        super(hourInput, elements, value);
 
         this.am = elements.am;
         this._toAm = registerMouseEvent(this.am, "click", () => this.setTo12Hr(AmPm.am));

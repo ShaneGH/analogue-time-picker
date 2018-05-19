@@ -29,7 +29,8 @@ describe("inputBoxKeyEvent_tests.ts", () => {
                 minute: 0
             },
             mode: 24,
-            width: "100%"
+            width: "100%",
+            focusOnInput: true
         }));
 
         hours = ctxt.getInnerElement<HTMLInputElement>(".atp-hour");

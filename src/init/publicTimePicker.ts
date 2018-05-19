@@ -92,7 +92,7 @@ function publicTimePicker(context: DiContext): TimePicker {
         },
         set12h: () => timePicker.setMode(12),
         set24h: () => timePicker.setMode(24),
-        showHours: () => timePicker.showHours(),
+        showHours: () => timePicker.showHours(true),
         showMinutes: () => timePicker.showMinutes(),
         ok: () => timePicker.okClick(),
         cancel: () => timePicker.cancelClick(),

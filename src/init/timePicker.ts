@@ -7,6 +7,9 @@ type TimePickerData = CommonData & InitializeTimeData &
     {
         /** The element to create the time picker inside. If not specified, a new div will be created */
         element?: object
+        
+        /** If set to true, the "hours" input will be focused on render. Default false */
+        focus?: object
     }
 
 function parseTimePickerData(input?: TimePickerData) {
@@ -16,7 +19,8 @@ function parseTimePickerData(input?: TimePickerData) {
         config: {
             time: parseTimeInput(input.time),
             mode: parseMode(input.mode) as (12 | 24),
-            width: parseWidth(input.width)
+            width: parseWidth(input.width),
+            focusOnInput: !!input.focus
         },
         element: parseHtmlElement(input.element)
     };

@@ -49,9 +49,10 @@ abstract class Numbers {
     height: number
     fontSize: number | null
     value: GetValueResult
+    focused: boolean
     elements: NumbersElements & { selectedNumber: HTMLElement | null }
 
-    constructor (public numberInput: NumberInput, elements: NumbersElements, value: number, private focused: boolean) {
+    constructor (public numberInput: NumberInput, elements: NumbersElements, value: number) {
 
         this.elements = {
             ...elements,
@@ -67,9 +68,8 @@ abstract class Numbers {
         this.numberInput.onFocus(() => this.focusOnInput());
         this.onRenderValuesChanged(rv => this.triggerValueChanged(rv.value));
 
-        if (focused) this.focus();
-        else this.blur();
-
+        // hidden by default. A parent component will need to call focus(...)
+        this.blur();
         this.setLabel();
     }
 
@@ -223,12 +223,14 @@ abstract class Numbers {
         };
     }
 
-    /** Focus this component */
-    focus() {
+    /** Focus this component
+     * @param {boolean} [focusInput=true] If true, will focus the cursor on the input also
+     */
+    focus(focusInput = true) {
         this.elements.containerElement.style.transform = "scale(1)";
         this.elements.containerElement.style.opacity = "1";
         this.focused = true;
-        this.numberInput.focus();
+        this.numberInput.focus(focusInput);
     }
 
     /** Blur this component */

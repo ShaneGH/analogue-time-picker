@@ -91,11 +91,16 @@ abstract class NumberInput {
 
     abstract transformInputValue(value: number): string
 
-    focus() {
+    /**
+     * @param {boolean} [focusInput=true] If true, will focus the cursor on the input also
+     */
+    focus(focusInput = true) {
         this.input.classList.add("atp-focus");
-        this.input.focus();
-        this.input.selectionStart = 0;
-        this.input.selectionEnd = 0;
+        if (focusInput) {
+            this.input.focus();
+            this.input.selectionStart = 0;
+            this.input.selectionEnd = 0;
+        }
     }
 
     blur() {

@@ -11,7 +11,8 @@ describe("get_set_tests.ts", () => {
                 minute: 0
             },
             mode: 24,
-            width: "100%"
+            width: "100%",
+            focusOnInput: true
         }));
 
         document.body.appendChild(clock.element);

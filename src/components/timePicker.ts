@@ -30,7 +30,7 @@ class TimePicker {
     _ok: () => void
     _cancel: () => void
 
-    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, mode: 12 | 24) {
+    constructor(elements: Elements, public hours: Hours, public minutes: Minutes, public hand: Hand, mode: 12 | 24, focusInput: boolean) {
 
         this.ok = elements.okButton;
         this.cancel = elements.cancelButton;
@@ -39,16 +39,16 @@ class TimePicker {
         // register events for when something happens with the "hours"
         this.hours.onNext(() => this.showMinutes());
         this.hours.onRenderValuesChanged(() => this.hourChangeOccurred());
-        this.hours.onInputFocus(() => this.showHours());
+        this.hours.onInputFocus(() => this.showHours(true));
 
         // register events for when something happens with the "minutes"
         this.minutes.onNext(() => this.ok.focus());
-        this.minutes.onPrevious(() => this.showHours());
+        this.minutes.onPrevious(() => this.showHours(true));
         this.minutes.onRenderValuesChanged(() => this.minuteChangeOccurred());
         this.minutes.onInputFocus(() => this.showMinutes());
 
-        // show hours be default
-        this.showHours();
+        // show hours by default
+        this.showHours(focusInput);
 
         // register dom events on clock face, ok and cancel buttons
         this._createMouseTracker = registerMouseEvent(this.clock, "mousedown", e => this.createMouseTracker(e));
@@ -96,8 +96,8 @@ class TimePicker {
     }
 
     /** Show the hour hand */
-    showHours() {
-        this.hours.focus();
+    showHours(focusInput: boolean) {
+        this.hours.focus(focusInput);
         this.minutes.blur();
         this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
     }

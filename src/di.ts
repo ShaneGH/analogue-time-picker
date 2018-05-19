@@ -24,7 +24,8 @@ type Config =
             minute: number
         },
         mode: 12 | 24,
-        width: string
+        width: string,
+        focusOnInput: boolean
     }
 
 function toArray<T extends Element>(xs: NodeListOf<Element>): T[] {
@@ -101,7 +102,7 @@ class DiContext {
     hours: Hours | undefined
     buildHours() {
         if (!this.hours) {
-            this.hours = new Hours(this.buildHoursInput(), this.buildHoursElements(), this.config.time.hour, true);
+            this.hours = new Hours(this.buildHoursInput(), this.buildHoursElements(), this.config.time.hour);
             this.disposables.push(this.hours);
         }
         
@@ -143,7 +144,7 @@ class DiContext {
     minutes: Minutes | undefined
     buildMinutes() {
         if (!this.minutes) {
-            this.minutes = new Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.minute, true);
+            this.minutes = new Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.minute);
             this.disposables.push(this.minutes);
         }
         
@@ -178,7 +179,8 @@ class DiContext {
                 this.buildHours(), 
                 this.buildMinutes(), 
                 this.buildHand(),
-                this.config.mode);
+                this.config.mode,
+                this.config.focusOnInput);
 
             this.disposables.push(this.timePicker);
         }

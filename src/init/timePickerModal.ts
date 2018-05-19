@@ -4,7 +4,9 @@ import { CommonData, InitializeTimeData, parseMode, parseTimeInput, parseWidth }
 import { publicTimePicker } from './publicTimePicker';
 
 /** The inputs for a new modal time picker */
-type TimePickerModalData = CommonData & InitializeTimeData
+type TimePickerModalData = 
+    CommonData & 
+    InitializeTimeData
 
 function parseInputs(input?: TimePickerModalData) {
 
@@ -13,7 +15,8 @@ function parseInputs(input?: TimePickerModalData) {
         config: {
             time: parseTimeInput(input.time),
             mode: parseMode(input.mode) as (12 | 24),
-            width: parseWidth(input.width)
+            width: parseWidth(input.width),
+            focusOnInput: true
         }
     };
 }
