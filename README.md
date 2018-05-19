@@ -12,6 +12,9 @@ A small and simple time picker based on google material UI
 
 ## How to use
 
+## Demo
+https://shanegh.github.io/analogue-time-picker/demo/
+
 ### Use
 ```javascript
 import { timePickerInput } from 'analogue-time-picker'
@@ -19,9 +22,6 @@ import { timePickerInput } from 'analogue-time-picker'
 var input = document.getElementById("myInput");
 timePickerInput({ inputElement: input });
 ```
-
-## Demo
-https://shanegh.github.io/analogue-time-picker/demo/
 
 ## Style
 
