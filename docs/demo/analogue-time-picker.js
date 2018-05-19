@@ -168,7 +168,7 @@ var __assign = (undefined && undefined.__assign) || Object.assign || function(t)
 
 /**The time picker component which contains all other components */
 var timePicker_TimePicker = /** @class */ (function () {
-    function TimePicker(elements, hours, minutes, hand, mode) {
+    function TimePicker(elements, hours, minutes, hand, mode, focusInput) {
         var _this = this;
         this.hours = hours;
         this.minutes = minutes;
@@ -184,14 +184,14 @@ var timePicker_TimePicker = /** @class */ (function () {
         // register events for when something happens with the "hours"
         this.hours.onNext(function () { return _this.showMinutes(); });
         this.hours.onRenderValuesChanged(function () { return _this.hourChangeOccurred(); });
-        this.hours.onInputFocus(function () { return _this.showHours(); });
+        this.hours.onInputFocus(function () { return _this.showHours(true); });
         // register events for when something happens with the "minutes"
         this.minutes.onNext(function () { return _this.ok.focus(); });
-        this.minutes.onPrevious(function () { return _this.showHours(); });
+        this.minutes.onPrevious(function () { return _this.showHours(true); });
         this.minutes.onRenderValuesChanged(function () { return _this.minuteChangeOccurred(); });
         this.minutes.onInputFocus(function () { return _this.showMinutes(); });
-        // show hours be default
-        this.showHours();
+        // show hours by default
+        this.showHours(focusInput);
         // register dom events on clock face, ok and cancel buttons
         this._createMouseTracker = registerMouseEvent(this.clock, "mousedown", function (e) { return _this.createMouseTracker(e); });
         this._createTouchTracker = registerTouchEvent(this.clock, "touchstart", function (e) { return _this.createTouchTracker(e); });
@@ -225,8 +225,8 @@ var timePicker_TimePicker = /** @class */ (function () {
         }
     };
     /** Show the hour hand */
-    TimePicker.prototype.showHours = function () {
-        this.hours.focus();
+    TimePicker.prototype.showHours = function (focusInput) {
+        this.hours.focus(focusInput);
         this.minutes.blur();
         this.hand.setPositon(this.hours.value.angle, this.hours.value.position);
     };
@@ -561,18 +561,9 @@ function compareAngles(x, y) {
         y -= numbers_360;
     return sign(round(x, 5) - round(y, 5));
 }
-var NumberFocus;
-(function (NumberFocus) {
-    // not focused on this set of numbers
-    NumberFocus[NumberFocus["NotFocused"] = 1] = "NotFocused";
-    // focused on the numbers, but the number <input /> does not have focus
-    NumberFocus[NumberFocus["SoftFocus"] = 2] = "SoftFocus";
-    // focused on the numbers, and the number <input /> does have focus
-    NumberFocus[NumberFocus["HardFocus"] = 3] = "HardFocus";
-})(NumberFocus || (NumberFocus = {}));
 /** Base class for a number value (e.g. hours, minutes) */
 var numbers_Numbers = /** @class */ (function () {
-    function Numbers(numberInput, elements, value, focused) {
+    function Numbers(numberInput, elements, value) {
         var _this = this;
         this.numberInput = numberInput;
         this._onInputFocus = [];
@@ -591,17 +582,8 @@ var numbers_Numbers = /** @class */ (function () {
         this.highlightNumber();
         this.numberInput.onFocus(function () { return _this.focusOnInput(); });
         this.onRenderValuesChanged(function (rv) { return _this.triggerValueChanged(rv.value); });
-        switch (focused) {
-            case NumberFocus.SoftFocus:
-            case NumberFocus.HardFocus:
-                this.focus(focused === NumberFocus.HardFocus);
-                break;
-            case NumberFocus.NotFocused:
-                this.blur();
-                break;
-            default:
-                throw new Error("Not supported " + focused);
-        }
+        // hidden by default. A parent component will need to call focus(...)
+        this.blur();
         this.setLabel();
     }
     Numbers.prototype.onInputFocus = function (f) {
@@ -939,8 +921,8 @@ var hours_30 = Math.PI / 6;
 /**A component to manage the hours */
 var hours_Hours = /** @class */ (function (_super) {
     __extends(Hours, _super);
-    function Hours(hourInput, elements, value, focused) {
-        var _this = _super.call(this, hourInput, elements, value, focused) || this;
+    function Hours(hourInput, elements, value) {
+        var _this = _super.call(this, hourInput, elements, value) || this;
         _this.hourInput = hourInput;
         _this.mode = 24;
         _this.am = elements.am;
@@ -1367,7 +1349,7 @@ var numberInput_NumberInput = /** @class */ (function () {
     NumberInput.prototype._set = function (value) {
         var changed = this.value !== value;
         this.value = value;
-        // this.input.value = this.transformInputValue(value);
+        this.input.value = this.transformInputValue(value);
         if (changed) {
             this._timeChangedCallbacks
                 .slice(0)
@@ -1381,9 +1363,9 @@ var numberInput_NumberInput = /** @class */ (function () {
         if (focusInput === void 0) { focusInput = true; }
         this.input.classList.add("atp-focus");
         if (focusInput) {
-            // this.input.focus();
-            // this.input.selectionStart = 0;
-            // this.input.selectionEnd = 0;
+            this.input.focus();
+            this.input.selectionStart = 0;
+            this.input.selectionEnd = 0;
         }
     };
     NumberInput.prototype.blur = function () {
@@ -1485,7 +1467,6 @@ var MinuteInput = /** @class */ (function (_super) {
 
 
 
-
 function toArray(xs) {
     return Array.prototype.slice.call(xs);
 }
@@ -1545,8 +1526,7 @@ var di_DiContext = /** @class */ (function () {
     };
     DiContext.prototype.buildHours = function () {
         if (!this.hours) {
-            var focus = this.config.focusOnInput ? NumberFocus.HardFocus : NumberFocus.SoftFocus;
-            this.hours = new hours_Hours(this.buildHoursInput(), this.buildHoursElements(), this.config.time.hour, focus);
+            this.hours = new hours_Hours(this.buildHoursInput(), this.buildHoursElements(), this.config.time.hour);
             this.disposables.push(this.hours);
         }
         return this.hours;
@@ -1579,7 +1559,7 @@ var di_DiContext = /** @class */ (function () {
     };
     DiContext.prototype.buildMinutes = function () {
         if (!this.minutes) {
-            this.minutes = new minutes_Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.minute, NumberFocus.NotFocused);
+            this.minutes = new minutes_Minutes(this.buildMinutesInput(), this.buildMinutesElements(), this.config.time.minute);
             this.disposables.push(this.minutes);
         }
         return this.minutes;
@@ -1602,7 +1582,7 @@ var di_DiContext = /** @class */ (function () {
     };
     DiContext.prototype.buildTimePicker = function () {
         if (!this.timePicker) {
-            this.timePicker = new timePicker_TimePicker(this.buildTimePickerElements(), this.buildHours(), this.buildMinutes(), this.buildHand(), this.config.mode);
+            this.timePicker = new timePicker_TimePicker(this.buildTimePickerElements(), this.buildHours(), this.buildMinutes(), this.buildHand(), this.config.mode, this.config.focusOnInput);
             this.disposables.push(this.timePicker);
         }
         return this.timePicker;
@@ -1725,7 +1705,7 @@ function publicTimePicker(context) {
         },
         set12h: function () { return timePicker.setMode(12); },
         set24h: function () { return timePicker.setMode(24); },
-        showHours: function () { return timePicker.showHours(); },
+        showHours: function () { return timePicker.showHours(true); },
         showMinutes: function () { return timePicker.showMinutes(); },
         ok: function () { return timePicker.okClick(); },
         cancel: function () { return timePicker.cancelClick(); },
