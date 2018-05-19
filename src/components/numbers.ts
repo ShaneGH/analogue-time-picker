@@ -1,4 +1,5 @@
 import { NumberInput } from './numberInput';
+import { offset } from '../utils/html';
 
 const _360 = Math.PI * 2;
 
@@ -19,16 +20,6 @@ type GetValueResult =
     angle: number, 
     value: number, 
     position: Position 
-}
-
-function offset(el: HTMLElement | null, prop: "offsetLeft" | "offsetTop") {
-    var offset = -(prop === "offsetTop" ? window.pageYOffset : window.pageXOffset);
-    while (el && el instanceof HTMLElement) {
-        offset += el[prop];
-        el = <HTMLElement>el.offsetParent;
-    }
-
-    return offset;
 }
 
 function round(x: number, decimals: number) {
