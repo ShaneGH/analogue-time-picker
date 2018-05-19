@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A small and simple time picker based on google material UI",
   "main": "index.js",
+  "repository" : { 
+    "type" : "git",
+    "url" : "https://github.com/ShaneGH/analogue-time-picker.git"
+  },
   "scripts": {
     "clear-old-tests": "node \"./tools/deleteTestBin.js\"",
     "build-tests": "node \"./node_modules/typescript/lib/tsc.js\" -p \"./test.tsconfig.json\" && node \"./tools/buildTestPage.js\"",
