@@ -15,9 +15,14 @@ function expectError(f: () => void) {
 describe("timePicker_Tests.ts", () => {
 
     var validInput: TimePickerData
+    var div: HTMLDivElement
+    let tp: TimePicker
     beforeEach(() => {
+        div = document.createElement("div");
+        document.body.appendChild(div);
+
         validInput = {
-            element: document.createElement("div"),
+            element: div,
             time: {
                 hour: 12 as any,
                 minute: 30 as any
@@ -26,11 +31,16 @@ describe("timePicker_Tests.ts", () => {
         };
     });
 
+    afterEach(() => {
+        if (tp) tp.dispose();
+        document.body.removeChild(div);
+    });
+
     it("creates time with valid args", function() {
 
         // arrange
         // act
-        var tp = create(validInput);
+        tp = create(validInput);
         
         // assert
         tp.getTime().hour.should.eql(12);
@@ -46,7 +56,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.element = undefined;
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.element.tagName.should.eql("DIV");
@@ -71,7 +81,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).hour = undefined;
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(0);
@@ -84,7 +94,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).hour = "22";
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(22);
@@ -120,7 +130,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).minute = undefined;
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -133,7 +143,7 @@ describe("timePicker_Tests.ts", () => {
                 (validInput.time as any).minute = "22";
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -169,7 +179,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.mode = 12 as any;
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -182,7 +192,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.mode = "24" as any;
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -195,7 +205,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.mode = "12" as any;
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(12);
@@ -221,7 +231,7 @@ describe("timePicker_Tests.ts", () => {
                 validInput.time = undefined;
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(0);
@@ -234,11 +244,40 @@ describe("timePicker_Tests.ts", () => {
                 validInput.time = new Date(2000, 1, 1, 13, 13);
 
                 // act
-                var tp = create(validInput);
+                tp = create(validInput);
                 
                 // assert
                 tp.getTime().hour.should.eql(13);
                 tp.getTime().minute.should.eql(13);
+            });
+        });
+
+        describe("focus", () => {
+
+            it("focuses on input with focus === true", function() {
+
+                // arrange
+                validInput.focus = {};
+
+                // act
+                tp = create(validInput);
+                
+                // assert
+                document.activeElement.className.should.be.eql("atp-hour atp-focus");
+            });
+
+            it("does not focus on input with focus === false", function() {
+
+                // arrange
+                validInput.focus = undefined;
+
+                // act
+                tp = create(validInput);
+                
+                // assert
+                if (document.activeElement) {
+                    document.activeElement.className.should.not.be.eql("atp-hour atp-focus");
+                }
             });
         });
 
