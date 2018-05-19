@@ -114,7 +114,7 @@ var timePickerModal = timePickerModal({
 
 **Output**
 
-See [timePicker](#timePicker) timePicker output
+See [timePicker](#timepicker) output
 
 ### timePickerInput
 
