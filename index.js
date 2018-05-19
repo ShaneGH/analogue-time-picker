@@ -4,7 +4,7 @@
 // Typescript modules are compiled and bundled into the js files in the ./dist directory
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports = require('./dist/material-time-lite.min.js');
+    module.exports = require('./dist/analogue-time-picker.min.js');
 } else {
-    module.exports = require('./dist/material-time-lite.js');
+    module.exports = require('./dist/analogue-time-picker.js');
 }

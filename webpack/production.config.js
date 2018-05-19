@@ -3,6 +3,6 @@ const base = require("./base.config");
 
 module.exports = merge(base, {
     entry: {
-        "./dist/material-time-lite.min": "./index.ts"
+        "./dist/analogue-time-picker.min": "./index.ts"
     }
 });
