@@ -71,6 +71,7 @@ var timePicker = timePicker({
 | mode | number/string | true | 12 hour or 24 hour mode. Accepts 12, 24, "12", "24". | The default browser culture of the user |
 | width | number/string | true | The width of the component. Will also be used to calculate the font size. If `%` or `em` are used, the font sized cannot be auto calculated, and must be specified manually via css | "300px" |
 | time | {hour: number &#124; string, minute: number &#124; string} or Date | true | The initial time of the component in 24h format | { hour: 0, minute: 0 } |
+| focus | boolean | true | If set to true, the "hours" input will be focused on render. | false |
 
 **Output**
 
