@@ -39,12 +39,12 @@ The clock has a fixed aspect ratio, so the width will determine the width and th
  * Retain the default size of `300px`.
  * Add a `width` paramater to the time picker: `timePicker({ width: "300px" })`. The font size is then generated automatically.
  * Specify the width on the parent element
-     ```javascript
+```javascript
 var parent = document.getElementById("theParent");
 parent.style.width = "300px";
 parent.style.fontSize = "16px";
 timePicker({ element: parent });
-     ```
+```
 
 ## API
 
