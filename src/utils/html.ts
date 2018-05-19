@@ -3,11 +3,14 @@ import { registerEvent, registerKeyEvent } from "./utils";
 
 /** Get the offset to the window of an element */
 function offset(el: HTMLElement | null, prop: "offsetLeft" | "offsetTop") {
-    var offset = -(prop === "offsetTop" ? window.pageYOffset : window.pageXOffset);
-    while (el && el instanceof HTMLElement) {
+    var offset = 0;
+    while (el instanceof HTMLElement) {
         offset += el[prop];
+        if (window.getComputedStyle(el).getPropertyValue("position") === "fixed") return offset;
         el = <HTMLElement>el.offsetParent;
     }
+
+    offset -= (prop === "offsetTop" ? window.pageYOffset : window.pageXOffset);
 
     return offset;
 }
