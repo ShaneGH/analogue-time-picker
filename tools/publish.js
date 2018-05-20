@@ -21,19 +21,19 @@ function copyDirectory(directoryName) {
 }
 
 function publish() {
-    // return new Promise((resolve, reject) => {
-    //     var prc = spawn('npm',  ['publish'], {cwd: release});
-    //     prc.stdout.setEncoding('utf8');
+    return new Promise((resolve, reject) => {
+        var prc = spawn('npm',  ['publish'], {cwd: release});
+        prc.stdout.setEncoding('utf8');
 
-    //     prc.stdout.on('data', function (data) {
-    //         console.log(data.toString());
-    //     });
+        prc.stdout.on('data', function (data) {
+            console.log(data.toString());
+        });
 
-    //     prc.on('close', function (code) {
-    //         if (!code) resolve();
-    //         else reject(new Error('process exit code ' + code));
-    //     });
-    // });
+        prc.on('close', function (code) {
+            if (!code) resolve();
+            else reject(new Error('process exit code ' + code));
+        });
+    });
 }
 
 // delete old release
