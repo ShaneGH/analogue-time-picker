@@ -17,7 +17,8 @@
     "build-dev": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\"",
     "build-prod": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/production.config.js\"",
     "build": "npm run build-dev && npm run build-prod",
-    "develop": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch"
+    "develop": "node \"./node_modules/webpack/bin/webpack.js\" --config \"./webpack/dev.config.js\" --watch",
+    "release": "node \"./tools/publish.js\""
   },
   "keywords": [
     "ui",
