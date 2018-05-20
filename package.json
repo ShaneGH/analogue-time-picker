@@ -1,6 +1,6 @@
 {
   "name": "analogue-time-picker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A small and simple time picker based on google material UI",
   "main": "index.js",
   "repository": {
