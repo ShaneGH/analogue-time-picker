@@ -22,16 +22,24 @@ function copyDirectory(directoryName) {
 
 function publish() {
     return new Promise((resolve, reject) => {
-        var prc = spawn('npm',  ['publish'], {cwd: release});
+        var prc = spawn('cmd',  ['/c', 'npm', 'publish'], {cwd: release});
         prc.stdout.setEncoding('utf8');
 
         prc.stdout.on('data', function (data) {
             console.log(data.toString());
         });
 
+        var err = [];
+        prc.stderr.on('data', function (data) {
+            err.push(data);
+        });
+
         prc.on('close', function (code) {
             if (!code) resolve();
-            else reject(new Error('process exit code ' + code));
+            else {
+                err.push(`process exit code ${code}`);
+                reject(new Error(err.join("\n")));
+            }
         });
     });
 }
