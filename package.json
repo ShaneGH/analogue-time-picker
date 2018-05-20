@@ -3,9 +3,9 @@
   "version": "1.0.1",
   "description": "A small and simple time picker based on google material UI",
   "main": "index.js",
-  "repository" : { 
-    "type" : "git",
-    "url" : "https://github.com/ShaneGH/analogue-time-picker.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShaneGH/analogue-time-picker.git"
   },
   "scripts": {
     "clear-old-tests": "node \"./tools/deleteTestBin.js\"",
@@ -35,6 +35,7 @@
     "chai": "^4.1.2",
     "fs-walker": "^1.0.0",
     "mocha": "^5.1.1",
+    "ncp": "^2.0.0",
     "requirejs": "^2.3.5",
     "typescript": "^2.8.3",
     "webpack": "^4.7.0",
