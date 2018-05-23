@@ -5,6 +5,7 @@ A small and simple time picker based on google material UI
 
  * 12h and 24h versions
  * Mobile and desktop enabled
+ * Typescript enabled
  * Custom styles, and works with material UI
  * Responsive
  * Accessable
