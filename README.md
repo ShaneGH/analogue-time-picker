@@ -1,6 +1,8 @@
 # analogue-time-picker
 A small and simple time picker based on google material UI
 
+`npm add package analogue-time-picker`
+
 ![time picker](https://raw.githubusercontent.com/ShaneGH/analogue-time-picker/master/docs/timePicker.png)
 
  * 12h and 24h versions
